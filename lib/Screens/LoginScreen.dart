@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'dart:ui';
 
 import './SignInScreen.dart';
+import '../Widgets/CustomTextField.dart';
 
 enum MobileVerificationState {
   SHOW_MOBILE_FORM_STATE,
@@ -20,7 +21,7 @@ class _LoginScreenState extends State<LoginScreen> {
   // late GoogleSignInAccount _userObj;
   // GoogleSignIn _googleSignIn = GoogleSignIn();
 
-  var currentSate = MobileVerificationState.SHOW_MOBILE_FORM_STATE;
+  var _currentSate = MobileVerificationState.SHOW_MOBILE_FORM_STATE;
 
   final phoneController = TextEditingController();
   final otpController = TextEditingController();
@@ -54,29 +55,22 @@ class _LoginScreenState extends State<LoginScreen> {
                 ),
               ),
               Container(
-                height: 20,
-                padding: EdgeInsets.only(left: 10),
-                child: TextField(
-                  controller: phoneController,
-                  decoration: InputDecoration(
-                    border: InputBorder.none,
-                    hintText: "Phone number",
-                    hintStyle: TextStyle(
-                      color: Colors.grey.shade400,
-                    ),
-                  ),
-                ),
-              ),
+                  height: 20,
+                  padding: EdgeInsets.only(left: 10),
+                  child: CustomTextField(
+                    controller: phoneController,
+                    textFieldContent: "Phone number",
+                  )),
             ],
           ),
         ),
         SizedBox(
-          height: 20,
+          height: 10,
         ),
         TextButton(
           onPressed: () {
             setState(() {
-              currentSate = MobileVerificationState.SHOW_OTP_FORM_STATE;
+              _currentSate = MobileVerificationState.SHOW_OTP_FORM_STATE;
             });
           },
           child: Container(
@@ -194,15 +188,9 @@ class _LoginScreenState extends State<LoginScreen> {
               Container(
                 height: 20,
                 padding: EdgeInsets.only(left: 10),
-                child: TextField(
+                child: CustomTextField(
                   controller: otpController,
-                  decoration: InputDecoration(
-                    border: InputBorder.none,
-                    hintText: "OTP",
-                    hintStyle: TextStyle(
-                      color: Colors.grey.shade400,
-                    ),
-                  ),
+                  textFieldContent: "OTP",
                 ),
               ),
             ],
@@ -264,7 +252,7 @@ class _LoginScreenState extends State<LoginScreen> {
                     onPressed: () {
                       setState(() {
                         _isLoggedIn = false;
-                        currentSate =
+                        _currentSate =
                             MobileVerificationState.SHOW_MOBILE_FORM_STATE;
                       });
                     },
@@ -328,7 +316,7 @@ class _LoginScreenState extends State<LoginScreen> {
                               ),
                               Padding(
                                 padding: EdgeInsets.all(20.0),
-                                child: currentSate ==
+                                child: _currentSate ==
                                         MobileVerificationState
                                             .SHOW_MOBILE_FORM_STATE
                                     ? getMobileFormWidget(context)
