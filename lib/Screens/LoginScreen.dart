@@ -5,6 +5,7 @@ import 'dart:ui';
 
 import './SignInScreen.dart';
 import '../Widgets/CustomTextField.dart';
+import 'CategoryScreen.dart';
 
 enum MobileVerificationState {
   SHOW_MOBILE_FORM_STATE,
@@ -236,28 +237,8 @@ class _LoginScreenState extends State<LoginScreen> {
     return Scaffold(
       body: Container(
         child: _isLoggedIn
-            ? Column(
-                children: [
-                  // Image.network(_userObj.photoUrl),
-                  // Text(_userName),
-
-                  Container(
-                    height: 400,
-                    alignment: Alignment.center,
-                    child: Text("user@gmail.com"),
-                  ),
-
-                  TextButton(
-                    child: Text("Log out!"),
-                    onPressed: () {
-                      setState(() {
-                        _isLoggedIn = false;
-                        _currentSate =
-                            MobileVerificationState.SHOW_MOBILE_FORM_STATE;
-                      });
-                    },
-                  )
-                ],
+            ? Scaffold(
+                body: CategoryScreen(),
               )
             : Container(
                 decoration: BoxDecoration(
