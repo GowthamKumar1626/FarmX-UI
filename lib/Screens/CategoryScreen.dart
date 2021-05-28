@@ -76,7 +76,7 @@ class _CategoryScreenState extends State<CategoryScreen> {
                 height: 50,
               ),
               Text(
-                'Hey User!',
+                "Hey User",
                 style: TextStyle(
                   fontFamily: 'Roboto',
                   fontSize: 17,

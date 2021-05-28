@@ -3,6 +3,7 @@ import 'dart:ui';
 import 'package:farmx/Screens/LoginScreen.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:modal_progress_hud/modal_progress_hud.dart';
 
 import 'CategoryScreen.dart';
 import 'LoginScreen.dart';
@@ -32,6 +33,7 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
   String password = "";
 
   final _auth = FirebaseAuth.instance;
+  bool showSpinner = false;
 
   getEmailFormWidget(context) {
     return Column(
@@ -227,10 +229,21 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
         ),
         TextButton(
           onPressed: () async {
+            setState(() {
+              showSpinner = true;
+            });
             try {
               final newUser = await _auth.createUserWithEmailAndPassword(
                   email: email, password: password);
-              Navigator.pushNamed(context, CategoryScreen.id);
+
+              if (newUser != null) {
+                // ignore: unnecessary_null_comparison
+                Navigator.pushNamed(context, CategoryScreen.id);
+              }
+
+              setState(() {
+                showSpinner = false;
+              });
             } catch (error) {
               print('Error: $error');
               Navigator.pushNamed(context, RegistrationScreen.id);
@@ -279,54 +292,58 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Container(
+      body: ModalProgressHUD(
+        inAsyncCall: showSpinner,
         child: Container(
-          decoration: BoxDecoration(
-            image: DecorationImage(
-              image: AssetImage("assets/images/background-2.jpeg"),
-              fit: BoxFit.cover,
-            ),
-          ),
-          child: Center(
-            child: Container(
-              alignment: Alignment.bottomCenter,
-              margin: EdgeInsets.only(left: 10, right: 10, bottom: 22),
-              decoration: BoxDecoration(
-                boxShadow: ([
-                  BoxShadow(
-                    blurRadius: 24.0,
-                    spreadRadius: 16.0,
-                    color: Colors.black.withOpacity(0.4),
-                  )
-                ]),
+          child: Container(
+            decoration: BoxDecoration(
+              image: DecorationImage(
+                image: AssetImage("assets/images/background-2.jpeg"),
+                fit: BoxFit.cover,
               ),
-              child: ClipRRect(
-                borderRadius: BorderRadius.circular(16.0),
-                child: BackdropFilter(
-                  filter: ImageFilter.blur(
-                    sigmaX: 25.0,
-                    sigmaY: 25.0,
-                  ),
-                  child: Container(
-                    height: 350,
-                    decoration: BoxDecoration(
-                      color: Colors.white.withOpacity(0.3),
-                      borderRadius: BorderRadius.circular(16.0),
-                      border: Border.all(
-                        color: Colors.white.withOpacity(0.2),
-                      ),
+            ),
+            child: Center(
+              child: Container(
+                alignment: Alignment.bottomCenter,
+                margin: EdgeInsets.only(left: 10, right: 10, bottom: 22),
+                decoration: BoxDecoration(
+                  boxShadow: ([
+                    BoxShadow(
+                      blurRadius: 24.0,
+                      spreadRadius: 16.0,
+                      color: Colors.black.withOpacity(0.4),
+                    )
+                  ]),
+                ),
+                child: ClipRRect(
+                  borderRadius: BorderRadius.circular(16.0),
+                  child: BackdropFilter(
+                    filter: ImageFilter.blur(
+                      sigmaX: 25.0,
+                      sigmaY: 25.0,
                     ),
-                    child: Stack(
-                      alignment: Alignment.center,
-                      children: <Widget>[
-                        Padding(
-                          padding: EdgeInsets.all(20.0),
-                          child: _currentSate ==
-                                  MobileVerificationState.SHOW_EMAIL_FORM_STATE
-                              ? getEmailFormWidget(context)
-                              : getPasswordFormWidget(context),
+                    child: Container(
+                      height: 350,
+                      decoration: BoxDecoration(
+                        color: Colors.white.withOpacity(0.3),
+                        borderRadius: BorderRadius.circular(16.0),
+                        border: Border.all(
+                          color: Colors.white.withOpacity(0.2),
                         ),
-                      ],
+                      ),
+                      child: Stack(
+                        alignment: Alignment.center,
+                        children: <Widget>[
+                          Padding(
+                            padding: EdgeInsets.all(20.0),
+                            child: _currentSate ==
+                                    MobileVerificationState
+                                        .SHOW_EMAIL_FORM_STATE
+                                ? getEmailFormWidget(context)
+                                : getPasswordFormWidget(context),
+                          ),
+                        ],
+                      ),
                     ),
                   ),
                 ),
