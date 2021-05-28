@@ -1,10 +1,11 @@
 import 'dart:ui';
 
+import 'package:farmx/Screens/LoginScreen.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
-import './LoginScreen.dart';
 import 'CategoryScreen.dart';
+import 'LoginScreen.dart';
 
 enum MobileVerificationState {
   SHOW_EMAIL_FORM_STATE,
@@ -34,10 +35,23 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
 
   getEmailFormWidget(context) {
     return Column(
-      mainAxisAlignment: MainAxisAlignment.center,
+      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
       children: <Widget>[
         Container(
-          margin: EdgeInsets.only(top: 50),
+          padding: EdgeInsets.all(10),
+          child: Align(
+            alignment: Alignment.topCenter,
+            child: Text(
+              "Create an account",
+              style: TextStyle(
+                fontWeight: FontWeight.bold,
+                fontSize: 20.0,
+                color: Colors.white,
+              ),
+            ),
+          ),
+        ),
+        Container(
           padding: EdgeInsets.all(5.0),
           decoration: BoxDecoration(
               color: Colors.white,
@@ -116,44 +130,25 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
           ),
         ),
         SizedBox(
-          height: 10,
-        ),
-        Text(
-          "Forgot Password?",
-          style: TextStyle(
-            color: Colors.lime.shade500,
-          ),
-        ),
-        SizedBox(
-          height: 10,
+          height: 5,
         ),
         Row(
-          crossAxisAlignment: CrossAxisAlignment.center,
+          mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
-            Align(
-              alignment: Alignment.center,
-              child: Container(
-                child: Text(
-                  "Existing user?",
-                  style: TextStyle(
-                    color: Colors.lime.shade500,
-                  ),
-                ),
+            Text(
+              "Existing user?",
+              style: TextStyle(
+                color: Colors.lime.shade500,
               ),
             ),
-            Expanded(
-              child: TextButton(
-                onPressed: () {
-                  Navigator.pushNamed(context, LoginScreen.id);
-                },
-                child: Container(
-                  child: Text(
-                    "Click here",
-                    style: TextStyle(
-                      color: Colors.white,
-                      fontWeight: FontWeight.bold,
-                    ),
-                  ),
+            TextButton(
+              onPressed: () {
+                Navigator.pushNamed(context, LoginScreen.id);
+              },
+              child: Text(
+                "Click here",
+                style: TextStyle(
+                  color: Colors.white,
                 ),
               ),
             ),
@@ -165,9 +160,24 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
 
   getPasswordFormWidget(context) {
     return Column(
+      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
       children: <Widget>[
         Container(
-          margin: EdgeInsets.only(top: 50),
+          padding: EdgeInsets.all(5.0),
+          child: Align(
+            alignment: Alignment.topLeft,
+            child: Text(
+              "Password",
+              style: TextStyle(
+                fontWeight: FontWeight.bold,
+                fontSize: 15.0,
+                color: Colors.white,
+              ),
+            ),
+          ),
+        ),
+        Container(
+          margin: EdgeInsets.only(top: 10),
           padding: EdgeInsets.all(5.0),
           decoration: BoxDecoration(
               color: Colors.white,
@@ -228,7 +238,7 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
           },
           child: Container(
             height: 50,
-            width: 100,
+            width: 200,
             decoration: BoxDecoration(
               borderRadius: BorderRadius.circular(10.0),
               gradient: LinearGradient(colors: [
@@ -257,11 +267,9 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
               _currentSate = MobileVerificationState.SHOW_EMAIL_FORM_STATE;
             });
           },
-          child: Text(
-            "Back",
-            style: TextStyle(
-              color: Colors.black,
-            ),
+          child: Icon(
+            Icons.arrow_back,
+            color: Colors.white,
           ),
         ),
       ],
@@ -300,7 +308,7 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
                     sigmaY: 25.0,
                   ),
                   child: Container(
-                    height: 330,
+                    height: 350,
                     decoration: BoxDecoration(
                       color: Colors.white.withOpacity(0.3),
                       borderRadius: BorderRadius.circular(16.0),
@@ -311,20 +319,6 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
                     child: Stack(
                       alignment: Alignment.center,
                       children: <Widget>[
-                        Container(
-                          padding: EdgeInsets.all(30),
-                          child: Align(
-                            alignment: Alignment.topCenter,
-                            child: Text(
-                              "Create an account",
-                              style: TextStyle(
-                                fontWeight: FontWeight.bold,
-                                fontSize: 20.0,
-                                color: Colors.white,
-                              ),
-                            ),
-                          ),
-                        ),
                         Padding(
                           padding: EdgeInsets.all(20.0),
                           child: _currentSate ==

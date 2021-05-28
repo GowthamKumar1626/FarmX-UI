@@ -4,7 +4,6 @@ import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 
 import '../Constants/Constants.dart';
 import '../Constants/Tools.dart';
-import 'RegistrationScreen.dart';
 
 class CategoryScreen extends StatefulWidget {
   static const String id = "category_screen";
@@ -63,7 +62,7 @@ class _CategoryScreenState extends State<CategoryScreen> {
                   TextButton(
                     onPressed: () async {
                       await _auth.signOut();
-                      Navigator.pushNamed(context, RegistrationScreen.id);
+                      Navigator.pop(context);
                     },
                     child: CircleAvatar(
                       radius: 25,
