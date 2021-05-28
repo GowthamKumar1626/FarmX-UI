@@ -1,0 +1,91 @@
+{
+  "project_info": {
+    "project_number": "376866163821",
+    "firebase_url": "https://farmx-4ef60-default-rtdb.firebaseio.com",
+    "project_id": "farmx-4ef60",
+    "storage_bucket": "farmx-4ef60.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:376866163821:android:3249394354f6e35e758364",
+        "android_client_info": {
+          "package_name": "co.dotdev.farmx"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "376866163821-h288q58s0l07otfh0n77fpbfvrtgargs.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyA6MScIXFog_3wOpzIPQP5IsTJXIg1NnaM"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "376866163821-h288q58s0l07otfh0n77fpbfvrtgargs.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "376866163821-bb3hi063eb2k8r6rqfpe296lc6oko511.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "co.dotdev.farmx"
+              }
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:376866163821:android:3d47f8f2f2a616a7758364",
+        "android_client_info": {
+          "package_name": "com.example.flutter_auth"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "376866163821-4dtn02pndl6dkd8b8lql6c8d9eos96s8.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.flutter_auth",
+            "certificate_hash": "2eeae8ff209704a3e4462317112e9010bfafdeb1"
+          }
+        },
+        {
+          "client_id": "376866163821-h288q58s0l07otfh0n77fpbfvrtgargs.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyA6MScIXFog_3wOpzIPQP5IsTJXIg1NnaM"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "376866163821-h288q58s0l07otfh0n77fpbfvrtgargs.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "376866163821-bb3hi063eb2k8r6rqfpe296lc6oko511.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "co.dotdev.farmx"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

@@ -1,9 +1,14 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
+
 import '../Constants/Constants.dart';
 import '../Constants/Tools.dart';
+import 'RegistrationScreen.dart';
 
 class CategoryScreen extends StatefulWidget {
+  static const String id = "category_screen";
+
   @override
   _CategoryScreenState createState() => _CategoryScreenState();
 }
@@ -12,10 +17,27 @@ class _CategoryScreenState extends State<CategoryScreen> {
   int currentIndex = 1;
   String title = "Tools";
 
+  final _auth = FirebaseAuth.instance;
+  User? loggedInUser;
+
+  @override
+  void initState() {
+    super.initState();
+    getCurrentUser();
+  }
+
+  void getCurrentUser() {
+    final user = _auth.currentUser;
+    if (user != null) {
+      loggedInUser = user;
+      print(loggedInUser!.email);
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
-    return Container(
-      child: SafeArea(
+    return Scaffold(
+      body: SafeArea(
         child: Container(
           padding: EdgeInsets.symmetric(
             vertical: 15,
@@ -39,7 +61,10 @@ class _CategoryScreenState extends State<CategoryScreen> {
                   ),
                   Spacer(),
                   TextButton(
-                    onPressed: () {},
+                    onPressed: () async {
+                      await _auth.signOut();
+                      Navigator.pushNamed(context, RegistrationScreen.id);
+                    },
                     child: CircleAvatar(
                       radius: 25,
                       backgroundColor: Colors.transparent,
