@@ -50,8 +50,7 @@ class _ToolScreenState extends State<ToolScreen> {
                     child: CircleAvatar(
                       radius: 25,
                       backgroundColor: Colors.transparent,
-                      backgroundImage:
-                          AssetImage("assets/icons/profile-user.png"),
+                      backgroundImage: AssetImage("assets/icons/man.png"),
                     ),
                   ),
                 ],
@@ -71,7 +70,7 @@ class _ToolScreenState extends State<ToolScreen> {
                 height: 20,
               ),
               Text(
-                'Know more about our tools',
+                'Tools provided',
                 style: kGreetingsStyle,
               ),
               SizedBox(
@@ -94,7 +93,6 @@ class _ToolScreenState extends State<ToolScreen> {
                                 currentIndex = index;
                                 title = toolIcons[index].name;
                               });
-                              print(currentIndex);
                             },
                           );
                         },

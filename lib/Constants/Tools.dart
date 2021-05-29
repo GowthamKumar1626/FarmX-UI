@@ -65,19 +65,19 @@ List<ToolIcons> toolIcons = [
     color: kYellow,
   ),
   ToolIcons(
-    name: "Pest Detection",
-    imgPath: "assets/icons/pest-detection.png",
+    name: "Co-Farming",
+    imgPath: "assets/icons/co-farmer.png",
+    color: kBlue,
+  ),
+  ToolIcons(
+    name: "Farming Tools",
+    imgPath: "assets/icons/tractor.png",
     color: kGrey,
   ),
   ToolIcons(
-    name: "Pest Detection",
-    imgPath: "assets/icons/pest-detection.png",
-    color: kGrey,
-  ),
-  ToolIcons(
-    name: "Pest Detection",
-    imgPath: "assets/icons/pest-detection.png",
-    color: kGrey,
+    name: "Donation",
+    imgPath: "assets/icons/donation.png",
+    color: kPink,
   ),
 ];
 
