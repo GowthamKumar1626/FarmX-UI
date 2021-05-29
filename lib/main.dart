@@ -1,4 +1,6 @@
 import 'package:farmx/Screens/LoginScreen.dart';
+import 'package:farmx/Screens/ToolScreen.dart';
+import 'package:farmx/Screens/UserProfileScreen.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 
@@ -20,11 +22,13 @@ class MyApp extends StatelessWidget {
       builder: (context, snapshot) {
         return MaterialApp(
           debugShowCheckedModeBanner: false,
-          initialRoute: RegistrationScreen.id,
+          initialRoute: ToolScreen.id,
           routes: {
             RegistrationScreen.id: (context) => RegistrationScreen(),
             LoginScreen.id: (context) => LoginScreen(),
             CategoryScreen.id: (context) => CategoryScreen(),
+            ToolScreen.id: (context) => ToolScreen(),
+            UserProfileScreen.id: (context) => UserProfileScreen(),
           },
         );
       },

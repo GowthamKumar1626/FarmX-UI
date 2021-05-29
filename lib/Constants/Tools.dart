@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+
 import '../Constants/Constants.dart';
 
 List<Tool> tools = [
@@ -45,4 +46,49 @@ class Tool {
       required this.imgPath,
       required this.imgFit,
       required this.colorStyle});
+}
+
+List<ToolIcons> toolIcons = [
+  ToolIcons(
+    name: "Pest Detection",
+    imgPath: "assets/icons/pest-detection.png",
+    color: kGreen,
+  ),
+  ToolIcons(
+    name: "Fertilizer",
+    imgPath: "assets/icons/fertilizer-1.png",
+    color: kOrange,
+  ),
+  ToolIcons(
+    name: "Crop Suggestion",
+    imgPath: "assets/icons/crop-suggestion.png",
+    color: kYellow,
+  ),
+  ToolIcons(
+    name: "Pest Detection",
+    imgPath: "assets/icons/pest-detection.png",
+    color: kGrey,
+  ),
+  ToolIcons(
+    name: "Pest Detection",
+    imgPath: "assets/icons/pest-detection.png",
+    color: kGrey,
+  ),
+  ToolIcons(
+    name: "Pest Detection",
+    imgPath: "assets/icons/pest-detection.png",
+    color: kGrey,
+  ),
+];
+
+class ToolIcons {
+  String name;
+  String imgPath;
+  Color color;
+
+  ToolIcons({
+    required this.name,
+    required this.imgPath,
+    required this.color,
+  });
 }

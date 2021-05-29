@@ -41,5 +41,9 @@
 	</array>
 	<key>UIViewControllerBasedStatusBarAppearance</key>
 	<false/>
+	<key>NSLocationAlwaysUsageDescription</key>
+	<string>FarmX will use your Location details</string>
+	<key>NSLocationWhenInUseUsageDescription</key>
+	<string>FarmX will use your Location details</string>
 </dict>
 </plist>
