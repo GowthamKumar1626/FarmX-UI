@@ -1,6 +1,7 @@
 import 'dart:ui';
 
 import 'package:farmx/Screens/UserProfileScreen.dart';
+import 'package:farmx/Widgets/PestDetectionWidget.dart';
 import 'package:flutter/material.dart';
 
 import '../Constants/Constants.dart';
@@ -16,6 +17,8 @@ class ToolScreen extends StatefulWidget {
 class _ToolScreenState extends State<ToolScreen> {
   String title = "Pest Detection";
   int currentIndex = 0;
+
+  Widget toolWidget = Container();
 
   @override
   Widget build(BuildContext context) {
@@ -92,6 +95,18 @@ class _ToolScreenState extends State<ToolScreen> {
                               setState(() {
                                 currentIndex = index;
                                 title = toolIcons[index].name;
+                                switch (title) {
+                                  case "Pest Detection":
+                                    toolWidget = PestDetectionWidget();
+                                    break;
+                                  default:
+                                    toolWidget = Container(
+                                      child: Text(
+                                        "Tool will be implemented Soon!",
+                                        style: kDefaultStyle,
+                                      ),
+                                    );
+                                }
                               });
                             },
                           );
@@ -117,6 +132,7 @@ class _ToolScreenState extends State<ToolScreen> {
               SizedBox(
                 height: 25,
               ),
+              toolWidget,
             ],
           ),
         ),

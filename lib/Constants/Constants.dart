@@ -18,6 +18,12 @@ const TextStyle kGreetingsStyle = TextStyle(
     height: 1.2,
     letterSpacing: 0.8);
 
+const TextStyle kDefaultStyle = TextStyle(
+  fontFamily: 'Roboto',
+  fontWeight: FontWeight.w700,
+  fontSize: 20,
+);
+
 const TextStyle kTopHeadingStyle =
     TextStyle(fontFamily: 'Poppins', fontWeight: FontWeight.w700, fontSize: 20);
 
