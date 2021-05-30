@@ -3,9 +3,8 @@ import 'dart:ui';
 import 'package:farmx/Screens/LoginScreen.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:modal_progress_hud/modal_progress_hud.dart';
 
-import 'CategoryScreen.dart';
+import 'HomeScreen.dart';
 import 'LoginScreen.dart';
 
 enum MobileVerificationState {
@@ -238,7 +237,7 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
 
               if (newUser != null) {
                 // ignore: unnecessary_null_comparison
-                Navigator.pushNamed(context, CategoryScreen.id);
+                Navigator.pushNamed(context, HomeScreen.id);
               }
 
               setState(() {
@@ -292,58 +291,54 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: ModalProgressHUD(
-        inAsyncCall: showSpinner,
+      body: Container(
         child: Container(
-          child: Container(
-            decoration: BoxDecoration(
-              image: DecorationImage(
-                image: AssetImage("assets/images/background-2.jpeg"),
-                fit: BoxFit.cover,
-              ),
+          decoration: BoxDecoration(
+            image: DecorationImage(
+              image: AssetImage("assets/images/background-2.jpeg"),
+              fit: BoxFit.cover,
             ),
-            child: Center(
-              child: Container(
-                alignment: Alignment.bottomCenter,
-                margin: EdgeInsets.only(left: 10, right: 10, bottom: 22),
-                decoration: BoxDecoration(
-                  boxShadow: ([
-                    BoxShadow(
-                      blurRadius: 24.0,
-                      spreadRadius: 16.0,
-                      color: Colors.black.withOpacity(0.4),
-                    )
-                  ]),
-                ),
-                child: ClipRRect(
-                  borderRadius: BorderRadius.circular(16.0),
-                  child: BackdropFilter(
-                    filter: ImageFilter.blur(
-                      sigmaX: 25.0,
-                      sigmaY: 25.0,
+          ),
+          child: Center(
+            child: Container(
+              alignment: Alignment.bottomCenter,
+              margin: EdgeInsets.only(left: 10, right: 10, bottom: 22),
+              decoration: BoxDecoration(
+                boxShadow: ([
+                  BoxShadow(
+                    blurRadius: 24.0,
+                    spreadRadius: 16.0,
+                    color: Colors.black.withOpacity(0.4),
+                  )
+                ]),
+              ),
+              child: ClipRRect(
+                borderRadius: BorderRadius.circular(16.0),
+                child: BackdropFilter(
+                  filter: ImageFilter.blur(
+                    sigmaX: 25.0,
+                    sigmaY: 25.0,
+                  ),
+                  child: Container(
+                    height: 350,
+                    decoration: BoxDecoration(
+                      color: Colors.white.withOpacity(0.3),
+                      borderRadius: BorderRadius.circular(16.0),
+                      border: Border.all(
+                        color: Colors.white.withOpacity(0.2),
+                      ),
                     ),
-                    child: Container(
-                      height: 350,
-                      decoration: BoxDecoration(
-                        color: Colors.white.withOpacity(0.3),
-                        borderRadius: BorderRadius.circular(16.0),
-                        border: Border.all(
-                          color: Colors.white.withOpacity(0.2),
+                    child: Stack(
+                      alignment: Alignment.center,
+                      children: <Widget>[
+                        Padding(
+                          padding: EdgeInsets.all(20.0),
+                          child: _currentSate ==
+                                  MobileVerificationState.SHOW_EMAIL_FORM_STATE
+                              ? getEmailFormWidget(context)
+                              : getPasswordFormWidget(context),
                         ),
-                      ),
-                      child: Stack(
-                        alignment: Alignment.center,
-                        children: <Widget>[
-                          Padding(
-                            padding: EdgeInsets.all(20.0),
-                            child: _currentSate ==
-                                    MobileVerificationState
-                                        .SHOW_EMAIL_FORM_STATE
-                                ? getEmailFormWidget(context)
-                                : getPasswordFormWidget(context),
-                          ),
-                        ],
-                      ),
+                      ],
                     ),
                   ),
                 ),

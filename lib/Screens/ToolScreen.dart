@@ -18,123 +18,131 @@ class _ToolScreenState extends State<ToolScreen> {
   String title = "Pest Detection";
   int currentIndex = 0;
 
-  Widget toolWidget = Container();
+  Widget toolWidget = PestDetectionWidget();
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       body: SafeArea(
-        child: Container(
-          padding: EdgeInsets.symmetric(
-            vertical: 15,
-            horizontal: 25,
-          ),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: <Widget>[
-              Row(
+        child: Column(
+          children: [
+            Container(
+              padding: EdgeInsets.symmetric(
+                vertical: 15,
+                horizontal: 25,
+              ),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
                 children: <Widget>[
-                  InkWell(
-                    onTap: () {},
-                    customBorder: CircleBorder(),
-                    child: Padding(
-                      padding: EdgeInsets.all(8.0),
-                      child: Icon(
-                        Icons.search,
-                        size: 30,
+                  Row(
+                    children: <Widget>[
+                      InkWell(
+                        onTap: () {},
+                        customBorder: CircleBorder(),
+                        child: Padding(
+                          padding: EdgeInsets.all(8.0),
+                          child: Icon(
+                            Icons.search,
+                            size: 30,
+                          ),
+                        ),
                       ),
+                      Spacer(),
+                      TextButton(
+                        onPressed: () {
+                          Navigator.pushNamed(context, UserProfileScreen.id);
+                        },
+                        child: CircleAvatar(
+                          radius: 25,
+                          backgroundColor: Colors.transparent,
+                          backgroundImage: AssetImage("assets/icons/man.png"),
+                        ),
+                      ),
+                    ],
+                  ),
+                  SizedBox(
+                    height: 50,
+                  ),
+                  Text(
+                    "Hey User",
+                    style: TextStyle(
+                      fontFamily: 'Roboto',
+                      fontSize: 17,
+                      color: kGrey,
                     ),
                   ),
-                  Spacer(),
-                  TextButton(
-                    onPressed: () {
-                      Navigator.pushNamed(context, UserProfileScreen.id);
-                    },
-                    child: CircleAvatar(
-                      radius: 25,
-                      backgroundColor: Colors.transparent,
-                      backgroundImage: AssetImage("assets/icons/man.png"),
-                    ),
+                  SizedBox(
+                    height: 20,
                   ),
-                ],
-              ),
-              SizedBox(
-                height: 50,
-              ),
-              Text(
-                "Hey User",
-                style: TextStyle(
-                  fontFamily: 'Roboto',
-                  fontSize: 17,
-                  color: kGrey,
-                ),
-              ),
-              SizedBox(
-                height: 20,
-              ),
-              Text(
-                'Tools provided',
-                style: kGreetingsStyle,
-              ),
-              SizedBox(
-                height: 20,
-              ),
-              Row(
-                children: <Widget>[
-                  Expanded(
-                    child: SizedBox(
-                      height: 70.0,
-                      child: new ListView.separated(
-                        scrollDirection: Axis.horizontal,
-                        itemCount: toolIcons.length,
-                        itemBuilder: (BuildContext context, int index) {
-                          return ToolContainer(
-                            index: index,
-                            getCurrentIndex: () => currentIndex,
-                            setCurrentIndex: () {
-                              setState(() {
-                                currentIndex = index;
-                                title = toolIcons[index].name;
-                                switch (title) {
-                                  case "Pest Detection":
-                                    toolWidget = PestDetectionWidget();
-                                    break;
-                                  default:
-                                    toolWidget = Container(
-                                      child: Text(
-                                        "Tool will be implemented Soon!",
-                                        style: kDefaultStyle,
-                                      ),
-                                    );
-                                }
-                              });
+                  Text(
+                    'Tools provided',
+                    style: kGreetingsStyle,
+                  ),
+                  SizedBox(
+                    height: 20,
+                  ),
+                  Row(
+                    children: <Widget>[
+                      Expanded(
+                        child: SizedBox(
+                          height: 70.0,
+                          child: new ListView.separated(
+                            scrollDirection: Axis.horizontal,
+                            itemCount: toolIcons.length,
+                            itemBuilder: (BuildContext context, int index) {
+                              return ToolContainer(
+                                index: index,
+                                getCurrentIndex: () => currentIndex,
+                                setCurrentIndex: () {
+                                  setState(
+                                    () {
+                                      currentIndex = index;
+                                      title = toolIcons[index].name;
+                                      switch (title) {
+                                        case "Pest Detection":
+                                          toolWidget = PestDetectionWidget();
+                                          break;
+                                        default:
+                                          toolWidget = Container(
+                                            child: Text(
+                                              "Tool will be implemented Soon!",
+                                              style: kDefaultStyle,
+                                            ),
+                                          );
+                                      }
+                                    },
+                                  );
+                                },
+                              );
                             },
-                          );
-                        },
-                        separatorBuilder: (BuildContext context, int index) {
-                          return SizedBox(
-                            width: 5,
-                          );
-                        },
+                            separatorBuilder:
+                                (BuildContext context, int index) {
+                              return SizedBox(
+                                width: 5,
+                              );
+                            },
+                          ),
+                        ),
                       ),
-                    ),
+                    ],
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   ),
+                  SizedBox(
+                    height: 10,
+                  ),
+                  Text(
+                    title,
+                    style: kToolSelected,
+                  ),
+                  SizedBox(
+                    height: 25,
+                  ),
+                  toolWidget,
                 ],
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
               ),
-              SizedBox(
-                height: 10,
-              ),
-              Text(
-                title,
-                style: kToolSelected,
-              ),
-              SizedBox(
-                height: 25,
-              ),
-              toolWidget,
-            ],
-          ),
+            ),
+            Spacer(),
+          ],
         ),
       ),
     );

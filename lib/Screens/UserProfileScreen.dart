@@ -2,7 +2,6 @@ import 'dart:ui';
 
 import 'package:farmx/Constants/Constants.dart';
 import 'package:farmx/Constants/Crops.dart';
-import 'package:farmx/Screens/ToolScreen.dart';
 import 'package:flutter/material.dart';
 import 'package:location/location.dart';
 
@@ -24,7 +23,7 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
       appBar: AppBar(
         leading: IconButton(
           onPressed: () {
-            Navigator.pushNamed(context, ToolScreen.id);
+            Navigator.pop(context);
           },
           icon: Icon(
             Icons.arrow_back_ios,

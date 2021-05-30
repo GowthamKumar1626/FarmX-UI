@@ -3,7 +3,7 @@ import 'dart:ui';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
-import 'CategoryScreen.dart';
+import 'HomeScreen.dart';
 import 'RegistrationScreen.dart';
 
 class LoginScreen extends StatefulWidget {
@@ -161,7 +161,7 @@ class _LoginScreenState extends State<LoginScreen> {
                                       // ignore: unnecessary_null_comparison
                                       if (user != null) {
                                         Navigator.pushNamed(
-                                            context, CategoryScreen.id);
+                                            context, HomeScreen.id);
                                       } else {
                                         print("No User Found");
                                       }
