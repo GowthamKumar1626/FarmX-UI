@@ -137,7 +137,12 @@ class _ToolScreenState extends State<ToolScreen> {
                   SizedBox(
                     height: 25,
                   ),
-                  toolWidget,
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    children: <Widget>[
+                      toolWidget,
+                    ],
+                  ),
                 ],
               ),
             ),

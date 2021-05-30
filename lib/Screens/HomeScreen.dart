@@ -27,6 +27,9 @@ class _HomeScreenState extends State<HomeScreen> {
     return Scaffold(
       body: _pages[currentIndex],
       bottomNavigationBar: BottomNavyBar(
+        itemCornerRadius: 20,
+        curve: Curves.decelerate,
+        // animationDuration: Duration(milliseconds: 200),
         backgroundColor: Colors.white,
         showElevation: false,
         selectedIndex: currentIndex,
