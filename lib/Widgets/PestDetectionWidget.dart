@@ -1,5 +1,5 @@
 import 'dart:io';
-
+import 'package:tflite/tflite.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 
@@ -13,15 +13,91 @@ class PestDetectionWidget extends StatefulWidget {
 class _PestDetectionWidgetState extends State<PestDetectionWidget> {
   var _image;
   final imagePicker = ImagePicker();
-  Future getImage() async {
-    final pickedFile = await imagePicker.getImage(source: ImageSource.camera);
-    setState(() {
-      if (pickedFile != null) {
-        _image = File(pickedFile.path);
-      } else {
-        print('No image selected.');
-      }
+
+  List? _output;
+  String? disease;
+  String? confidence;
+  bool _loading = true;
+
+  final picker = ImagePicker();
+  @override
+  void initState() {
+    super.initState();
+    // load TFLite Model
+    loadModel().then((value) {
+      setState(() {});
     });
+  }
+
+// Function to perform TFLite Inference
+  classifyImage(File image) async {
+    //var output = await Tflite.runModelOnImage(
+    //path: image.path, numResults: 38, asynch: true);
+
+    var output = await Tflite.runModelOnImage(
+        path: image.path, // required
+        imageMean: 0.0, // defaults to 117.0
+        imageStd: 255.0, // defaults to 1.0
+        numResults: 38, // defaults to 5
+        threshold: 0.2, // defaults to 0.1
+        asynch: true // defaults to true
+        );
+    setState(() {
+      // set our global variable equal to local variable
+      _output = output;
+      _loading = false;
+
+      confidence = _output != null
+          ? (_output![0]['confidence'] * 100.0).toString().substring(0, 2) + "%"
+          : " ";
+
+      disease = _output![0]['label'];
+    });
+    print("prediction: $_output");
+  }
+
+  // Function to Load Model
+  loadModel() async {
+    // define model path and labels path
+    await Tflite.loadModel(
+        model: 'assets/models/model.tflite',
+        labels: 'assets/models/label.txt',
+        numThreads: 1);
+  }
+
+  // Function to dispose and clear mmemory once done inferring
+  @override
+  void dispose() {
+    super.dispose();
+    // helps avoid memory leaks
+    Tflite.close();
+  }
+
+  pickImage() async {
+    // load image from source - camera/gallery
+    var image = await picker.getImage(source: ImageSource.camera);
+    // check if error laoding image
+    if (image == null) return null;
+    setState(() {
+      _image = File(image.path);
+    });
+
+    // classify image
+    classifyImage(_image);
+  }
+
+  // Function to pick image - using gallery
+  pickGalleryImage() async {
+    // load image from source - camera/gallery
+    var image = await picker.getImage(source: ImageSource.gallery);
+    // check if error laoding image
+    if (image == null) return null;
+    setState(() {
+      _image = File(image.path);
+    });
+
+    // classify image
+    classifyImage(_image);
   }
 
   @override
@@ -103,17 +179,25 @@ class _PestDetectionWidgetState extends State<PestDetectionWidget> {
           mainAxisAlignment: MainAxisAlignment.end,
           children: <Widget>[
             FloatingActionButton(
-              onPressed: getImage,
+              onPressed: pickImage(),
               tooltip: 'Pick Image',
               child: Icon(Icons.add_a_photo),
             ),
             SizedBox(
               height: 10,
             ),
-            ElevatedButton(
-              onPressed: () {},
-              child: Text("Run test"),
+            FloatingActionButton(
+              onPressed: pickGalleryImage(),
+              tooltip: 'Pick Image from Gallery',
+              child: Icon(Icons.album),
             ),
+            SizedBox(
+              height: 10,
+            ),
+            // ElevatedButton(
+            //   onPressed: () {},
+            //   child: Text("Run test"),
+            // ),
           ],
         ),
       ],
