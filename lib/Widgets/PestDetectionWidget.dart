@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 
 import '../Constants/Constants.dart';
+import 'package:farmx/Widgets/viewdetails.dart';
 
 class PestDetectionWidget extends StatefulWidget {
   @override
@@ -172,7 +173,68 @@ class _PestDetectionWidgetState extends State<PestDetectionWidget> {
                       color: Colors.black,
                     ),
                   )
-                : Image.file(_image),
+                : Center(
+                    child: _loading
+                        ? Container(
+                            width: 280,
+                            child: Column(
+                              children: [
+                                SizedBox(
+                                  height: 50,
+                                )
+                              ],
+                            ),
+                          )
+                        : Container(
+                            child: Column(
+                              children: [
+                                Container(
+                                  height: 250,
+                                  child: Image.file(
+                                    _image,
+                                    width: 450,
+                                    height: 450,
+                                    scale: 0.8,
+                                  ),
+                                ),
+                                SizedBox(
+                                  height: 20,
+                                ),
+                                _output != null
+                                    ? Text(
+                                        'Predicted disease: ${_output![0]['label']} \n Confidence : $confidence',
+                                        style: TextStyle(
+                                            color: Colors.black,
+                                            fontSize: 20,
+                                            fontWeight: FontWeight.bold),
+                                      )
+                                    : Container(),
+                                SizedBox(
+                                  height: 5,
+                                ),
+                                ElevatedButton(
+                                  onPressed: () {
+                                    /*setState(() {
+                                _viewdetails(disease);
+                              });*/
+                                    Navigator.push(
+                                      context,
+                                      MaterialPageRoute(
+                                        builder: (context) {
+                                          return viewdetails(disease!);
+                                        },
+                                      ),
+                                    );
+                                  },
+                                  child: new Text(
+                                    'View Details',
+                                    style: TextStyle(color: Colors.white),
+                                  ),
+                                )
+                              ],
+                            ),
+                          ),
+                  ),
           ),
         ),
         Column(
@@ -201,6 +263,27 @@ class _PestDetectionWidgetState extends State<PestDetectionWidget> {
           ],
         ),
       ],
+    );
+  }
+}
+
+class viewdetails extends StatelessWidget {
+  String? dis;
+  viewdetails(String? disease) {
+    dis = disease;
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: new AppBar(
+        title: new Text('Details of the disease'),
+      ),
+      body: new Container(
+        child: new Text(
+          disease_dic![dis],
+        ),
+      ),
     );
   }
 }
