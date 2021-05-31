@@ -65,6 +65,11 @@ List<ToolIcons> toolIcons = [
     color: kYellow,
   ),
   ToolIcons(
+    name: "General Crop-Info",
+    imgPath: "assets/icons/crop-info.png",
+    color: kOrange,
+  ),
+  ToolIcons(
     name: "Co-Farming",
     imgPath: "assets/icons/co-farmer.png",
     color: kBlue,

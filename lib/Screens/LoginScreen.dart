@@ -213,7 +213,8 @@ class _LoginScreenState extends State<LoginScreen> {
                                 ),
                                 TextButton(
                                   onPressed: () {
-                                    Navigator.pop(context);
+                                    Navigator.pushNamed(
+                                        context, RegistrationScreen.id);
                                   },
                                   child: Icon(
                                     Icons.arrow_back,
