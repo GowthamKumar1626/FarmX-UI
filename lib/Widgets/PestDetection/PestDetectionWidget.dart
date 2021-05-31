@@ -189,26 +189,32 @@ class _PestDetectionWidgetState extends State<PestDetectionWidget> {
         Column(
           mainAxisAlignment: MainAxisAlignment.end,
           children: <Widget>[
-            FloatingActionButton(
+            ElevatedButton.icon(
               onPressed: pickImage,
-              tooltip: 'Pick Image',
-              child: Icon(Icons.add_a_photo),
+              icon: Icon(Icons.add_a_photo),
+              label: Text("Capture Image"),
+              style: ButtonStyle(
+                backgroundColor: MaterialStateColor.resolveWith(
+                  (states) => kGreen,
+                ),
+              ),
             ),
             SizedBox(
               height: 10,
             ),
-            FloatingActionButton(
+            ElevatedButton.icon(
               onPressed: pickGalleryImage,
-              tooltip: 'Pick Image from Gallery',
-              child: Icon(Icons.album),
+              icon: Icon(Icons.album),
+              label: Text("Choose from Gallery"),
+              style: ButtonStyle(
+                backgroundColor: MaterialStateColor.resolveWith(
+                  (states) => kGreen,
+                ),
+              ),
             ),
             SizedBox(
               height: 10,
             ),
-            // ElevatedButton(
-            //   onPressed: () {},
-            //   child: Text("Run test"),
-            // ),
           ],
         ),
       ],
