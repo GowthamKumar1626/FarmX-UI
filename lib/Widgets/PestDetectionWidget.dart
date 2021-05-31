@@ -1,11 +1,11 @@
 import 'dart:io';
 
+import 'package:farmx/Widgets/viewdetails.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:tflite/tflite.dart';
 
 import '../Constants/Constants.dart';
-import 'package:farmx/Widgets/viewdetails.dart';
 
 class PestDetectionWidget extends StatefulWidget {
   @override
@@ -216,13 +216,13 @@ class _PestDetectionWidgetState extends State<PestDetectionWidget> {
                                 ElevatedButton(
                                   onPressed: () {
                                     /*setState(() {
-                                _viewdetails(disease);
+                                _PestDetails(disease);
                               });*/
                                     Navigator.push(
                                       context,
                                       MaterialPageRoute(
                                         builder: (context) {
-                                          return viewdetails(disease!);
+                                          return PestDetails(disease: disease!);
                                         },
                                       ),
                                     );
@@ -268,11 +268,9 @@ class _PestDetectionWidgetState extends State<PestDetectionWidget> {
   }
 }
 
-class viewdetails extends StatelessWidget {
-  String? dis;
-  viewdetails(String? disease) {
-    dis = disease;
-  }
+class PestDetails extends StatelessWidget {
+  final String disease;
+  PestDetails({required this.disease});
 
   @override
   Widget build(BuildContext context) {
@@ -281,9 +279,7 @@ class viewdetails extends StatelessWidget {
         title: new Text('Details of the disease'),
       ),
       body: new Container(
-        child: new Text(
-          disease_dic![dis],
-        ),
+        child: new Text(diseaseDetails[disease]),
       ),
     );
   }

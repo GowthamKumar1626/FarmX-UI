@@ -160,19 +160,10 @@ class _CropSuggestionWidgetState extends State<CropSuggestionWidget> {
               ),
             ),
           ),
-        ],
-      ),
-    );
-  }
-
-  Future<Form> buildForm() async {
-    return Form(
-      key: _key,
-      child: SingleChildScrollView(
-        child: Column(
-          children: <Widget>[
-            Padding(
-              padding: const EdgeInsets.all(8.0),
+          Padding(
+            padding: EdgeInsets.all(10),
+            child: Container(
+              width: MediaQuery.of(context).size.width * 0.8,
               child: TextFormField(
                 keyboardType: TextInputType.number,
                 validator: (value) {
@@ -191,10 +182,12 @@ class _CropSuggestionWidgetState extends State<CropSuggestionWidget> {
                   temperature = double.parse(value);
                 },
               ),
-            ), //temperature
-
-            Padding(
-              padding: const EdgeInsets.all(8.0),
+            ),
+          ),
+          Padding(
+            padding: EdgeInsets.all(10),
+            child: Container(
+              width: MediaQuery.of(context).size.width * 0.8,
               child: TextFormField(
                 keyboardType: TextInputType.number,
                 validator: (value) {
@@ -213,10 +206,12 @@ class _CropSuggestionWidgetState extends State<CropSuggestionWidget> {
                   humidity = double.parse(value);
                 },
               ),
-            ), //humidity
-
-            Padding(
-              padding: const EdgeInsets.all(8.0),
+            ),
+          ),
+          Padding(
+            padding: EdgeInsets.all(10),
+            child: Container(
+              width: MediaQuery.of(context).size.width * 0.8,
               child: TextFormField(
                 keyboardType: TextInputType.number,
                 validator: (value) {
@@ -235,45 +230,44 @@ class _CropSuggestionWidgetState extends State<CropSuggestionWidget> {
                   rainfall = double.parse(value);
                 },
               ),
-            ), //rainfall
-
-            Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: ElevatedButton(
-                  child: Text('Submit'),
-                  onPressed: () async {
-                    if (_key.currentState!.validate()) {
-                      print('success');
+            ),
+          ),
+          Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: ElevatedButton(
+                child: Text('Submit'),
+                onPressed: () async {
+                  if (_key.currentState!.validate()) {
+                    print('success');
+                  }
+                  var body = [
+                    {
+                      'N': n,
+                      'P': p,
+                      'K': k,
+                      'temperature': temperature,
+                      'humidity': humidity,
+                      'ph': pH,
+                      'rainfall': rainfall
                     }
-                    var body = [
-                      {
-                        'N': n,
-                        'P': p,
-                        'K': k,
-                        'temperature': temperature,
-                        'humidity': humidity,
-                        'ph': pH,
-                        'rainfall': rainfall
-                      }
-                    ];
-                    var response = await predictCrop(body);
-                    setState(() {
-                      resultDict = response;
-                    });
-                  }),
-            ),
-            Container(
-              child: resultDict["statusCode"] == 200
-                  ? Text(
-                      resultDict["prediction"],
-                      style: kTopHeadingStyle,
-                    )
-                  : Text(
-                      "Click the button",
-                    ),
-            ),
-          ],
-        ),
+                  ];
+                  var response = await predictCrop(body);
+                  setState(() {
+                    resultDict = response;
+                  });
+                }),
+          ),
+          Container(
+            child: resultDict["statusCode"] == 200
+                ? Text(
+                    resultDict["prediction"],
+                    style: kTopHeadingStyle,
+                  )
+                : Text(
+                    "Click the button",
+                  ),
+          ),
+        ],
       ),
     );
   }

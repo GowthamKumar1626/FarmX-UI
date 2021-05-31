@@ -1,4 +1,4 @@
-Map<String?, String?> disease_dic = {
+Map<dynamic, dynamic> diseaseDetails = {
   'Apple___Apple_scab': """ Crop : Apple \n Disease: Apple Scab\n
         Cause of disease:
         \n1. Apple scab overwinters primarily in fallen leaves and in the soil. Disease development is favored by wet, cool weather that generally occurs in spring and early summer.
