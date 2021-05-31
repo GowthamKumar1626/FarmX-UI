@@ -1,7 +1,8 @@
 import 'dart:io';
-import 'package:tflite/tflite.dart';
+
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:tflite/tflite.dart';
 
 import '../Constants/Constants.dart';
 
@@ -12,6 +13,7 @@ class PestDetectionWidget extends StatefulWidget {
 
 class _PestDetectionWidgetState extends State<PestDetectionWidget> {
   var _image;
+
   final imagePicker = ImagePicker();
 
   List? _output;
@@ -73,21 +75,20 @@ class _PestDetectionWidgetState extends State<PestDetectionWidget> {
     Tflite.close();
   }
 
-  pickImage() async {
-    // load image from source - camera/gallery
-    var image = await picker.getImage(source: ImageSource.camera);
-    // check if error laoding image
-    if (image == null) return null;
+  Future pickImage() async {
+    final pickedFile = await picker.getImage(source: ImageSource.camera);
     setState(() {
-      _image = File(image.path);
+      if (pickedFile != null) {
+        _image = File(pickedFile.path);
+      } else {
+        print('No image selected.');
+      }
     });
-
-    // classify image
     classifyImage(_image);
   }
 
   // Function to pick image - using gallery
-  pickGalleryImage() async {
+  Future pickGalleryImage() async {
     // load image from source - camera/gallery
     var image = await picker.getImage(source: ImageSource.gallery);
     // check if error laoding image
@@ -179,7 +180,7 @@ class _PestDetectionWidgetState extends State<PestDetectionWidget> {
           mainAxisAlignment: MainAxisAlignment.end,
           children: <Widget>[
             FloatingActionButton(
-              onPressed: pickImage(),
+              onPressed: pickImage,
               tooltip: 'Pick Image',
               child: Icon(Icons.add_a_photo),
             ),
@@ -187,7 +188,7 @@ class _PestDetectionWidgetState extends State<PestDetectionWidget> {
               height: 10,
             ),
             FloatingActionButton(
-              onPressed: pickGalleryImage(),
+              onPressed: pickGalleryImage,
               tooltip: 'Pick Image from Gallery',
               child: Icon(Icons.album),
             ),
