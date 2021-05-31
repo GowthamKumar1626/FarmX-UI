@@ -1,8 +1,9 @@
 import 'dart:ui';
 
 import 'package:farmx/Screens/UserProfileScreen.dart';
-import 'package:farmx/Widgets/CropSuggestionWidget.dart';
-import 'package:farmx/Widgets/PestDetectionWidget.dart';
+import 'package:farmx/Widgets/CropSuggestion/CropSuggestionWidget.dart';
+import 'package:farmx/Widgets/GeneralCropInfo/GeneralCropInfoWidget.dart';
+import 'package:farmx/Widgets/PestDetection/PestDetectionWidget.dart';
 import 'package:flutter/material.dart';
 
 import '../Constants/Constants.dart';
@@ -106,6 +107,10 @@ class _ToolScreenState extends State<ToolScreen> {
                                             break;
                                           case "Crop Suggestion":
                                             toolWidget = CropSuggestionWidget();
+                                            break;
+                                          case "General Crop-Info":
+                                            toolWidget =
+                                                GeneralCropInfoWidget();
                                             break;
                                           default:
                                             toolWidget = Container(

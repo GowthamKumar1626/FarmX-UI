@@ -5,7 +5,7 @@ import 'package:http/http.dart' as http;
 
 // import 'package:rflutter_alert/rflutter_alert.dart';
 
-import '../Constants/Constants.dart';
+import '../../Constants/Constants.dart';
 
 class CropSuggestionWidget extends StatefulWidget {
   @override
@@ -126,10 +126,12 @@ class _CropSuggestionWidgetState extends State<CropSuggestionWidget> {
                   }
                 },
                 decoration: InputDecoration(
-                    labelText: 'pH',
-                    hintText: 'Enter a Value from 0 to 14.',
-                    border: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(20.0))),
+                  labelText: 'pH',
+                  hintText: 'Enter a Value from 0 to 14.',
+                  border: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(20.0),
+                  ),
+                ),
                 onChanged: (value) {
                   pH = double.parse(value);
                 },
@@ -150,10 +152,12 @@ class _CropSuggestionWidgetState extends State<CropSuggestionWidget> {
                   }
                 },
                 decoration: InputDecoration(
-                    labelText: 'Potassium(k)',
-                    hintText: 'Enter a Value.',
-                    border: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(20.0))),
+                  labelText: 'Potassium(k)',
+                  hintText: 'Enter a Value.',
+                  border: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(20.0),
+                  ),
+                ),
                 onChanged: (value) {
                   k = int.parse(value);
                 },
@@ -174,10 +178,12 @@ class _CropSuggestionWidgetState extends State<CropSuggestionWidget> {
                   }
                 },
                 decoration: InputDecoration(
-                    labelText: 'Temperature',
-                    hintText: 'Enter a Value.',
-                    border: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(20.0))),
+                  labelText: 'Temperature',
+                  hintText: 'Enter a Value.',
+                  border: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(20.0),
+                  ),
+                ),
                 onChanged: (value) {
                   temperature = double.parse(value);
                 },
@@ -198,10 +204,12 @@ class _CropSuggestionWidgetState extends State<CropSuggestionWidget> {
                   }
                 },
                 decoration: InputDecoration(
-                    labelText: 'Humidity',
-                    hintText: 'Enter a Value.',
-                    border: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(20.0))),
+                  labelText: 'Humidity',
+                  hintText: 'Enter a Value.',
+                  border: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(20.0),
+                  ),
+                ),
                 onChanged: (value) {
                   humidity = double.parse(value);
                 },
@@ -222,10 +230,12 @@ class _CropSuggestionWidgetState extends State<CropSuggestionWidget> {
                   }
                 },
                 decoration: InputDecoration(
-                    labelText: 'Rainfall',
-                    hintText: 'Enter a Value.',
-                    border: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(20.0))),
+                  labelText: 'Rainfall',
+                  hintText: 'Enter a Value.',
+                  border: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(20.0),
+                  ),
+                ),
                 onChanged: (value) {
                   rainfall = double.parse(value);
                 },
@@ -233,40 +243,56 @@ class _CropSuggestionWidgetState extends State<CropSuggestionWidget> {
             ),
           ),
           Padding(
-            padding: const EdgeInsets.all(8.0),
+            padding: EdgeInsets.all(10.0),
             child: ElevatedButton(
-                child: Text('Submit'),
-                onPressed: () async {
-                  if (_key.currentState!.validate()) {
-                    print('success');
+              child: Text('Submit'),
+              style: ButtonStyle(
+                backgroundColor:
+                    MaterialStateColor.resolveWith((states) => kYellow),
+              ),
+              onPressed: () async {
+                if (_key.currentState!.validate()) {
+                  print('success');
+                }
+                var body = [
+                  {
+                    'N': n,
+                    'P': p,
+                    'K': k,
+                    'temperature': temperature,
+                    'humidity': humidity,
+                    'ph': pH,
+                    'rainfall': rainfall
                   }
-                  var body = [
-                    {
-                      'N': n,
-                      'P': p,
-                      'K': k,
-                      'temperature': temperature,
-                      'humidity': humidity,
-                      'ph': pH,
-                      'rainfall': rainfall
-                    }
-                  ];
-                  var response = await predictCrop(body);
-                  setState(() {
-                    resultDict = response;
-                  });
-                }),
+                ];
+                var response = await predictCrop(body);
+                setState(() {
+                  resultDict = response;
+                });
+              },
+            ),
           ),
           Container(
-            child: resultDict["statusCode"] == 200
-                ? Text(
-                    resultDict["prediction"],
-                    style: kTopHeadingStyle,
-                  )
-                : Text(
-                    "Click the button",
-                  ),
-          ),
+              padding: EdgeInsets.all(8.0),
+              child: resultDict["statusCode"] == 200
+                  ? Row(
+                      children: <Widget>[
+                        Text(
+                          "Suggested crop is: ",
+                          style: kTopHeadingStyle,
+                        ),
+                        Text(
+                          "${resultDict["prediction"][0].toUpperCase()}${resultDict["prediction"].substring(1)}",
+                          style: kDefaultStyle,
+                        ),
+                      ],
+                    )
+                  : Padding(
+                      padding: EdgeInsets.all(8.0),
+                      child: Text(
+                        "",
+                      ),
+                    )),
         ],
       ),
     );

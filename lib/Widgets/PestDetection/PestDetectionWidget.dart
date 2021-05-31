@@ -1,11 +1,10 @@
 import 'dart:io';
 
-import 'package:farmx/Widgets/viewdetails.dart';
+import 'package:farmx/Constants/Constants.dart';
+import 'package:farmx/Widgets/PestDetection/PestDiseaseDetails.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:tflite/tflite.dart';
-
-import '../Constants/Constants.dart';
 
 class PestDetectionWidget extends StatefulWidget {
   @override
@@ -17,7 +16,7 @@ class _PestDetectionWidgetState extends State<PestDetectionWidget> {
 
   final imagePicker = ImagePicker();
 
-  List? _output;
+  var _output;
   String? disease;
   String? confidence;
   bool _loading = true;
@@ -174,67 +173,16 @@ class _PestDetectionWidgetState extends State<PestDetectionWidget> {
                       color: Colors.black,
                     ),
                   )
-                : Center(
-                    child: _loading
-                        ? Container(
-                            width: 280,
-                            child: Column(
-                              children: [
-                                SizedBox(
-                                  height: 50,
-                                )
-                              ],
-                            ),
-                          )
-                        : Container(
-                            child: Column(
-                              children: [
-                                Container(
-                                  height: 250,
-                                  child: Image.file(
-                                    _image,
-                                    width: 450,
-                                    height: 450,
-                                    scale: 0.8,
-                                  ),
-                                ),
-                                SizedBox(
-                                  height: 20,
-                                ),
-                                _output != null
-                                    ? Text(
-                                        'Predicted disease: ${_output![0]['label']} \n Confidence : $confidence',
-                                        style: TextStyle(
-                                            color: Colors.black,
-                                            fontSize: 20,
-                                            fontWeight: FontWeight.bold),
-                                      )
-                                    : Container(),
-                                SizedBox(
-                                  height: 5,
-                                ),
-                                ElevatedButton(
-                                  onPressed: () {
-                                    /*setState(() {
-                                _PestDetails(disease);
-                              });*/
-                                    Navigator.push(
-                                      context,
-                                      MaterialPageRoute(
-                                        builder: (context) {
-                                          return PestDetails(disease: disease!);
-                                        },
-                                      ),
-                                    );
-                                  },
-                                  child: new Text(
-                                    'View Details',
-                                    style: TextStyle(color: Colors.white),
-                                  ),
-                                )
-                              ],
-                            ),
-                          ),
+                : Column(
+                    children: <Widget>[
+                      Image.file(
+                        _image,
+                        width: MediaQuery.of(context).size.width * 0.8,
+                        height: 450,
+                        scale: 0.8,
+                      ),
+                      Text("Hello"),
+                    ],
                   ),
           ),
         ),
