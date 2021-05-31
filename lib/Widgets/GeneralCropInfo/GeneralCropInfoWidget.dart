@@ -137,7 +137,7 @@ class _GeneralCropInfoWidgetState extends State<GeneralCropInfoWidget> {
               child: Text('Submit'),
               style: ButtonStyle(
                 backgroundColor: MaterialStateColor.resolveWith(
-                  (states) => kPrimaryGreen,
+                  (states) => kBlack,
                 ),
               ),
               onPressed: () async {
@@ -184,7 +184,7 @@ class CropInfo extends StatelessWidget {
       appBar: AppBar(
         title: new Text('Crop Suggestions'),
         centerTitle: true,
-        backgroundColor: Colors.green[400],
+        backgroundColor: kBlack,
       ),
       body: Padding(
         padding: const EdgeInsets.all(50.0),
@@ -214,22 +214,26 @@ class CropInfo extends StatelessWidget {
                   // Text(),
                   SizedBox(height: 10),
                   TextButton(
-                      style: ButtonStyle(
-                        backgroundColor: MaterialStateColor.resolveWith(
-                          (states) => kPrimaryGreen,
-                        ),
+                    style: ButtonStyle(
+                      backgroundColor: MaterialStateColor.resolveWith(
+                        (states) => kBlack,
                       ),
-                      onPressed: () {
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                            builder: (context) {
-                              return TableView();
-                            },
-                          ),
-                        );
-                      },
-                      child: new Text('View Conditions'))
+                    ),
+                    onPressed: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) {
+                            return TableView();
+                          },
+                        ),
+                      );
+                    },
+                    child: new Text(
+                      'View Conditions',
+                      style: TextStyle(color: Colors.white),
+                    ),
+                  )
                 ],
               ),
             ),

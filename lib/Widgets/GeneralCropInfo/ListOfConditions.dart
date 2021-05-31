@@ -1,3 +1,4 @@
+import 'package:farmx/Constants/Constants.dart';
 import 'package:flutter/material.dart';
 
 final List<Map<dynamic, dynamic>> listOfConditions = [
@@ -200,7 +201,7 @@ class TableView extends StatelessWidget {
     return Scaffold(
         appBar: AppBar(
           title: new Text('Check Your Condition'),
-          backgroundColor: Colors.green[400],
+          backgroundColor: kBlack,
         ),
         body: SingleChildScrollView(
           child: DataTable(

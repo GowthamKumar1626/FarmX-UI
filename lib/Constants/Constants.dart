@@ -10,6 +10,7 @@ const Color kOrange = Color(0xFFe85d04);
 const Color kYellow = Color(0xFFffba08);
 const Color kPink = Color(0xFFe483eb);
 const Color kUserProfileBackGround = Color(0xFF000000);
+const Color kBlack = Color(0xFF000000);
 const Color kBrownSoil = Color(0xFF3e3117);
 
 const TextStyle kGreetingsStyle = TextStyle(

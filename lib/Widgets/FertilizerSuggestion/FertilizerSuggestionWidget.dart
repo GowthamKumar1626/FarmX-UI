@@ -1,37 +1,73 @@
 import 'dart:convert';
 
+import 'package:farmx/Constants/Constants.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 
-// import 'package:rflutter_alert/rflutter_alert.dart';
-
-import '../../Constants/Constants.dart';
-
-class CropSuggestionWidget extends StatefulWidget {
+class FertilizerSuggestionWidget extends StatefulWidget {
   @override
-  _CropSuggestionWidgetState createState() => _CropSuggestionWidgetState();
+  _FertilizerSuggestionWidgetState createState() =>
+      _FertilizerSuggestionWidgetState();
 }
 
-class _CropSuggestionWidgetState extends State<CropSuggestionWidget> {
+class _FertilizerSuggestionWidgetState
+    extends State<FertilizerSuggestionWidget> {
   final _key = GlobalKey<FormState>();
 
-  int? n, p, k;
-  double? temperature, humidity, pH, rainfall;
+  final List<String> typeOfSoils = ['Sandy', 'Loamy', 'Black', 'Red', 'Clayey'];
+  final List<String> typeOfCrops = [
+    'Maize',
+    'Sugarcane',
+    'Cotton',
+    'Tobacco',
+    'Paddy',
+    'Barley',
+    'Wheat',
+    'Millets',
+    'Oil seeds',
+    'Pulses',
+    'Ground Nuts'
+  ];
 
-  Future<Map<String, dynamic>> predictCrop(var body) async {
+  double? n, p, k, temperature, humidity, moisture;
+  var selectedSoilType;
+  var selectedCropType;
+
+  var encodedCropType = {
+    'Barley': 5,
+    'Cotton': 2,
+    'Ground Nuts': 10,
+    'Maize': 0,
+    'Millets': 7,
+    'Oil seeds': 8,
+    'Paddy': 4,
+    'Pulses': 9,
+    'Sugarcane': 1,
+    'Tobacco': 3,
+    'Wheat': 6
+  };
+
+  var encodedSoilType = {
+    "Sandy": 1,
+    "Loamy": 2,
+    "Black": 3,
+    "Red": 4,
+    "Clayey": 5
+  };
+
+  Future<Map<String, dynamic>> predictFertiliser(var body) async {
     var uri =
-        Uri.parse("https://farmx-crop-recommendation.herokuapp.com/croprec");
-
+        Uri.parse("https://farmx-crop-recommendation.herokuapp.com/fertrec");
     Map<String, String> headers = {"Content-type": "application/json"};
     String jsonString = json.encode(body);
-
     try {
       var response = await http.post(uri, headers: headers, body: jsonString);
-      var statusCode = response.statusCode;
-
-      if (statusCode == 200) {
+      print(response.statusCode);
+      if (response.statusCode == 200) {
         print("DATA FETCHED SUCCESSFULLY");
         var result = json.decode(response.body);
+        print(result);
+        print(result['prediction']);
 
         var resultDict = {
           'prediction': result['prediction'],
@@ -46,9 +82,9 @@ class _CropSuggestionWidgetState extends State<CropSuggestionWidget> {
       }
     } catch (e) {
       print("EXCEPTION OCCURRED: $e");
-      return Future.error("Null");
+      return Future.error("Exception Occurred");
     }
-    return Future.error("Null");
+    return Future.error("Exception Occurred");
   }
 
   Map<String, dynamic> resultDict = {
@@ -78,12 +114,14 @@ class _CropSuggestionWidgetState extends State<CropSuggestionWidget> {
                   }
                 },
                 decoration: InputDecoration(
-                    labelText: 'Nitrogen',
-                    hintText: 'Enter a Value.',
-                    border: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(20.0))),
+                  labelText: 'Nitrogen',
+                  hintText: 'Enter a value',
+                  border: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(20.0),
+                  ),
+                ),
                 onChanged: (value) {
-                  n = int.parse(value);
+                  n = double.parse(value);
                 },
               ),
             ),
@@ -103,41 +141,16 @@ class _CropSuggestionWidgetState extends State<CropSuggestionWidget> {
                 },
                 decoration: InputDecoration(
                     labelText: 'Phosphate',
-                    hintText: 'Enter a Value.',
+                    hintText: 'Enter a value',
                     border: OutlineInputBorder(
                         borderRadius: BorderRadius.circular(20.0))),
                 onChanged: (value) {
-                  p = int.parse(value);
+                  p = double.parse(value);
                 },
               ),
             ),
           ),
-          Padding(
-            padding: EdgeInsets.all(10),
-            child: Container(
-              width: MediaQuery.of(context).size.width * 0.8,
-              child: TextFormField(
-                keyboardType: TextInputType.number,
-                validator: (value) {
-                  if (value == null) {
-                    return 'It cannot be empty';
-                  } else {
-                    return null;
-                  }
-                },
-                decoration: InputDecoration(
-                  labelText: 'pH',
-                  hintText: 'Enter a Value from 0 to 14.',
-                  border: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(20.0),
-                  ),
-                ),
-                onChanged: (value) {
-                  pH = double.parse(value);
-                },
-              ),
-            ),
-          ),
+
           Padding(
             padding: EdgeInsets.all(10),
             child: Container(
@@ -153,13 +166,13 @@ class _CropSuggestionWidgetState extends State<CropSuggestionWidget> {
                 },
                 decoration: InputDecoration(
                   labelText: 'Potassium(k)',
-                  hintText: 'Enter a Value.',
+                  hintText: 'Enter a value',
                   border: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(20.0),
                   ),
                 ),
                 onChanged: (value) {
-                  k = int.parse(value);
+                  k = double.parse(value);
                 },
               ),
             ),
@@ -179,7 +192,7 @@ class _CropSuggestionWidgetState extends State<CropSuggestionWidget> {
                 },
                 decoration: InputDecoration(
                   labelText: 'Temperature',
-                  hintText: 'Enter a Value.',
+                  hintText: 'Enter a value',
                   border: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(20.0),
                   ),
@@ -205,7 +218,7 @@ class _CropSuggestionWidgetState extends State<CropSuggestionWidget> {
                 },
                 decoration: InputDecoration(
                   labelText: 'Humidity',
-                  hintText: 'Enter a Value.',
+                  hintText: 'Enter a value',
                   border: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(20.0),
                   ),
@@ -230,15 +243,83 @@ class _CropSuggestionWidgetState extends State<CropSuggestionWidget> {
                   }
                 },
                 decoration: InputDecoration(
-                  labelText: 'Rainfall',
-                  hintText: 'Enter a Value.',
+                  labelText: 'Moisture',
+                  hintText: 'Enter a value',
                   border: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(20.0),
                   ),
                 ),
                 onChanged: (value) {
-                  rainfall = double.parse(value);
+                  moisture = double.parse(value);
                 },
+              ),
+            ),
+          ),
+          Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: Container(
+              width: MediaQuery.of(context).size.width * 0.8,
+              padding: EdgeInsets.only(left: 16, right: 16),
+              decoration: BoxDecoration(
+                border: Border.all(color: Colors.black45, width: 1),
+                borderRadius: BorderRadius.circular(20.0),
+              ),
+              child: DropdownButton(
+                hint: Text('Select a SoilType'),
+                icon: Icon(Icons.arrow_drop_down),
+                iconSize: 36,
+                isExpanded: true,
+                underline: SizedBox(),
+                style: TextStyle(
+                  color: Colors.black,
+                  fontSize: 16,
+                ),
+                value: selectedSoilType,
+                onChanged: (value) {
+                  setState(() {
+                    selectedSoilType = value;
+                  });
+                },
+                items: typeOfSoils.map((valueItem) {
+                  return DropdownMenuItem(
+                    value: valueItem,
+                    child: Text(valueItem),
+                  );
+                }).toList(),
+              ),
+            ),
+          ),
+          Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: Container(
+              width: MediaQuery.of(context).size.width * 0.8,
+              padding: EdgeInsets.only(left: 16, right: 16),
+              decoration: BoxDecoration(
+                border: Border.all(color: Colors.black45, width: 1),
+                borderRadius: BorderRadius.circular(20.0),
+              ),
+              child: DropdownButton(
+                hint: Text('Select a CropType'),
+                icon: Icon(Icons.arrow_drop_down),
+                iconSize: 36,
+                isExpanded: true,
+                underline: SizedBox(),
+                style: TextStyle(
+                  color: Colors.black,
+                  fontSize: 16,
+                ),
+                value: selectedCropType,
+                onChanged: (value) {
+                  setState(() {
+                    selectedCropType = value;
+                  });
+                },
+                items: typeOfCrops.map((valueItem) {
+                  return DropdownMenuItem(
+                    value: valueItem,
+                    child: Text(valueItem),
+                  );
+                }).toList(),
               ),
             ),
           ),
@@ -248,7 +329,7 @@ class _CropSuggestionWidgetState extends State<CropSuggestionWidget> {
               child: Text('Submit'),
               style: ButtonStyle(
                 backgroundColor:
-                    MaterialStateColor.resolveWith((states) => kOrange),
+                    MaterialStateColor.resolveWith((states) => kYellow),
               ),
               onPressed: () async {
                 if (_key.currentState!.validate()) {
@@ -261,11 +342,13 @@ class _CropSuggestionWidgetState extends State<CropSuggestionWidget> {
                     'K': k,
                     'temperature': temperature,
                     'humidity': humidity,
-                    'ph': pH,
-                    'rainfall': rainfall
+                    'moisture': moisture,
+                    'Soil Type': encodedSoilType[selectedSoilType],
+                    'Crop Type': encodedCropType[selectedCropType],
                   }
                 ];
-                var response = await predictCrop(body);
+                print(body);
+                var response = await predictFertiliser(body);
                 setState(() {
                   resultDict = response;
                 });
@@ -278,7 +361,7 @@ class _CropSuggestionWidgetState extends State<CropSuggestionWidget> {
                   ? Row(
                       children: <Widget>[
                         Text(
-                          "Suggested crop is: ",
+                          "Suggested fertilizer is: ",
                           style: kTopHeadingStyle,
                         ),
                         Text(
@@ -297,8 +380,4 @@ class _CropSuggestionWidgetState extends State<CropSuggestionWidget> {
       ),
     );
   }
-
-  // _onBasicAlertPressed(context, resp) {
-  //   Alert(context: context, title: "Recommended Crop is", desc: resp).show();
-  // }
 }
