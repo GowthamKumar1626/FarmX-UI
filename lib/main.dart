@@ -8,35 +8,49 @@ import 'package:flutter/services.dart';
 
 import 'Screens/RegistrationScreen.dart';
 
-void main() => runApp(
-      MaterialApp(
-        debugShowCheckedModeBanner: false,
-        home: MyApp(),
-      ),
-    );
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await Firebase.initializeApp();
+  runApp(MyApp());
+}
 
 class MyApp extends StatelessWidget {
+  final Future<FirebaseApp> _initialization = Firebase.initializeApp();
   @override
   Widget build(BuildContext context) {
     SystemChrome.setEnabledSystemUIOverlays([SystemUiOverlay.bottom]);
     return FutureBuilder(
-      future: Firebase.initializeApp(),
+      future: _initialization,
       builder: (context, snapshot) {
-        return MaterialApp(
-          debugShowCheckedModeBanner: false,
-          theme: ThemeData(
-            primarySwatch: Colors.blue,
-            fontFamily: 'LeonSans',
-            visualDensity: VisualDensity.adaptivePlatformDensity,
+        if (snapshot.hasError) {
+          return Scaffold(
+            body: Center(
+              child: Text("Error: ${snapshot.error}"),
+            ),
+          );
+        }
+
+        if (snapshot.connectionState == ConnectionState.done) {
+          return MaterialApp(
+            debugShowCheckedModeBanner: false,
+            theme: ThemeData(
+              fontFamily: 'LeonSans',
+              visualDensity: VisualDensity.adaptivePlatformDensity,
+            ),
+            initialRoute: LoginScreen.id,
+            routes: {
+              RegistrationScreen.id: (context) => RegistrationScreen(),
+              LoginScreen.id: (context) => LoginScreen(),
+              HomeScreen.id: (context) => HomeScreen(),
+              ToolScreen.id: (context) => ToolScreen(),
+              UserProfileScreen.id: (context) => UserProfileScreen(),
+            },
+          );
+        }
+        return Scaffold(
+          body: Center(
+            child: Text("Connecting to app.."),
           ),
-          initialRoute: HomeScreen.id,
-          routes: {
-            RegistrationScreen.id: (context) => RegistrationScreen(),
-            LoginScreen.id: (context) => LoginScreen(),
-            HomeScreen.id: (context) => HomeScreen(),
-            ToolScreen.id: (context) => ToolScreen(),
-            UserProfileScreen.id: (context) => UserProfileScreen(),
-          },
         );
       },
     );

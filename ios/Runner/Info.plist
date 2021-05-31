@@ -51,5 +51,10 @@
 	<string>Farmx will use your Camera</string>
 	<key>NSMicrophoneUsageDescription</key>
 	<string>FarmX will use your Microphone</string>
+	<key>NSAppTransportSecurity</key>
+    <dict>
+        <key>NSAllowsLocalNetworking</key>
+        <true/>
+    </dict>
 </dict>
 </plist>

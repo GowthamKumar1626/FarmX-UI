@@ -62,9 +62,10 @@ class _PestDetectionWidgetState extends State<PestDetectionWidget> {
   loadModel() async {
     // define model path and labels path
     await Tflite.loadModel(
-        model: 'assets/models/model.tflite',
-        labels: 'assets/models/label.txt',
-        numThreads: 1);
+      model: 'assets/models/model.tflite',
+      labels: 'assets/models/label.txt',
+      numThreads: 1,
+    );
   }
 
   // Function to dispose and clear mmemory once done inferring

@@ -26,6 +26,13 @@ const TextStyle kDefaultStyle = TextStyle(
   fontSize: 20,
 );
 
+const TextStyle kLoginHeading = TextStyle(
+  fontFamily: 'Roboto',
+  fontWeight: FontWeight.w700,
+  fontSize: 25,
+  color: Colors.black,
+);
+
 const TextStyle kTopHeadingStyle =
     TextStyle(fontFamily: 'Poppins', fontWeight: FontWeight.w700, fontSize: 20);
 
@@ -61,5 +68,10 @@ const TextStyle kProfileContent = TextStyle(
   fontFamily: 'Roboto',
   fontWeight: FontWeight.normal,
   fontSize: 15,
+  color: Colors.black,
+);
+
+const TextStyle kLabelStyleDefault = TextStyle(
+  fontSize: 20,
   color: Colors.black,
 );
