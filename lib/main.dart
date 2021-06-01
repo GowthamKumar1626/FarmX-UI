@@ -3,6 +3,7 @@ import 'package:farmx/Screens/LoginScreen.dart';
 import 'package:farmx/Screens/ToolScreen.dart';
 import 'package:farmx/Screens/UserProfileScreen.dart';
 import 'package:firebase_core/firebase_core.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
@@ -22,36 +23,55 @@ class MyApp extends StatelessWidget {
     return FutureBuilder(
       future: _initialization,
       builder: (context, snapshot) {
-        if (snapshot.hasError) {
-          return Scaffold(
-            body: Center(
-              child: Text("Error: ${snapshot.error}"),
-            ),
-          );
-        }
-
-        if (snapshot.connectionState == ConnectionState.done) {
-          return MaterialApp(
-            debugShowCheckedModeBanner: false,
-            theme: ThemeData(
-              fontFamily: 'LeonSans',
-              visualDensity: VisualDensity.adaptivePlatformDensity,
-            ),
-            initialRoute: LoginScreen.id,
-            routes: {
-              RegistrationScreen.id: (context) => RegistrationScreen(),
-              LoginScreen.id: (context) => LoginScreen(),
-              HomeScreen.id: (context) => HomeScreen(),
-              ToolScreen.id: (context) => ToolScreen(),
-              UserProfileScreen.id: (context) => UserProfileScreen(),
-            },
-          );
-        }
-        return Scaffold(
-          body: Center(
-            child: Text("Connecting to app.."),
+        return MaterialApp(
+          debugShowCheckedModeBanner: false,
+          theme: ThemeData(
+            fontFamily: 'LeonSans',
+            visualDensity: VisualDensity.adaptivePlatformDensity,
           ),
+          initialRoute: LoginScreen.id,
+          routes: {
+            RegistrationScreen.id: (context) => RegistrationScreen(),
+            LoginScreen.id: (context) => LoginScreen(),
+            HomeScreen.id: (context) => HomeScreen(),
+            ToolScreen.id: (context) => ToolScreen(),
+            UserProfileScreen.id: (context) => UserProfileScreen(),
+          },
         );
+        //   if (snapshot.hasError) {
+        //     return MaterialApp(
+        //       home: Scaffold(
+        //         body: Center(
+        //           child: Text("Error: ${snapshot.error}"),
+        //         ),
+        //       ),
+        //     );
+        //   }
+        //
+        //   if (snapshot.connectionState == ConnectionState.done) {
+        //     return MaterialApp(
+        //       debugShowCheckedModeBanner: false,
+        //       theme: ThemeData(
+        //         fontFamily: 'LeonSans',
+        //         visualDensity: VisualDensity.adaptivePlatformDensity,
+        //       ),
+        //       initialRoute: LoginScreen.id,
+        //       routes: {
+        //         RegistrationScreen.id: (context) => RegistrationScreen(),
+        //         LoginScreen.id: (context) => LoginScreen(),
+        //         HomeScreen.id: (context) => HomeScreen(),
+        //         ToolScreen.id: (context) => ToolScreen(),
+        //         UserProfileScreen.id: (context) => UserProfileScreen(),
+        //       },
+        //     );
+        //   }
+        //   return MaterialApp(
+        //     home: Scaffold(
+        //       body: Center(
+        //         child: Text("Connecting to app.."),
+        //       ),
+        //     ),
+        //   );
       },
     );
   }

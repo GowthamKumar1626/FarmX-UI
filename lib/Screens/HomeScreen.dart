@@ -2,9 +2,10 @@ import 'package:bottom_navy_bar/bottom_navy_bar.dart';
 import 'package:eva_icons_flutter/eva_icons_flutter.dart';
 import 'package:farmx/Screens/NewsFeedScreen.dart';
 import 'package:farmx/Screens/ToolScreen.dart';
-import 'package:farmx/Screens/UserProfileScreen.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+
+import 'UserProfileScreen.dart';
 
 class HomeScreen extends StatefulWidget {
   static const id = "home_screen";
@@ -20,7 +21,7 @@ var _pages = [
 ];
 
 class _HomeScreenState extends State<HomeScreen> {
-  int currentIndex = 0;
+  int currentIndex = 2;
 
   @override
   Widget build(BuildContext context) {

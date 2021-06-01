@@ -1,16 +1,9 @@
 import 'dart:ui';
 
-import 'package:farmx/Screens/LoginScreen.dart';
+import 'package:farmx/Constants/Constants.dart';
+import 'package:farmx/Screens/HomeScreen.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-
-import 'HomeScreen.dart';
-import 'LoginScreen.dart';
-
-enum MobileVerificationState {
-  SHOW_EMAIL_FORM_STATE,
-  SHOW_PASSWORD_FORM_STATE,
-}
 
 class RegistrationScreen extends StatefulWidget {
   static const String id = "registration_screen";
@@ -23,7 +16,7 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
   // late GoogleSignInAccount _userObj;
   // GoogleSignIn _googleSignIn = GoogleSignIn();
 
-  var _currentSate = MobileVerificationState.SHOW_EMAIL_FORM_STATE;
+  final _key = GlobalKey<FormState>();
 
   final emailController = TextEditingController();
   final passwordController = TextEditingController();
@@ -34,318 +27,256 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
   final _auth = FirebaseAuth.instance;
   bool showSpinner = false;
 
-  getEmailFormWidget(context) {
-    return Column(
-      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-      children: <Widget>[
-        Container(
-          padding: EdgeInsets.all(10),
-          child: Align(
-            alignment: Alignment.topCenter,
-            child: Text(
-              "Create an account",
-              style: TextStyle(
-                fontWeight: FontWeight.bold,
-                fontSize: 20.0,
-                color: Colors.white,
-              ),
-            ),
-          ),
-        ),
-        Container(
-          padding: EdgeInsets.all(5.0),
-          decoration: BoxDecoration(
-              color: Colors.white,
-              borderRadius: BorderRadius.circular(10.0),
-              boxShadow: [
-                BoxShadow(
-                  color: Color.fromRGBO(92, 148, 71, 0.2),
-                  blurRadius: 20.0,
-                  offset: Offset(0, 10),
-                ),
-              ]),
-          child: Column(
-            children: <Widget>[
-              Container(
-                padding: EdgeInsets.all(8.0),
-                decoration: BoxDecoration(
-                  border: Border(
-                    bottom: BorderSide(
-                      color: Colors.grey.shade100,
-                    ),
-                  ),
-                ),
-              ),
-              Container(
-                height: 20,
-                padding: EdgeInsets.only(left: 10),
-                child: TextField(
-                  keyboardType: TextInputType.emailAddress,
-                  controller: emailController,
-                  onChanged: (value) {
-                    email = value;
-                  },
-                  decoration: InputDecoration(
-                    border: InputBorder.none,
-                    hintText: "Email",
-                    hintStyle: TextStyle(
-                      color: Colors.grey.shade400,
-                    ),
-                  ),
-                ),
-              ),
-            ],
-          ),
-        ),
-        SizedBox(
-          height: 10,
-        ),
-        TextButton(
-          onPressed: () {
-            print(email);
-            setState(
-              () {
-                _currentSate = MobileVerificationState.SHOW_PASSWORD_FORM_STATE;
-              },
-            );
-          },
-          child: Container(
-            height: 50,
-            decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(10.0),
-              gradient: LinearGradient(colors: [
-                Color.fromRGBO(201, 184, 24, 1),
-                Color.fromRGBO(201, 184, 24, 0.6),
-              ]),
-            ),
-            child: Center(
-              child: Text(
-                "Click Here",
-                style: TextStyle(
-                  color: Colors.white,
-                  fontWeight: FontWeight.bold,
-                  fontSize: 18.0,
-                ),
-              ),
-            ),
-          ),
-        ),
-        SizedBox(
-          height: 5,
-        ),
-        Row(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[
-            Text(
-              "Existing user?",
-              style: TextStyle(
-                color: Colors.lime.shade500,
-              ),
-            ),
-            TextButton(
-              onPressed: () {
-                Navigator.pushNamed(context, LoginScreen.id);
-              },
-              child: Text(
-                "Click here",
-                style: TextStyle(
-                  color: Colors.white,
-                ),
-              ),
-            ),
-          ],
-        ),
-      ],
-    );
+  String validateEmail(value) {
+    if (value == null || value.isEmpty) {
+      return 'Please enter some text';
+    }
+    return "";
   }
 
-  getPasswordFormWidget(context) {
-    return Column(
-      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-      children: <Widget>[
-        Container(
-          padding: EdgeInsets.all(5.0),
-          child: Align(
-            alignment: Alignment.topLeft,
-            child: Text(
-              "Password",
-              style: TextStyle(
-                fontWeight: FontWeight.bold,
-                fontSize: 15.0,
-                color: Colors.white,
-              ),
-            ),
-          ),
-        ),
-        Container(
-          margin: EdgeInsets.only(top: 10),
-          padding: EdgeInsets.all(5.0),
-          decoration: BoxDecoration(
-              color: Colors.white,
-              borderRadius: BorderRadius.circular(10.0),
-              boxShadow: [
-                BoxShadow(
-                  color: Color.fromRGBO(92, 148, 71, 0.2),
-                  blurRadius: 20.0,
-                  offset: Offset(0, 10),
-                ),
-              ]),
-          child: Column(
-            children: <Widget>[
-              Container(
-                padding: EdgeInsets.all(8.0),
-                decoration: BoxDecoration(
-                  border: Border(
-                    bottom: BorderSide(
-                      color: Colors.grey.shade100,
-                    ),
-                  ),
-                ),
-              ),
-              Container(
-                height: 20,
-                padding: EdgeInsets.only(left: 10),
-                child: TextField(
-                  obscureText: true,
-                  controller: passwordController,
-                  onChanged: (value) {
-                    password = value;
-                  },
-                  decoration: InputDecoration(
-                    border: InputBorder.none,
-                    hintText: "Password",
-                    hintStyle: TextStyle(
-                      color: Colors.grey.shade400,
-                    ),
-                  ),
-                ),
-              ),
-            ],
-          ),
-        ),
-        SizedBox(
-          height: 20,
-        ),
-        TextButton(
-          onPressed: () async {
-            setState(() {
-              showSpinner = true;
-            });
-            try {
-              final newUser = await _auth.createUserWithEmailAndPassword(
-                  email: email, password: password);
+  String validatePassword(value) {
+    if (value == null) {
+      return "It cannot be empty";
+    } else if (value.length < 8 && value.length > 32) {
+      return "Password should be length of 8-32 characters";
+    } else {
+      return "";
+    }
+  }
 
-              if (newUser != null) { // ignore: unnecessary_null_comparison
-                // ignore: unnecessary_null_comparison
-                Navigator.pushNamed(context, HomeScreen.id);
-              }
+  void createAccount() async {
+    if (_key.currentState!.validate()) {
+      // If the form is valid, display a Snackbar.
+      Scaffold.of(context)
+          .showSnackBar(SnackBar(content: Text('Data is in processing.')));
+    } else {
+      try {
+        final newUser = await _auth.createUserWithEmailAndPassword(
+            email: email, password: password);
 
-              setState(() {
-                showSpinner = false;
-              });
-            } catch (error) {
-              print('Error: $error');
-              Navigator.pushNamed(context, RegistrationScreen.id);
-            }
-          },
-          child: Container(
-            height: 50,
-            width: 200,
-            decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(10.0),
-              gradient: LinearGradient(colors: [
-                Color.fromRGBO(201, 184, 24, 1),
-                Color.fromRGBO(201, 184, 24, 0.6),
-              ]),
-            ),
-            child: Center(
-              child: Text(
-                "Verify",
-                style: TextStyle(
-                  color: Colors.white,
-                  fontWeight: FontWeight.bold,
-                  fontSize: 15.0,
-                ),
-              ),
-            ),
-          ),
-        ),
-        SizedBox(
-          height: 10,
-        ),
-        TextButton(
-          onPressed: () {
-            setState(() {
-              _currentSate = MobileVerificationState.SHOW_EMAIL_FORM_STATE;
-            });
-          },
-          child: Icon(
-            Icons.arrow_back,
-            color: Colors.white,
-          ),
-        ),
-      ],
-    );
+        if (newUser != null) {
+          // ignore: unnecessary_null_comparison
+          // ignore: unnecessary_null_comparison
+          Navigator.pushNamed(context, HomeScreen.id);
+        }
+      } catch (error) {
+        print('Error: $error');
+        Navigator.pushNamed(context, RegistrationScreen.id);
+      }
+    }
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Container(
-        child: Container(
-          decoration: BoxDecoration(
-            image: DecorationImage(
-              image: AssetImage("assets/images/background-2.jpeg"),
-              fit: BoxFit.cover,
+      body: Stack(
+        children: [
+          Container(
+            decoration: BoxDecoration(
+              image: DecorationImage(
+                image: AssetImage("assets/images/LoginScreen-1.png"),
+                fit: BoxFit.cover,
+              ),
             ),
           ),
-          child: Center(
-            child: Container(
-              alignment: Alignment.bottomCenter,
-              margin: EdgeInsets.only(left: 10, right: 10, bottom: 22),
-              decoration: BoxDecoration(
-                boxShadow: ([
-                  BoxShadow(
-                    blurRadius: 24.0,
-                    spreadRadius: 16.0,
-                    color: Colors.black.withOpacity(0.4),
-                  )
-                ]),
-              ),
-              child: ClipRRect(
-                borderRadius: BorderRadius.circular(16.0),
-                child: BackdropFilter(
-                  filter: ImageFilter.blur(
-                    sigmaX: 25.0,
-                    sigmaY: 25.0,
-                  ),
-                  child: Container(
-                    height: 350,
-                    decoration: BoxDecoration(
-                      color: Colors.white.withOpacity(0.3),
-                      borderRadius: BorderRadius.circular(16.0),
-                      border: Border.all(
-                        color: Colors.white.withOpacity(0.2),
-                      ),
+          Column(
+            children: [
+              Spacer(),
+              Container(
+                alignment: Alignment.bottomCenter,
+                margin: EdgeInsets.only(left: 10, right: 10, bottom: 22),
+                decoration: BoxDecoration(
+                  boxShadow: ([
+                    BoxShadow(
+                      blurRadius: 24.0,
+                      spreadRadius: 16.0,
+                      color: Colors.black.withOpacity(0.4),
+                    )
+                  ]),
+                ),
+                child: ClipRRect(
+                  borderRadius: BorderRadius.circular(16.0),
+                  child: BackdropFilter(
+                    filter: ImageFilter.blur(
+                      sigmaX: 25.0,
+                      sigmaY: 25.0,
                     ),
-                    child: Stack(
-                      alignment: Alignment.center,
-                      children: <Widget>[
-                        Padding(
-                          padding: EdgeInsets.all(20.0),
-                          child: _currentSate ==
-                                  MobileVerificationState.SHOW_EMAIL_FORM_STATE
-                              ? getEmailFormWidget(context)
-                              : getPasswordFormWidget(context),
+                    child: Container(
+                      height: MediaQuery.of(context).size.height * 0.55,
+                      width: MediaQuery.of(context).size.width,
+                      padding: EdgeInsets.all(10.0),
+                      decoration: BoxDecoration(
+                        color: Colors.white.withOpacity(0.8),
+                        borderRadius: BorderRadius.circular(16.0),
+                        border: Border.all(
+                          color: Colors.white.withOpacity(0.5),
                         ),
-                      ],
+                      ),
+                      child: Stack(
+                        alignment: AlignmentDirectional.topStart,
+                        children: <Widget>[
+                          Column(
+                            children: <Widget>[
+                              Padding(
+                                padding: EdgeInsets.all(10),
+                                child: Align(
+                                  alignment: Alignment.centerLeft,
+                                  child: Text(
+                                    "Create account",
+                                    style: kLoginHeading,
+                                  ),
+                                ),
+                              ),
+                              SizedBox(
+                                height: 10,
+                              ),
+                              Form(
+                                key: _key,
+                                child: Column(
+                                  children: <Widget>[
+                                    Padding(
+                                      padding: EdgeInsets.all(10),
+                                      child: TextFormField(
+                                        keyboardType:
+                                            TextInputType.emailAddress,
+                                        cursorColor: Colors.black,
+                                        validator: validateEmail,
+                                        controller: emailController,
+                                        decoration: InputDecoration(
+                                          labelText: 'Email',
+                                          labelStyle: kLabelStyleDefault,
+                                          prefixIcon: Icon(
+                                            Icons.mail,
+                                            color: kBlack,
+                                          ),
+                                          border: OutlineInputBorder(),
+                                          focusedBorder: OutlineInputBorder(
+                                            borderSide: BorderSide(
+                                                color: Colors.black,
+                                                width: 1.0),
+                                          ),
+                                        ),
+                                        onChanged: (value) {
+                                          email = value;
+                                        },
+                                      ),
+                                    ),
+                                    Padding(
+                                      padding: EdgeInsets.all(10),
+                                      child: TextFormField(
+                                        obscureText: true,
+                                        validator: validatePassword,
+                                        cursorColor: Colors.black,
+                                        decoration: InputDecoration(
+                                          labelText: 'Password',
+                                          labelStyle: kLabelStyleDefault,
+                                          prefixIcon: Icon(
+                                            Icons.admin_panel_settings,
+                                            color: kBlack,
+                                          ),
+                                          border: OutlineInputBorder(),
+                                          focusedBorder: OutlineInputBorder(
+                                            borderSide: BorderSide(
+                                                color: Colors.black,
+                                                width: 1.0),
+                                          ),
+                                        ),
+                                        onChanged: (value) {
+                                          password = value;
+                                        },
+                                      ),
+                                    ),
+                                    Row(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.spaceBetween,
+                                      children: <Widget>[
+                                        Padding(
+                                          padding: EdgeInsets.all(10.0),
+                                          child: Align(
+                                            alignment: Alignment.centerLeft,
+                                            child: TextButton(
+                                              child: Text(
+                                                "Existing user",
+                                                style: TextStyle(
+                                                  color: kBlack,
+                                                  fontSize: 15,
+                                                ),
+                                              ),
+                                              onPressed: () {
+                                                Navigator.pop(context);
+                                              },
+                                            ),
+                                          ),
+                                        ),
+                                        SizedBox(
+                                          width: 150,
+                                          child: ElevatedButton(
+                                            child: Text(
+                                              "Create",
+                                              style: TextStyle(
+                                                fontSize: 20,
+                                              ),
+                                            ),
+                                            style: ButtonStyle(
+                                              backgroundColor:
+                                                  MaterialStateColor
+                                                      .resolveWith(
+                                                          (states) => kBlack),
+                                            ),
+                                            onPressed: createAccount,
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                    Padding(
+                                      padding: EdgeInsets.all(8.0),
+                                      child: Text("Create account using:"),
+                                    ),
+                                    Padding(
+                                      padding: EdgeInsets.all(8.0),
+                                      child: Row(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.spaceEvenly,
+                                        children: <Widget>[
+                                          IconButton(
+                                            icon: Icon(
+                                              Icons.mail,
+                                            ),
+                                            onPressed: () {},
+                                          ),
+                                          IconButton(
+                                            icon: Icon(
+                                              Icons.phone,
+                                            ),
+                                            onPressed: () {},
+                                          ),
+                                          IconButton(
+                                            icon: Image.asset(
+                                                "assets/icons/anonymous.png"),
+                                            onPressed: () {},
+                                          ),
+                                          IconButton(
+                                            icon: Image.asset(
+                                                "assets/icons/icons8-google.png"),
+                                            onPressed: () {},
+                                          ),
+                                        ],
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ),
+                            ],
+                          ),
+                        ],
+                      ),
                     ),
                   ),
                 ),
               ),
-            ),
+            ],
           ),
-        ),
+        ],
       ),
     );
   }

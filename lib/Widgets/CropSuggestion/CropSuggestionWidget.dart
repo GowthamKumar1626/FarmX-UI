@@ -269,6 +269,17 @@ class _CropSuggestionWidgetState extends State<CropSuggestionWidget> {
                 setState(() {
                   resultDict = response;
                 });
+                showDialog(
+                  context: context,
+                  builder: (context) {
+                    return AlertDialog(
+                      content: Text(
+                        "${resultDict["prediction"][0].toUpperCase()}${resultDict["prediction"].substring(1)}",
+                        style: kDefaultStyle,
+                      ),
+                    );
+                  },
+                );
               },
             ),
           ),
