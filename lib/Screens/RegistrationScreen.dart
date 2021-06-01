@@ -26,15 +26,25 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
   final emailController = TextEditingController();
   final passwordController = TextEditingController();
 
+  static const badlyFormattedEmailError =
+      "[firebase_auth/invalid-email] The email address is badly formatted.";
+  static const emailInUseError =
+      "[firebase_auth/email-already-in-use] The email address is already in use by another account.";
+
+  dynamic snackBar(context, message, duration) {
+    return (ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+        content: Text(message),
+        duration: Duration(seconds: duration),
+      ),
+    ));
+  }
+
   void createAccount() async {
     if (_key.currentState!.validate()) {
       // If the form is valid, display a Snackbar.
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-          content: Text('Creating account'),
-          duration: Duration(seconds: 1),
-        ),
-      );
+      snackBar(context, 'Creating account', 1);
+
       try {
         final newUser = await _auth.createUserWithEmailAndPassword(
             email: email, password: password);
@@ -42,12 +52,17 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
         Navigator.pushNamed(context, HomeScreen.id);
       } catch (error) {
         print('Error: $error');
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(
-            content: Text('Email address is already in use by another account'),
-            duration: Duration(seconds: 2),
-          ),
-        );
+        switch (error.toString()) {
+          case emailInUseError:
+            snackBar(context, "Email is in use. Try with a new one", 2);
+            break;
+          case badlyFormattedEmailError:
+            snackBar(context, "Invalid email. Try again!", 2);
+            break;
+          default:
+            snackBar(context, "Error occurred", 2);
+            break;
+        }
       }
     } else {
       print("Validation failed");

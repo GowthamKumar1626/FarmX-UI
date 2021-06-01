@@ -26,34 +26,68 @@ class _LoginScreenState extends State<LoginScreen> {
   final emailController = TextEditingController();
   final passwordController = TextEditingController();
 
+  static const userDeleteError =
+      "[firebase_auth/user-not-found] There is no user record corresponding to this identifier. The user may have been deleted.";
+  static const passwordIncorrectError =
+      "[firebase_auth/wrong-password] The password is invalid or the user does not have a password.";
+
+  dynamic snackBar(context, message, duration) {
+    return (ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+        content: Text(message),
+        duration: Duration(seconds: duration),
+      ),
+    ));
+  }
+
   void validateLogin() async {
     if (_key.currentState!.validate()) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-          content: Text('Fetching details'),
-          duration: Duration(seconds: 1),
-        ),
-      );
+      snackBar(context, "Fetching Details", 1);
       try {
-        final user = await _auth.signInWithEmailAndPassword(
+        final resultEmailSignIn = await _auth.signInWithEmailAndPassword(
             email: email, password: password);
+        final userEmailSignIn = resultEmailSignIn.user;
         // ignore: unnecessary_null_comparison
-        if (user != null) {
+        if (userEmailSignIn != null) {
           Navigator.pushNamed(context, HomeScreen.id);
         } else {
           print("No User Found");
         }
       } catch (error) {
         print(error);
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(
-            content: Text('User name or Password did not match'),
-            duration: Duration(seconds: 2),
-          ),
-        );
+
+        switch (error.toString()) {
+          case userDeleteError:
+            snackBar(
+                context, "You're not an user. Please create an account", 2);
+            break;
+          case passwordIncorrectError:
+            snackBar(context, "Incorrect Password. Try again!", 2);
+            break;
+          default:
+            snackBar(context, "Error occurred!", 2);
+            break;
+        }
       }
     } else {
       print("Validation failed");
+    }
+  }
+
+  void anonymousSignIn() async {
+    snackBar(context, 'SigningIn anonymously', 1);
+
+    try {
+      final anonymousSignInResult = await _auth.signInAnonymously();
+      final anonymousUser = anonymousSignInResult.user;
+
+      if (anonymousUser != null) {
+        Navigator.pushNamed(context, HomeScreen.id);
+      }
+      print(anonymousUser);
+    } catch (error) {
+      print(error);
+      snackBar(context, 'Error has occurred', 1);
     }
   }
 
@@ -266,7 +300,7 @@ class _LoginScreenState extends State<LoginScreen> {
                                           IconButton(
                                             icon: Image.asset(
                                                 "assets/icons/anonymous.png"),
-                                            onPressed: () {},
+                                            onPressed: anonymousSignIn,
                                           ),
                                           IconButton(
                                             icon: Image.asset(

@@ -1,5 +1,6 @@
 import 'package:bottom_navy_bar/bottom_navy_bar.dart';
 import 'package:eva_icons_flutter/eva_icons_flutter.dart';
+import 'package:farmx/Screens/EditProfileScreen.dart';
 import 'package:farmx/Screens/NewsFeedScreen.dart';
 import 'package:farmx/Screens/ToolScreen.dart';
 import 'package:flutter/cupertino.dart';
@@ -18,6 +19,7 @@ var _pages = [
   NewsFeedScreen(),
   ToolScreen(),
   UserProfileScreen(),
+  EditProfileScreen(),
 ];
 
 class _HomeScreenState extends State<HomeScreen> {
@@ -52,6 +54,10 @@ class _HomeScreenState extends State<HomeScreen> {
           BottomNavyBarItem(
               icon: Icon(EvaIcons.personOutline),
               title: Text('Account'),
+              activeColor: Colors.black),
+          BottomNavyBarItem(
+              icon: Icon(EvaIcons.settingsOutline),
+              title: Text('Profile Settings'),
               activeColor: Colors.black),
         ],
       ),
