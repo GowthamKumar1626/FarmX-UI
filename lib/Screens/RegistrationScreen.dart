@@ -1,6 +1,7 @@
 import 'dart:ui';
 
 import 'package:farmx/Constants/Constants.dart';
+import 'package:farmx/Constants/Errors.dart';
 import 'package:farmx/Screens/HomeScreen.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -17,32 +18,16 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
   // GoogleSignIn _googleSignIn = GoogleSignIn();
 
   final _key = GlobalKey<FormState>();
+  final _auth = FirebaseAuth.instance;
 
   String email = "";
   String password = "";
 
-  final _auth = FirebaseAuth.instance;
-
   final emailController = TextEditingController();
   final passwordController = TextEditingController();
 
-  static const badlyFormattedEmailError =
-      "[firebase_auth/invalid-email] The email address is badly formatted.";
-  static const emailInUseError =
-      "[firebase_auth/email-already-in-use] The email address is already in use by another account.";
-
-  dynamic snackBar(context, message, duration) {
-    return (ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(
-        content: Text(message),
-        duration: Duration(seconds: duration),
-      ),
-    ));
-  }
-
   void createAccount() async {
     if (_key.currentState!.validate()) {
-      // If the form is valid, display a Snackbar.
       snackBar(context, 'Creating account', 1);
 
       try {

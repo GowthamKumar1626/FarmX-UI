@@ -3,6 +3,8 @@ import 'package:eva_icons_flutter/eva_icons_flutter.dart';
 import 'package:farmx/Screens/EditProfileScreen.dart';
 import 'package:farmx/Screens/NewsFeedScreen.dart';
 import 'package:farmx/Screens/ToolScreen.dart';
+import 'package:firebase_auth/firebase_auth.dart' as auth;
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
@@ -25,6 +27,19 @@ var _pages = [
 class _HomeScreenState extends State<HomeScreen> {
   int currentIndex = 2;
 
+  final Future<FirebaseApp> _initialization = Firebase.initializeApp();
+  final _auth = auth.FirebaseAuth.instance;
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    print(_auth.currentUser!.isAnonymous);
+    if (_auth.currentUser!.isAnonymous) {
+      currentIndex = 1;
+    }
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -38,7 +53,11 @@ class _HomeScreenState extends State<HomeScreen> {
         selectedIndex: currentIndex,
         onItemSelected: (index) {
           setState(() {
-            currentIndex = index;
+            if (_auth.currentUser!.isAnonymous) {
+              currentIndex = 1;
+            } else {
+              currentIndex = index;
+            }
           });
         },
         items: <BottomNavyBarItem>[

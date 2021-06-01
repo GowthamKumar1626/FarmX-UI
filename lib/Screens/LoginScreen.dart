@@ -1,6 +1,7 @@
 import 'dart:ui';
 
 import 'package:farmx/Constants/Constants.dart';
+import 'package:farmx/Constants/Errors.dart';
 import 'package:farmx/Screens/HomeScreen.dart';
 import 'package:farmx/Screens/RegistrationScreen.dart';
 import 'package:firebase_auth/firebase_auth.dart' as auth;
@@ -16,29 +17,15 @@ class LoginScreen extends StatefulWidget {
 }
 
 class _LoginScreenState extends State<LoginScreen> {
-  String email = "";
-  String password = "";
-
   final _key = GlobalKey<FormState>();
   final Future<FirebaseApp> _initialization = Firebase.initializeApp();
   final _auth = auth.FirebaseAuth.instance;
 
+  String email = "";
+  String password = "";
+
   final emailController = TextEditingController();
   final passwordController = TextEditingController();
-
-  static const userDeleteError =
-      "[firebase_auth/user-not-found] There is no user record corresponding to this identifier. The user may have been deleted.";
-  static const passwordIncorrectError =
-      "[firebase_auth/wrong-password] The password is invalid or the user does not have a password.";
-
-  dynamic snackBar(context, message, duration) {
-    return (ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(
-        content: Text(message),
-        duration: Duration(seconds: duration),
-      ),
-    ));
-  }
 
   void validateLogin() async {
     if (_key.currentState!.validate()) {
@@ -84,7 +71,6 @@ class _LoginScreenState extends State<LoginScreen> {
       if (anonymousUser != null) {
         Navigator.pushNamed(context, HomeScreen.id);
       }
-      print(anonymousUser);
     } catch (error) {
       print(error);
       snackBar(context, 'Error has occurred', 1);
@@ -305,7 +291,7 @@ class _LoginScreenState extends State<LoginScreen> {
                                           IconButton(
                                             icon: Image.asset(
                                                 "assets/icons/icons8-google.png"),
-                                            onPressed: () {},
+                                            onPressed: () async {},
                                           ),
                                         ],
                                       ),

@@ -1,10 +1,12 @@
 import 'dart:ui';
 
-import 'package:farmx/Screens/UserProfileScreen.dart';
+import 'package:farmx/Screens/LoginScreen.dart';
 import 'package:farmx/Widgets/CropSuggestion/CropSuggestionWidget.dart';
 import 'package:farmx/Widgets/FertilizerSuggestion/FertilizerSuggestionWidget.dart';
 import 'package:farmx/Widgets/GeneralCropInfo/GeneralCropInfoWidget.dart';
 import 'package:farmx/Widgets/PestDetection/PestDetectionWidget.dart';
+import 'package:firebase_auth/firebase_auth.dart' as auth;
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 
 import '../Constants/Constants.dart';
@@ -19,7 +21,10 @@ class ToolScreen extends StatefulWidget {
 
 class _ToolScreenState extends State<ToolScreen> {
   String title = "Pest Detection";
-  int currentIndex = 0;
+  int currentIndex = 0; //Walk through features
+
+  final Future<FirebaseApp> _initialization = Firebase.initializeApp();
+  final _auth = auth.FirebaseAuth.instance;
 
   Widget toolWidget = PestDetectionWidget();
 
@@ -53,13 +58,19 @@ class _ToolScreenState extends State<ToolScreen> {
                         ),
                         Spacer(),
                         TextButton(
-                          onPressed: () {
-                            Navigator.pushNamed(context, UserProfileScreen.id);
+                          onPressed: () async {
+                            try {
+                              await _auth.signOut();
+                              Navigator.pushNamed(context, LoginScreen.id);
+                            } catch (error) {
+                              print(error);
+                            }
                           },
-                          child: CircleAvatar(
-                            radius: 25,
-                            backgroundColor: Colors.transparent,
-                            backgroundImage: AssetImage("assets/icons/man.png"),
+                          child: Text(
+                            "Logout",
+                            style: TextStyle(
+                              color: Colors.black,
+                            ),
                           ),
                         ),
                       ],
