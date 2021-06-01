@@ -24,28 +24,16 @@ class _LoginScreenState extends State<LoginScreen> {
   final _auth = auth.FirebaseAuth.instance;
 
   final emailController = TextEditingController();
-
-  String validateEmail(value) {
-    if (value == null || value.isEmpty) {
-      return 'Please enter some text';
-    }
-    return "";
-  }
-
-  String validatePassword(value) {
-    if (value == null) {
-      return "It cannot be empty";
-    } else if (value.length < 8 && value.length > 32) {
-      return "Password should be length of 8-32 characters";
-    } else {
-      return "";
-    }
-  }
+  final passwordController = TextEditingController();
 
   void validateLogin() async {
     if (_key.currentState!.validate()) {
-      print("Not Validated");
-    } else {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text('Fetching details'),
+          duration: Duration(seconds: 1),
+        ),
+      );
       try {
         final user = await _auth.signInWithEmailAndPassword(
             email: email, password: password);
@@ -57,7 +45,15 @@ class _LoginScreenState extends State<LoginScreen> {
         }
       } catch (error) {
         print(error);
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text('User name or Password did not match'),
+            duration: Duration(seconds: 2),
+          ),
+        );
       }
+    } else {
+      print("Validation failed");
     }
   }
 
@@ -135,7 +131,15 @@ class _LoginScreenState extends State<LoginScreen> {
                                         keyboardType:
                                             TextInputType.emailAddress,
                                         cursorColor: Colors.black,
-                                        validator: validateEmail,
+                                        validator: (value) {
+                                          if (value == null || value.isEmpty) {
+                                            return 'Fill your email';
+                                          }
+                                          if (value.contains('@') == false) {
+                                            return 'Invalid Email ID';
+                                          }
+                                          return null;
+                                        },
                                         controller: emailController,
                                         decoration: InputDecoration(
                                           labelText: 'Email',
@@ -160,7 +164,13 @@ class _LoginScreenState extends State<LoginScreen> {
                                       padding: EdgeInsets.all(10),
                                       child: TextFormField(
                                         obscureText: true,
-                                        validator: validatePassword,
+                                        validator: (value) {
+                                          if (value == null || value.isEmpty) {
+                                            return "It shouldn't be empty";
+                                          }
+                                          return null;
+                                        },
+                                        controller: passwordController,
                                         cursorColor: Colors.black,
                                         decoration: InputDecoration(
                                           labelText: 'Password',

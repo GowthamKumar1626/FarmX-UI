@@ -18,51 +18,39 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
 
   final _key = GlobalKey<FormState>();
 
-  final emailController = TextEditingController();
-  final passwordController = TextEditingController();
-
   String email = "";
   String password = "";
 
   final _auth = FirebaseAuth.instance;
-  bool showSpinner = false;
 
-  String validateEmail(value) {
-    if (value == null || value.isEmpty) {
-      return 'Please enter some text';
-    }
-    return "";
-  }
-
-  String validatePassword(value) {
-    if (value == null) {
-      return "It cannot be empty";
-    } else if (value.length < 8 && value.length > 32) {
-      return "Password should be length of 8-32 characters";
-    } else {
-      return "";
-    }
-  }
+  final emailController = TextEditingController();
+  final passwordController = TextEditingController();
 
   void createAccount() async {
     if (_key.currentState!.validate()) {
       // If the form is valid, display a Snackbar.
-      Scaffold.of(context)
-          .showSnackBar(SnackBar(content: Text('Data is in processing.')));
-    } else {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text('Creating account'),
+          duration: Duration(seconds: 1),
+        ),
+      );
       try {
         final newUser = await _auth.createUserWithEmailAndPassword(
             email: email, password: password);
 
-        if (newUser != null) {
-          // ignore: unnecessary_null_comparison
-          // ignore: unnecessary_null_comparison
-          Navigator.pushNamed(context, HomeScreen.id);
-        }
+        Navigator.pushNamed(context, HomeScreen.id);
       } catch (error) {
         print('Error: $error');
-        Navigator.pushNamed(context, RegistrationScreen.id);
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text('Email address is already in use by another account'),
+            duration: Duration(seconds: 2),
+          ),
+        );
       }
+    } else {
+      print("Validation failed");
     }
   }
 
@@ -140,7 +128,15 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
                                         keyboardType:
                                             TextInputType.emailAddress,
                                         cursorColor: Colors.black,
-                                        validator: validateEmail,
+                                        validator: (value) {
+                                          if (value == null || value.isEmpty) {
+                                            return 'Fill your email';
+                                          }
+                                          if (value.contains('@') == false) {
+                                            return 'Invalid Email ID';
+                                          }
+                                          return null;
+                                        },
                                         controller: emailController,
                                         decoration: InputDecoration(
                                           labelText: 'Email',
@@ -165,7 +161,17 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
                                       padding: EdgeInsets.all(10),
                                       child: TextFormField(
                                         obscureText: true,
-                                        validator: validatePassword,
+                                        validator: (value) {
+                                          if (value == null || value.isEmpty) {
+                                            return "It shouldn't be empty";
+                                          }
+                                          if (value.length < 8 ||
+                                              value.length > 32) {
+                                            return "Password should contain 8-32 characters";
+                                          }
+                                          return null;
+                                        },
+                                        controller: passwordController,
                                         cursorColor: Colors.black,
                                         decoration: InputDecoration(
                                           labelText: 'Password',
