@@ -3,6 +3,8 @@ import 'package:farmx/Screens/LoginScreen.dart';
 import 'package:firebase_auth/firebase_auth.dart' as auth;
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
+import 'package:line_icons/line_icon.dart';
+import 'package:line_icons/line_icons.dart';
 
 class EditProfileScreen extends StatefulWidget {
   @override
@@ -26,7 +28,10 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
               print(error);
             }
           },
-          icon: Icon(Icons.settings_outlined),
+          icon: LineIcon(
+            LineIcons.alternateSignOut,
+            color: kBlack,
+          ),
           label: Text(
             "Logout",
             style: kLoginHeading,

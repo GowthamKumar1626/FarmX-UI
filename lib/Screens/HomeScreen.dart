@@ -32,8 +32,6 @@ class _HomeScreenState extends State<HomeScreen> {
 
   @override
   void initState() {
-    // TODO: implement initState
-    print(_auth.currentUser!.isAnonymous);
     if (_auth.currentUser!.isAnonymous) {
       currentIndex = 1;
     }
@@ -76,7 +74,7 @@ class _HomeScreenState extends State<HomeScreen> {
               activeColor: Colors.black),
           BottomNavyBarItem(
               icon: Icon(EvaIcons.settingsOutline),
-              title: Text('Profile Settings'),
+              title: Text('Settings'),
               activeColor: Colors.black),
         ],
       ),

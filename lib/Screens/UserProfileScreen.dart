@@ -2,7 +2,11 @@ import 'dart:ui';
 
 import 'package:farmx/Constants/Constants.dart';
 import 'package:farmx/Constants/Crops.dart';
+import 'package:firebase_auth/firebase_auth.dart' as auth;
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
+import 'package:line_icons/line_icon.dart';
+import 'package:line_icons/line_icons.dart';
 import 'package:location/location.dart';
 
 class UserProfileScreen extends StatefulWidget {
@@ -15,6 +19,8 @@ class UserProfileScreen extends StatefulWidget {
 
 class _UserProfileScreenState extends State<UserProfileScreen> {
   var selectedCrop;
+  final Future<FirebaseApp> _initialization = Firebase.initializeApp();
+  final _auth = auth.FirebaseAuth.instance;
 
   @override
   Widget build(BuildContext context) {
@@ -51,270 +57,166 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
           ),
         ],
       ),
-      body: ListView(
-        children: <Widget>[
-          Stack(
-            children: <Widget>[
-              Container(
-                height: MediaQuery.of(context).size.height - 82.0,
-                width: MediaQuery.of(context).size.width,
-                color: Colors.transparent,
-              ),
-              Positioned(
-                top: 50,
-                child: Container(
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.only(
-                      topLeft: Radius.circular(45.0),
-                      topRight: Radius.circular(45.0),
-                    ),
-                    color: Colors.white,
-                  ),
-                  height: MediaQuery.of(context).size.height - 100.0,
+      body: Container(
+        child: ListView(
+          children: <Widget>[
+            Stack(
+              children: <Widget>[
+                Container(
+                  height: MediaQuery.of(context).size.height - 82.0,
                   width: MediaQuery.of(context).size.width,
+                  color: Colors.transparent,
                 ),
-              ),
-              Positioned(
-                top: 25,
-                left: (MediaQuery.of(context).size.width / 2) - 100.0,
-                child: Hero(
-                  tag: widget.heroTag,
+                Positioned(
+                  top: 50,
                   child: Container(
                     decoration: BoxDecoration(
-                      image: DecorationImage(
-                        image: AssetImage("assets/icons/man.png"),
-                        fit: BoxFit.cover,
+                      borderRadius: BorderRadius.only(
+                        topLeft: Radius.circular(45.0),
+                        topRight: Radius.circular(45.0),
                       ),
+                      color: Colors.white,
                     ),
-                    height: 200,
-                    width: 200,
+                    height: MediaQuery.of(context).size.height - 100.0,
+                    width: MediaQuery.of(context).size.width,
                   ),
                 ),
-              ),
-              Positioned(
-                top: 250,
-                left: 25,
-                right: 25,
-                child: Column(
-                  children: <Widget>[
-                    Text(
-                      "Hey User!",
-                      style: TextStyle(
-                        color: Colors.black,
-                        fontFamily: 'Roboto',
-                        fontSize: 22.0,
-                        fontWeight: FontWeight.bold,
+                Center(
+                  child: Stack(
+                    children: <Widget>[
+                      Container(
+                        width: 130,
+                        height: 130,
+                        decoration: BoxDecoration(
+                          shape: BoxShape.circle,
+                          // border: Border.all(
+                          //   width: 4,
+                          //   color: Theme.of(context).scaffoldBackgroundColor,
+                          // ),
+                          boxShadow: [
+                            BoxShadow(
+                              color: Colors.black.withOpacity(0.1),
+                              blurRadius: 10,
+                              offset: Offset(0, 10),
+                              spreadRadius: 2,
+                            ),
+                          ],
+                          image: DecorationImage(
+                            fit: BoxFit.cover,
+                            image: AssetImage("assets/images/user.JPG"),
+                          ),
+                        ),
                       ),
-                    ),
-                    SizedBox(height: 30),
-                    Column(
-                      crossAxisAlignment: CrossAxisAlignment.stretch,
-                      children: <Widget>[
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: <Widget>[
-                            Container(
-                              child: Text(
-                                "Contact info: ",
-                                style: kProfileHeadersStyle,
+                      Positioned(
+                        bottom: 0,
+                        right: 0,
+                        child: Container(
+                          height: 40,
+                          width: 40,
+                          child: Center(
+                            child: IconButton(
+                              icon: Icon(
+                                Icons.edit,
+                                color: Colors.white,
                               ),
+                              onPressed: () {},
                             ),
-                            Container(
-                              child: Text(
-                                "+91 9705908495",
-                                style: kProfileContent,
-                              ),
+                          ),
+                          decoration: BoxDecoration(
+                            border: Border.all(
+                              width: 4,
+                              color: Theme.of(context).scaffoldBackgroundColor,
                             ),
-                          ],
+                            color: Colors.black,
+                            shape: BoxShape.circle,
+                          ),
                         ),
-                        SizedBox(
-                          height: 10,
-                        ),
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: <Widget>[
-                            Container(
-                              child: Text(
-                                "Occupation:",
-                                style: kProfileHeadersStyle,
-                              ),
-                            ),
-                            Container(
-                              child: Text(
-                                "Farmer",
-                                style: kProfileContent,
-                              ),
-                            ),
-                          ],
-                        ),
-                        SizedBox(
-                          height: 10,
-                        ),
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: <Widget>[
-                            Container(
-                              child: Text(
-                                "Location:",
-                                style: kProfileHeadersStyle,
-                              ),
-                            ),
-                            Column(
-                              children: <Widget>[
-                                Container(
-                                  child: Text(
-                                    "Sattenapalli, Guntur",
-                                    style: kProfileContent,
-                                  ),
-                                ),
-                                Container(
-                                  child: Text(
-                                    "Lat: 23.05" + ", Lon: -192",
-                                    style: kProfileContent,
-                                  ),
-                                ),
-                              ],
-                            ),
-                          ],
-                        ),
-                        SizedBox(
-                          height: 10,
-                        ),
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: <Widget>[
-                            Container(
-                              child: Text(
-                                "Nationality:",
-                                style: kProfileHeadersStyle,
-                              ),
-                            ),
-                            Container(
-                              child: Text(
-                                "India",
-                                style: kProfileContent,
-                              ),
-                            ),
-                          ],
-                        ),
-                        SizedBox(
-                          height: 30,
-                        ),
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: <Widget>[
-                            Container(
-                              child: Text(
-                                "Field Details",
-                                style: kTopHeadingStyle,
-                              ),
-                            ),
-                          ],
-                        ),
-                        SizedBox(
-                          height: 20,
-                        ),
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: <Widget>[
-                            Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: <Widget>[
-                                Container(
-                                  child: Text(
-                                    "Amount of Land",
-                                    style: kProfileHeadersStyle,
-                                  ),
-                                ),
-                                Container(
-                                  child: Text(
-                                    "in Acres",
-                                    style: kProfileHeadersStyle,
-                                  ),
-                                ),
-                              ],
-                            ),
-                            Container(
-                              child: Text(
-                                "2",
-                                style: kProfileContent,
-                              ),
-                            ),
-                          ],
-                        ),
-                        SizedBox(
-                          height: 10,
-                        ),
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: <Widget>[
-                            Container(
-                              child: Text(
-                                "Soil type:",
-                                style: kProfileHeadersStyle,
-                              ),
-                            ),
-                            Container(
-                              height: 30,
-                              width: 30,
-                              decoration: BoxDecoration(
-                                borderRadius: BorderRadius.circular(10.0),
-                                color: kBrownSoil,
-                              ),
-                            ),
-                          ],
-                        ),
-                        SizedBox(
-                          height: 20,
-                        ),
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: <Widget>[
-                            Container(
-                              child: Text(
-                                "Crop Details",
-                                style: kTopHeadingStyle,
-                              ),
-                            ),
-                          ],
-                        ),
-                        SizedBox(
-                          height: 20,
-                        ),
-                        Row(
-                          children: <Widget>[
-                            Expanded(
-                              child: SizedBox(
-                                height: 70.0,
-                                child: new ListView.separated(
-                                  scrollDirection: Axis.horizontal,
-                                  itemCount: crops.length,
-                                  itemBuilder:
-                                      (BuildContext context, int index) {
-                                    return CropsCultivatedContainer(
-                                      index: index,
-                                    );
-                                  },
-                                  separatorBuilder:
-                                      (BuildContext context, int index) {
-                                    return SizedBox(
-                                      width: 10,
-                                    );
-                                  },
-                                ),
-                              ),
-                            ),
-                          ],
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        ),
-                      ],
-                    ),
-                  ],
+                      ),
+                    ],
+                  ),
                 ),
-              ),
-            ],
-          ),
-        ],
+                Positioned(
+                  top: MediaQuery.of(context).size.height * 0.2,
+                  left: 25,
+                  right: 25,
+                  child: Column(
+                    children: <Widget>[
+                      Text(
+                        "Hey User!",
+                        style: TextStyle(
+                          color: Colors.black,
+                          fontFamily: 'Roboto',
+                          fontSize: 22.0,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                      SizedBox(
+                        height: 3,
+                      ),
+                      Text(
+                        _auth.currentUser!.email.toString(),
+                        style: TextStyle(
+                          color: Colors.black,
+                          fontFamily: 'Roboto',
+                          fontSize: 15.0,
+                          fontWeight: FontWeight.normal,
+                        ),
+                      ),
+                      SizedBox(height: 30),
+                      Column(
+                        crossAxisAlignment: CrossAxisAlignment.stretch,
+                        children: <Widget>[
+                          ProfileListItem(
+                            icon: LineIcons.infoCircle,
+                            onPressed: () {
+                              print("Click");
+                            },
+                            text: "General Info",
+                          ),
+                          ProfileListItem(
+                            icon: LineIcons.tools,
+                            onPressed: () {
+                              print("Click");
+                            },
+                            text: "Crop Info",
+                          ),
+                          ProfileListItem(
+                            icon: LineIcons.userShield,
+                            onPressed: () {
+                              print("Click");
+                            },
+                            text: "Privacy",
+                          ),
+                          ProfileListItem(
+                            icon: LineIcons.history,
+                            onPressed: () {
+                              print("Click");
+                            },
+                            text: "Purchase History",
+                          ),
+                          ProfileListItem(
+                            icon: LineIcons.questionCircle,
+                            onPressed: () {
+                              print("Click");
+                            },
+                            text: "Help & Support",
+                          ),
+                          ProfileListItem(
+                            icon: LineIcons.alternateFile,
+                            onPressed: () {
+                              print("Click");
+                            },
+                            text: "About us",
+                          ),
+                        ],
+                      ),
+                    ],
+                  ),
+                ),
+              ],
+            ),
+          ],
+        ),
       ),
     );
   }
@@ -337,6 +239,64 @@ class CropsCultivatedContainer extends StatelessWidget {
         image: DecorationImage(
           image: AssetImage(crops[index].imgPath),
         ),
+      ),
+    );
+  }
+}
+
+class ProfileListItem extends StatelessWidget {
+  final IconData icon;
+  final String text;
+  final Function() onPressed;
+
+  const ProfileListItem({
+    required this.icon,
+    required this.text,
+    required this.onPressed,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      width: MediaQuery.of(context).size.width * 0.8,
+      height: 60,
+      margin: EdgeInsets.only(bottom: 15),
+      // margin: EdgeInsets.symmetric(
+      //   horizontal: kSpacingUnit * 4,
+      // ).copyWith(
+      //   bottom: kSpacingUnit * 2,
+      // ),
+      padding: EdgeInsets.all(10),
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.circular(kSpacingUnit * 2),
+        color: kDarkSecondaryColor,
+      ),
+      child: Row(
+        children: <Widget>[
+          LineIcon(
+            this.icon,
+            color: Colors.white,
+            size: kSpacingUnit * 2.5,
+          ),
+          SizedBox(width: kSpacingUnit * 1.5),
+          Text(
+            this.text,
+            style: kTitleTextStyle.copyWith(
+              fontWeight: FontWeight.w500,
+              fontSize: 20,
+              color: kLightSecondaryColor,
+            ),
+          ),
+          Spacer(),
+          IconButton(
+            icon: LineIcon(
+              LineIcons.angleRight,
+              size: kSpacingUnit * 2.5,
+              color: kAccentColor,
+            ),
+            onPressed: this.onPressed,
+          ),
+        ],
       ),
     );
   }
