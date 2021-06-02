@@ -1,5 +1,6 @@
 import 'package:farmx/Screens/HomeScreen.dart';
 import 'package:farmx/Screens/LoginScreen.dart';
+import 'package:farmx/Screens/ProfileEditingScreen.dart';
 import 'package:farmx/Screens/ToolScreen.dart';
 import 'package:farmx/Screens/UserProfileScreen.dart';
 import 'package:firebase_core/firebase_core.dart';
@@ -36,6 +37,7 @@ class MyApp extends StatelessWidget {
             HomeScreen.id: (context) => HomeScreen(),
             ToolScreen.id: (context) => ToolScreen(),
             UserProfileScreen.id: (context) => UserProfileScreen(),
+            ProfileEditingScreen.id: (context) => ProfileEditingScreen(),
           },
         );
         //   if (snapshot.hasError) {

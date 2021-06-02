@@ -23,7 +23,12 @@ class _ToolScreenState extends State<ToolScreen> {
   String title = "Pest Detection";
   int currentIndex = 0; //Walk through features
 
-  final Future<FirebaseApp> _initialization = Firebase.initializeApp();
+  @override
+  void initState() {
+    Firebase.initializeApp();
+    super.initState();
+  }
+
   final _auth = auth.FirebaseAuth.instance;
 
   Widget toolWidget = PestDetectionWidget();

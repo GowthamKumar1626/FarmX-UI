@@ -4,6 +4,7 @@ import 'package:farmx/Constants/Constants.dart';
 import 'package:farmx/Constants/Errors.dart';
 import 'package:farmx/Screens/HomeScreen.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 
 class RegistrationScreen extends StatefulWidget {
@@ -18,6 +19,13 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
   // GoogleSignIn _googleSignIn = GoogleSignIn();
 
   final _key = GlobalKey<FormState>();
+
+  @override
+  void initState() {
+    Firebase.initializeApp();
+    super.initState();
+  }
+
   final _auth = FirebaseAuth.instance;
 
   String email = "";
@@ -33,6 +41,8 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
       try {
         final newUser = await _auth.createUserWithEmailAndPassword(
             email: email, password: password);
+
+        print(newUser.user);
 
         Navigator.pushNamed(context, HomeScreen.id);
       } catch (error) {
@@ -190,6 +200,13 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
                                         onChanged: (value) {
                                           password = value;
                                         },
+                                      ),
+                                    ),
+                                    Padding(
+                                      padding: EdgeInsets.all(10.0),
+                                      child: Align(
+                                        alignment: Alignment.centerRight,
+                                        child: Text("Forgot password?"),
                                       ),
                                     ),
                                     Row(

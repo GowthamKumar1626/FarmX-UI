@@ -1,12 +1,13 @@
 import 'package:bottom_navy_bar/bottom_navy_bar.dart';
 import 'package:eva_icons_flutter/eva_icons_flutter.dart';
-import 'package:farmx/Screens/EditProfileScreen.dart';
+import 'package:farmx/Screens/AboutUsScreen.dart';
 import 'package:farmx/Screens/NewsFeedScreen.dart';
 import 'package:farmx/Screens/ToolScreen.dart';
 import 'package:firebase_auth/firebase_auth.dart' as auth;
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:line_icons/line_icons.dart';
 
 import 'UserProfileScreen.dart';
 
@@ -27,16 +28,16 @@ var _pages = [
 class _HomeScreenState extends State<HomeScreen> {
   int currentIndex = 2;
 
-  final Future<FirebaseApp> _initialization = Firebase.initializeApp();
-  final _auth = auth.FirebaseAuth.instance;
-
   @override
   void initState() {
+    Firebase.initializeApp();
     if (_auth.currentUser!.isAnonymous) {
       currentIndex = 1;
     }
     super.initState();
   }
+
+  final _auth = auth.FirebaseAuth.instance;
 
   @override
   Widget build(BuildContext context) {
@@ -73,8 +74,8 @@ class _HomeScreenState extends State<HomeScreen> {
               title: Text('Account'),
               activeColor: Colors.black),
           BottomNavyBarItem(
-              icon: Icon(EvaIcons.settingsOutline),
-              title: Text('Settings'),
+              icon: Icon(LineIcons.alternateFile),
+              title: Text('About us'),
               activeColor: Colors.black),
         ],
       ),

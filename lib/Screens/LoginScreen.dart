@@ -18,7 +18,13 @@ class LoginScreen extends StatefulWidget {
 
 class _LoginScreenState extends State<LoginScreen> {
   final _key = GlobalKey<FormState>();
-  final Future<FirebaseApp> _initialization = Firebase.initializeApp();
+
+  @override
+  void initState() {
+    Firebase.initializeApp();
+    super.initState();
+  }
+
   final _auth = auth.FirebaseAuth.instance;
 
   String email = "";
@@ -34,6 +40,7 @@ class _LoginScreenState extends State<LoginScreen> {
         final resultEmailSignIn = await _auth.signInWithEmailAndPassword(
             email: email, password: password);
         final userEmailSignIn = resultEmailSignIn.user;
+        print(userEmailSignIn);
         // ignore: unnecessary_null_comparison
         if (userEmailSignIn != null) {
           Navigator.pushNamed(context, HomeScreen.id);

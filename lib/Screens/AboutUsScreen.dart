@@ -12,7 +12,12 @@ class EditProfileScreen extends StatefulWidget {
 }
 
 class _EditProfileScreenState extends State<EditProfileScreen> {
-  final Future<FirebaseApp> _initialization = Firebase.initializeApp();
+  @override
+  void initState() {
+    Firebase.initializeApp();
+    super.initState();
+  }
+
   final _auth = auth.FirebaseAuth.instance;
 
   @override

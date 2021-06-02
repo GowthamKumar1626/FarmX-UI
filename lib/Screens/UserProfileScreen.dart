@@ -2,6 +2,7 @@ import 'dart:ui';
 
 import 'package:farmx/Constants/Constants.dart';
 import 'package:farmx/Constants/Crops.dart';
+import 'package:farmx/Screens/ProfileEditingScreen.dart';
 import 'package:firebase_auth/firebase_auth.dart' as auth;
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
@@ -18,14 +19,19 @@ class UserProfileScreen extends StatefulWidget {
 }
 
 class _UserProfileScreenState extends State<UserProfileScreen> {
-  var selectedCrop;
-  final Future<FirebaseApp> _initialization = Firebase.initializeApp();
   final _auth = auth.FirebaseAuth.instance;
+
+  @override
+  void initState() {
+    Firebase.initializeApp();
+    _auth.currentUser!.reload();
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: kUserProfileBackGround,
+      backgroundColor: kDarkPrimaryColor,
       appBar: AppBar(
         leading: IconButton(
           onPressed: () {
@@ -36,7 +42,7 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
           ),
           color: Colors.white,
         ),
-        backgroundColor: Colors.black,
+        backgroundColor: kDarkPrimaryColor,
         elevation: 0.0,
         title: Text(
           "User Profile",
@@ -142,7 +148,9 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
                   child: Column(
                     children: <Widget>[
                       Text(
-                        "Hey User!",
+                        _auth.currentUser!.displayName == null
+                            ? "Hey User"
+                            : _auth.currentUser!.displayName.toString(),
                         style: TextStyle(
                           color: Colors.black,
                           fontFamily: 'Roboto',
@@ -169,7 +177,9 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
                           ProfileListItem(
                             icon: LineIcons.infoCircle,
                             onPressed: () {
-                              print("Click");
+                              print("General Info");
+                              Navigator.pushNamed(
+                                  context, ProfileEditingScreen.id);
                             },
                             text: "General Info",
                           ),
