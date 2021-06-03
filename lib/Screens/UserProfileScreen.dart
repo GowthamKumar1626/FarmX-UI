@@ -3,7 +3,8 @@ import 'dart:ui';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:farmx/Constants/Constants.dart';
 import 'package:farmx/Constants/Crops.dart';
-import 'package:farmx/Screens/ProfileEditScreens/CropInfoScree.dart';
+import 'package:farmx/Screens/HomeScreen.dart';
+import 'package:farmx/Screens/ProfileEditScreens/CropInfoScreen.dart';
 import 'package:farmx/Screens/ProfileEditScreens/GeneralInfoScreen.dart';
 import 'package:farmx/Screens/ProfileEditScreens/PrivacySettingsScreen.dart';
 import 'package:firebase_auth/firebase_auth.dart' as auth;
@@ -48,7 +49,7 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
       appBar: AppBar(
         leading: IconButton(
           onPressed: () {
-            Navigator.pop(context);
+            Navigator.pushNamed(context, HomeScreen.id);
           },
           icon: Icon(
             Icons.arrow_back_ios,
@@ -191,61 +192,55 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
                       Column(
                         crossAxisAlignment: CrossAxisAlignment.stretch,
                         children: <Widget>[
-                          ProfileListItem(
-                            icon: LineIcons.infoCircle,
-                            onPressed: () {
-                              print("General Info");
-
+                          GestureDetector(
+                            onTap: () {
                               Navigator.pushNamed(
                                 context,
                                 GeneralInfoScreen.id,
                               );
                             },
-                            text: "General Info",
+                            child: ProfileListItem(
+                              icon: LineIcons.infoCircle,
+                              text: "General Info",
+                            ),
                           ),
                           isFarmer == true
-                              ? ProfileListItem(
-                                  icon: LineIcons.tools,
-                                  onPressed: () {
-                                    print("CropInfo Clicked");
+                              ? GestureDetector(
+                                  onTap: () {
                                     Navigator.pushNamed(
-                                        context, CropInfoScreen.id);
+                                      context,
+                                      CropInfoScreen.id,
+                                    );
                                   },
-                                  text: "Crop Info",
+                                  child: ProfileListItem(
+                                    icon: LineIcons.tools,
+                                    text: "Crop Info",
+                                  ),
                                 )
                               : Container(),
-                          ProfileListItem(
-                            icon: LineIcons.userShield,
-                            onPressed: () {
-                              print("Privacy");
-
+                          GestureDetector(
+                            onTap: () {
                               Navigator.pushNamed(
                                 context,
                                 PrivacySettingsScreen.id,
                               );
                             },
-                            text: "Privacy",
+                            child: ProfileListItem(
+                              icon: LineIcons.userShield,
+                              text: "Privacy",
+                            ),
                           ),
-                          ProfileListItem(
-                            icon: LineIcons.history,
-                            onPressed: () {
-                              print("Click");
-                            },
-                            text: "Purchase History",
+                          GestureDetector(
+                            child: ProfileListItem(
+                              icon: LineIcons.history,
+                              text: "Purchase History",
+                            ),
                           ),
-                          ProfileListItem(
-                            icon: LineIcons.questionCircle,
-                            onPressed: () {
-                              print("Click");
-                            },
-                            text: "Help & Support",
-                          ),
-                          ProfileListItem(
-                            icon: LineIcons.alternateFile,
-                            onPressed: () {
-                              print("Click");
-                            },
-                            text: "About us",
+                          GestureDetector(
+                            child: ProfileListItem(
+                              icon: LineIcons.questionCircle,
+                              text: "Help & Support",
+                            ),
                           ),
                         ],
                       ),
@@ -286,12 +281,10 @@ class CropsCultivatedContainer extends StatelessWidget {
 class ProfileListItem extends StatelessWidget {
   final IconData icon;
   final String text;
-  final Function() onPressed;
 
   const ProfileListItem({
     required this.icon,
     required this.text,
-    required this.onPressed,
   });
 
   @override
@@ -327,13 +320,10 @@ class ProfileListItem extends StatelessWidget {
             ),
           ),
           Spacer(),
-          IconButton(
-            icon: LineIcon(
-              LineIcons.angleRight,
-              size: kSpacingUnit * 2.5,
-              color: kAccentColor,
-            ),
-            onPressed: this.onPressed,
+          LineIcon(
+            LineIcons.angleRight,
+            size: kSpacingUnit * 2.5,
+            color: kAccentColor,
           ),
         ],
       ),

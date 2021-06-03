@@ -1,10 +1,10 @@
-import 'package:farmx/newsfeed/services/api_service.dart';
-import 'package:flutter/material.dart';
 import 'package:farmx/newsfeed/components/customListTile.dart';
 import 'package:farmx/newsfeed/model/article_model.dart';
-import 'dart:html';
+import 'package:farmx/newsfeed/services/api_service.dart';
+import 'package:flutter/material.dart';
 
 class NewsFeedScreen extends StatefulWidget {
+  static const id = "news_feed";
   @override
   _HomePageState createState() => _HomePageState();
 }
@@ -18,6 +18,7 @@ class _HomePageState extends State<NewsFeedScreen> {
       appBar: AppBar(
         title: Text("News Feed", style: TextStyle(color: Colors.black)),
         backgroundColor: Colors.white,
+        elevation: 0,
       ),
 
       //Now let's call the APi services with futurebuilder wiget
@@ -37,8 +38,10 @@ class _HomePageState extends State<NewsFeedScreen> {
             );
           }
           return Center(
-            // child: CircularProgressIndicator(),
-            child: new Text("error"),
+            child: CircularProgressIndicator(
+              color: Colors.black,
+            ),
+            // child: new Text("Loading"),
           );
         },
       ),

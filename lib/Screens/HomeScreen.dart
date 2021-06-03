@@ -23,6 +23,7 @@ var _pages = [
   ToolScreen(),
   UserProfileScreen(),
   EditProfileScreen(),
+  NewsFeedScreen(),
 ];
 
 class _HomeScreenState extends State<HomeScreen> {

@@ -33,9 +33,6 @@ class _PestDetectionWidgetState extends State<PestDetectionWidget> {
 
 // Function to perform TFLite Inference
   classifyImage(File image) async {
-    //var output = await Tflite.runModelOnImage(
-    //path: image.path, numResults: 38, asynch: true);
-
     var output = await Tflite.runModelOnImage(
         path: image.path, // required
         imageMean: 0.0, // defaults to 117.0
@@ -68,7 +65,6 @@ class _PestDetectionWidgetState extends State<PestDetectionWidget> {
     );
   }
 
-  // Function to dispose and clear mmemory once done inferring
   @override
   void dispose() {
     super.dispose();
@@ -92,7 +88,7 @@ class _PestDetectionWidgetState extends State<PestDetectionWidget> {
   Future pickGalleryImage() async {
     // load image from source - camera/gallery
     var image = await picker.getImage(source: ImageSource.gallery);
-    // check if error laoding image
+
     if (image == null) return null;
     setState(() {
       _image = File(image.path);

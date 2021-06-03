@@ -49,7 +49,7 @@ Widget customListTile(Article article, BuildContext context) {
               borderRadius: BorderRadius.circular(30.0),
             ),
             child: Text(
-              article.source!.name!,
+              article.source.name!,
               style: TextStyle(
                 color: Colors.white,
               ),

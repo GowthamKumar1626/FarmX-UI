@@ -8,6 +8,11 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 
+enum PageSate {
+  USERNAME_MAIL_STATE,
+  PASSWORD_VERIFY_STATE,
+}
+
 class RegistrationScreen extends StatefulWidget {
   static const String id = "registration_screen";
 
@@ -29,8 +34,7 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
 
   final _auth = FirebaseAuth.instance;
 
-  String email = "";
-  String password = "";
+  var email, password, confirmPassword;
 
   final emailController = TextEditingController();
   final passwordController = TextEditingController();
@@ -115,7 +119,7 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
                       sigmaY: 25.0,
                     ),
                     child: Container(
-                      height: MediaQuery.of(context).size.height * 0.55,
+                      height: MediaQuery.of(context).size.height * 0.60,
                       width: MediaQuery.of(context).size.width,
                       padding: EdgeInsets.all(10.0),
                       decoration: BoxDecoration(

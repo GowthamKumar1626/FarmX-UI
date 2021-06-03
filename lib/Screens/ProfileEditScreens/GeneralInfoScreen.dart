@@ -3,7 +3,6 @@ import 'dart:async';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:farmx/Constants/Constants.dart';
 import 'package:farmx/Constants/Errors.dart';
-import 'package:farmx/Screens/HomeScreen.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:line_icons/line_icons.dart';
@@ -61,15 +60,6 @@ class _GeneralInfoScreenState extends State<GeneralInfoScreen> {
       appBar: AppBar(
         elevation: 0,
         backgroundColor: kDarkPrimaryColor,
-        leading: IconButton(
-          onPressed: () {
-            Navigator.pushNamed(context, HomeScreen.id);
-          },
-          icon: Icon(
-            Icons.arrow_back_ios,
-          ),
-          color: Colors.white,
-        ),
         title: Text(
           "Settings",
           style: TextStyle(
