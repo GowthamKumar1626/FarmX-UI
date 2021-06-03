@@ -1,22 +1,31 @@
 import 'package:farmx/newsfeed/services/api_service.dart';
 import 'package:flutter/material.dart';
-import 'package:farmx/newsfeed/components/customListTile.dart';
-import 'package:farmx/newsfeed/model/article_model.dart';
-import 'dart:html';
+import 'components/customListTile.dart';
+import 'model/article_model.dart';
 
-class NewsFeedScreen extends StatefulWidget {
+class MyApp extends StatelessWidget {
+  // This widget is the root of your application.
+  @override
+  Widget build(BuildContext context) {
+    return MaterialApp(
+      home: HomePage(),
+    );
+  }
+}
+
+class HomePage extends StatefulWidget {
   @override
   _HomePageState createState() => _HomePageState();
 }
 
-class _HomePageState extends State<NewsFeedScreen> {
+class _HomePageState extends State<HomePage> {
   ApiService client = ApiService();
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text("News Feed", style: TextStyle(color: Colors.black)),
+        title: Text("News App", style: TextStyle(color: Colors.black)),
         backgroundColor: Colors.white,
       ),
 
@@ -27,7 +36,6 @@ class _HomePageState extends State<NewsFeedScreen> {
           //let's check if we got a response or not
           if (snapshot.hasData) {
             //Now let's make a list of articles
-            Text("hii");
             List<Article> articles = snapshot.data!;
             return ListView.builder(
               //Now let's create our custom List tile
@@ -37,8 +45,7 @@ class _HomePageState extends State<NewsFeedScreen> {
             );
           }
           return Center(
-            // child: CircularProgressIndicator(),
-            child: new Text("error"),
+            child: CircularProgressIndicator(),
           );
         },
       ),
