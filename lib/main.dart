@@ -1,5 +1,6 @@
 import 'package:farmx/Screens/HomeScreen.dart';
 import 'package:farmx/Screens/LoginScreen.dart';
+import 'package:farmx/Screens/ProfileEditScreens/CropInfoScree.dart';
 import 'package:farmx/Screens/ProfileEditScreens/GeneralInfoScreen.dart';
 import 'package:farmx/Screens/ProfileEditScreens/PrivacySettingsScreen.dart';
 import 'package:farmx/Screens/ToolScreen.dart';
@@ -40,6 +41,7 @@ class MyApp extends StatelessWidget {
             UserProfileScreen.id: (context) => UserProfileScreen(),
             GeneralInfoScreen.id: (context) => GeneralInfoScreen(),
             PrivacySettingsScreen.id: (context) => PrivacySettingsScreen(),
+            CropInfoScreen.id: (context) => CropInfoScreen(),
           },
         );
         //   if (snapshot.hasError) {

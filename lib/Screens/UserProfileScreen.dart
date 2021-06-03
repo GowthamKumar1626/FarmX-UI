@@ -3,6 +3,7 @@ import 'dart:ui';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:farmx/Constants/Constants.dart';
 import 'package:farmx/Constants/Crops.dart';
+import 'package:farmx/Screens/ProfileEditScreens/CropInfoScree.dart';
 import 'package:farmx/Screens/ProfileEditScreens/GeneralInfoScreen.dart';
 import 'package:farmx/Screens/ProfileEditScreens/PrivacySettingsScreen.dart';
 import 'package:firebase_auth/firebase_auth.dart' as auth;
@@ -20,21 +21,22 @@ class UserProfileScreen extends StatefulWidget {
 
 class _UserProfileScreenState extends State<UserProfileScreen> {
   final _auth = auth.FirebaseAuth.instance;
-  var displayName, uid;
+  var displayName, isFarmer, uid;
 
   @override
   void initState() {
     Firebase.initializeApp();
     uid = _auth.currentUser!.uid;
-    fetchUserName(uid);
+    fetchUserDetails(uid);
     super.initState();
   }
 
-  fetchUserName(uid) async {
+  fetchUserDetails(uid) async {
     DocumentSnapshot variable =
         await FirebaseFirestore.instance.collection('Users').doc(uid).get();
     setState(() {
       displayName = variable.data()!["displayName"];
+      isFarmer = variable.data()!["isFarmer"];
       print(displayName);
     });
   }
@@ -68,7 +70,7 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
           IconButton(
             onPressed: () {
               setState(() {
-                fetchUserName(uid);
+                fetchUserDetails(uid);
               });
             },
             icon: Icon(
@@ -201,13 +203,17 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
                             },
                             text: "General Info",
                           ),
-                          ProfileListItem(
-                            icon: LineIcons.tools,
-                            onPressed: () {
-                              print("Click");
-                            },
-                            text: "Crop Info",
-                          ),
+                          isFarmer == true
+                              ? ProfileListItem(
+                                  icon: LineIcons.tools,
+                                  onPressed: () {
+                                    print("CropInfo Clicked");
+                                    Navigator.pushNamed(
+                                        context, CropInfoScreen.id);
+                                  },
+                                  text: "Crop Info",
+                                )
+                              : Container(),
                           ProfileListItem(
                             icon: LineIcons.userShield,
                             onPressed: () {
