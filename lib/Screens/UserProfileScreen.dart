@@ -1,18 +1,18 @@
 import 'dart:ui';
 
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:farmx/Constants/Constants.dart';
 import 'package:farmx/Constants/Crops.dart';
-import 'package:farmx/Screens/ProfileEditingScreen.dart';
+import 'package:farmx/Screens/ProfileEditScreens/GeneralInfoScreen.dart';
+import 'package:farmx/Screens/ProfileEditScreens/PrivacySettingsScreen.dart';
 import 'package:firebase_auth/firebase_auth.dart' as auth;
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:line_icons/line_icon.dart';
 import 'package:line_icons/line_icons.dart';
-import 'package:location/location.dart';
 
 class UserProfileScreen extends StatefulWidget {
   static const id = "user_profile";
-  final heroTag = "HeroTag";
 
   @override
   _UserProfileScreenState createState() => _UserProfileScreenState();
@@ -20,12 +20,23 @@ class UserProfileScreen extends StatefulWidget {
 
 class _UserProfileScreenState extends State<UserProfileScreen> {
   final _auth = auth.FirebaseAuth.instance;
+  var displayName, uid;
 
   @override
   void initState() {
     Firebase.initializeApp();
-    _auth.currentUser!.reload();
+    uid = _auth.currentUser!.uid;
+    fetchUserName(uid);
     super.initState();
+  }
+
+  fetchUserName(uid) async {
+    DocumentSnapshot variable =
+        await FirebaseFirestore.instance.collection('Users').doc(uid).get();
+    setState(() {
+      displayName = variable.data()!["displayName"];
+      print(displayName);
+    });
   }
 
   @override
@@ -55,9 +66,13 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
         centerTitle: true,
         actions: <Widget>[
           IconButton(
-            onPressed: () {},
+            onPressed: () {
+              setState(() {
+                fetchUserName(uid);
+              });
+            },
             icon: Icon(
-              Icons.edit,
+              Icons.refresh,
               color: Colors.white,
             ),
           ),
@@ -148,9 +163,9 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
                   child: Column(
                     children: <Widget>[
                       Text(
-                        _auth.currentUser!.displayName == null
+                        displayName == null
                             ? "Hey User"
-                            : _auth.currentUser!.displayName.toString(),
+                            : displayName.toString(),
                         style: TextStyle(
                           color: Colors.black,
                           fontFamily: 'Roboto',
@@ -178,8 +193,11 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
                             icon: LineIcons.infoCircle,
                             onPressed: () {
                               print("General Info");
+
                               Navigator.pushNamed(
-                                  context, ProfileEditingScreen.id);
+                                context,
+                                GeneralInfoScreen.id,
+                              );
                             },
                             text: "General Info",
                           ),
@@ -193,7 +211,12 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
                           ProfileListItem(
                             icon: LineIcons.userShield,
                             onPressed: () {
-                              print("Click");
+                              print("Privacy");
+
+                              Navigator.pushNamed(
+                                context,
+                                PrivacySettingsScreen.id,
+                              );
                             },
                             text: "Privacy",
                           ),
@@ -310,33 +333,4 @@ class ProfileListItem extends StatelessWidget {
       ),
     );
   }
-}
-
-//Location Getter
-
-Future<LocationData> locationGetter() async {
-  Location location = new Location();
-
-  bool _serviceEnabled;
-  PermissionStatus _permissionGranted;
-  LocationData _locationData;
-
-  _serviceEnabled = await location.serviceEnabled();
-  if (!_serviceEnabled) {
-    _serviceEnabled = await location.requestService();
-    if (!_serviceEnabled) {
-      return Future.error('Location service not enabled');
-    }
-  }
-
-  _permissionGranted = await location.hasPermission();
-  if (_permissionGranted == PermissionStatus.denied) {
-    _permissionGranted = await location.requestPermission();
-    if (_permissionGranted != PermissionStatus.granted) {
-      return Future.error('Location permissions are denied');
-    }
-  }
-
-  _locationData = await location.getLocation();
-  return _locationData;
 }
