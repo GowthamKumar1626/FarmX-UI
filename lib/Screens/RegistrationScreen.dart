@@ -89,6 +89,7 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
       body: Stack(
         children: [
           Container(
+            height: MediaQuery.of(context).size.height,
             decoration: BoxDecoration(
               image: DecorationImage(
                 image: AssetImage("assets/images/LoginScreen-1.png"),
@@ -119,7 +120,8 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
                       sigmaY: 25.0,
                     ),
                     child: Container(
-                      height: MediaQuery.of(context).size.height * 0.60,
+                      //height: MediaQuery.of(context).size.height,
+                      height: MediaQuery.of(context).size.height * 0.50,
                       width: MediaQuery.of(context).size.width,
                       padding: EdgeInsets.all(10.0),
                       decoration: BoxDecoration(
@@ -149,9 +151,11 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
                               ),
                               Form(
                                 key: _key,
-                                child: SingleChildScrollView(
-                                  child: Column(
-                                    children: <Widget>[
+                                child: Expanded(
+                                  child: ListView(
+                                    shrinkWrap: true,
+                                    // child: Column(
+                                    children: [
                                       Padding(
                                         padding: EdgeInsets.all(10),
                                         child: TextFormField(
@@ -221,6 +225,45 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
                                           ),
                                           onChanged: (value) {
                                             password = value;
+                                          },
+                                        ),
+                                      ),
+                                      Padding(
+                                        padding: EdgeInsets.all(10),
+                                        child: TextFormField(
+                                          obscureText: true,
+                                          validator: (value) {
+                                            if (value == null ||
+                                                value.isEmpty) {
+                                              return "It shouldn't be empty";
+                                            }
+                                            if (value.length < 8 ||
+                                                value.length > 32) {
+                                              return "Password should contain 8-32 characters";
+                                            }
+                                            if (value != password) {
+                                              return "Enter the same password";
+                                            }
+                                            return null;
+                                          },
+                                          controller: passwordController,
+                                          cursorColor: Colors.black,
+                                          decoration: InputDecoration(
+                                            labelText: 'Comfirm Password',
+                                            labelStyle: kLabelStyleDefault,
+                                            prefixIcon: Icon(
+                                              Icons.admin_panel_settings,
+                                              color: kBlack,
+                                            ),
+                                            border: OutlineInputBorder(),
+                                            focusedBorder: OutlineInputBorder(
+                                              borderSide: BorderSide(
+                                                  color: Colors.black,
+                                                  width: 1.0),
+                                            ),
+                                          ),
+                                          onChanged: (value) {
+                                            confirmPassword = value;
                                           },
                                         ),
                                       ),
@@ -327,6 +370,7 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
                                   ),
                                 ),
                               ),
+                              //),
                             ],
                           ),
                         ],

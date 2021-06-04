@@ -150,8 +150,10 @@ class _LoginScreenState extends State<LoginScreen> {
                               ),
                               Form(
                                 key: _key,
-                                child: SingleChildScrollView(
-                                  child: Column(
+                                child: Expanded(
+                                  child: ListView(
+                                    //child: Column(
+                                    shrinkWrap: true,
                                     children: <Widget>[
                                       Padding(
                                         padding: EdgeInsets.all(10),
