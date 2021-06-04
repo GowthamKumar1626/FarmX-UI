@@ -1,3 +1,4 @@
+import 'package:farmx/Constants/Constants.dart';
 import 'package:farmx/newsfeed/model/article_model.dart';
 import 'package:farmx/newsfeed/pages/articles_details_page.dart';
 import 'package:flutter/material.dart';
@@ -6,11 +7,13 @@ Widget customListTile(Article article, BuildContext context) {
   return InkWell(
     onTap: () {
       Navigator.push(
-          context,
-          MaterialPageRoute(
-              builder: (context) => ArticlePage(
-                    article: article,
-                  )));
+        context,
+        MaterialPageRoute(
+          builder: (context) => ArticlePage(
+            article: article,
+          ),
+        ),
+      );
     },
     child: Container(
       margin: EdgeInsets.all(12.0),
@@ -43,10 +46,10 @@ Widget customListTile(Article article, BuildContext context) {
             height: 8.0,
           ),
           Container(
-            padding: EdgeInsets.all(6.0),
+            padding: EdgeInsets.all(8.0),
             decoration: BoxDecoration(
-              color: Colors.red,
-              borderRadius: BorderRadius.circular(30.0),
+              color: kDarkSecondaryColor,
+              borderRadius: BorderRadius.circular(10.0),
             ),
             child: Text(
               article.source.name!,
@@ -56,13 +59,13 @@ Widget customListTile(Article article, BuildContext context) {
             ),
           ),
           SizedBox(
-            height: 8.0,
+            height: 10.0,
           ),
           Text(
             article.title!,
             style: TextStyle(
-              fontWeight: FontWeight.bold,
-              fontSize: 16.0,
+              fontWeight: FontWeight.w500,
+              fontSize: 18.0,
             ),
           )
         ],

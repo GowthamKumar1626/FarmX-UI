@@ -39,11 +39,20 @@ class _HomeScreenState extends State<HomeScreen> {
   }
 
   final _auth = auth.FirebaseAuth.instance;
+  final PageController _pageController = PageController(initialPage: 2);
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: _pages[currentIndex],
+      body: PageView(
+        controller: _pageController,
+        children: _pages,
+        onPageChanged: (page) {
+          setState(() {
+            currentIndex = page;
+          });
+        },
+      ),
       bottomNavigationBar: BottomNavyBar(
         itemCornerRadius: 20,
         curve: Curves.decelerate,
@@ -58,6 +67,7 @@ class _HomeScreenState extends State<HomeScreen> {
             } else {
               currentIndex = index;
             }
+            _pageController.jumpToPage(currentIndex);
           });
         },
         items: <BottomNavyBarItem>[
