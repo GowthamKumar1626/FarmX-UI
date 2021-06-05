@@ -15,7 +15,7 @@ class ApiService {
   //NOTE: make sure to use your OWN apikey, you can make a free acount and
   // choose a developer option it's FREE
   var endPointUrl = Uri.parse(
-      'https://newsapi.org/v2/top-headlines?country=id&apiKey=c9707391546b4a81ad51e88d2f302b25');
+      'https://newsapi.org/v2/top-headlines?country=in&category=science&apiKey=c9707391546b4a81ad51e88d2f302b25');
 
   //Now let's create the http request function
   // but first let's import the http package

@@ -63,6 +63,16 @@ class ArticlePage extends StatelessWidget {
                 fontWeight: FontWeight.w500,
                 fontSize: 18.0,
               ),
+            ),
+            SizedBox(
+              height: 10.0,
+            ),
+            Text(
+              article!.content!,
+              style: TextStyle(
+                fontWeight: FontWeight.normal,
+                fontSize: 18.0,
+              ),
             )
           ],
         ),

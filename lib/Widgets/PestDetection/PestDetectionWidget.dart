@@ -60,7 +60,7 @@ class _PestDetectionWidgetState extends State<PestDetectionWidget> {
     // define model path and labels path
     await Tflite.loadModel(
       model: 'assets/models/model.tflite',
-      labels: 'assets/models/label.txt',
+      labels: 'assets/models/labels.txt',
       numThreads: 1,
     );
   }
@@ -178,7 +178,8 @@ class _PestDetectionWidgetState extends State<PestDetectionWidget> {
                         height: 450,
                         scale: 0.8,
                       ),
-                      Text("Hello"),
+                      Text("Confidence: $confidence"),
+                      Text("Disease: $disease"),
                     ],
                   ),
           ),
