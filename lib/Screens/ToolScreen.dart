@@ -1,6 +1,7 @@
 import 'dart:ui';
 
 import 'package:farmx/Screens/LoginScreen.dart';
+import 'package:farmx/Widgets/CoFarming/CoFarmingWidget.dart';
 import 'package:farmx/Widgets/CropSuggestion/CropSuggestionWidget.dart';
 import 'package:farmx/Widgets/FertilizerSuggestion/FertilizerSuggestionWidget.dart';
 import 'package:farmx/Widgets/GeneralCropInfo/GeneralCropInfoWidget.dart';
@@ -132,6 +133,9 @@ class _ToolScreenState extends State<ToolScreen> {
                                           case "General Crop-Info":
                                             toolWidget =
                                                 GeneralCropInfoWidget();
+                                            break;
+                                          case "Co-Farming":
+                                            toolWidget = CoFarmingWidget();
                                             break;
                                           default:
                                             toolWidget = Container(

@@ -24,11 +24,16 @@ class _GeneralInfoScreenState extends State<GeneralInfoScreen> {
   final _key = GlobalKey<FormState>();
   var displayName, contactInfo, locationInfo, isFarmer;
 
-  var displayNameInfo, displayContactInfo, displayLocation;
+  var displayNameInfo, displayContactInfo;
 
   var displayState = states.SHOW_GENERAL_INFO;
 
   final _auth = FirebaseAuth.instance;
+
+  Map<String, dynamic> locationCords = {
+    "longitude": null,
+    "latitude": null,
+  };
 
   var uid;
 
@@ -42,7 +47,6 @@ class _GeneralInfoScreenState extends State<GeneralInfoScreen> {
       uid = _auth.currentUser!.uid;
       displayNameInfo = variable.data()!["displayName"];
       displayContactInfo = variable.data()!["contactInfo"];
-      displayLocation = variable.data()!["location"];
       isFarmer = variable.data()!["isFarmer"];
       print(isFarmer);
     });
@@ -128,12 +132,12 @@ class _GeneralInfoScreenState extends State<GeneralInfoScreen> {
               SizedBox(
                 height: 10,
               ),
-              GeneralInfoFields(
-                label: "Location",
-                value: displayLocation.toString().contains('null')
-                    ? '-'
-                    : displayLocation.toString(),
-              ),
+              // GeneralInfoFields(
+              //   label: "Location",
+              //   value: displayLocation.toString().contains('null')
+              //       ? '-'
+              //       : displayLocation.toString(),
+              // ),
               SizedBox(
                 height: 10,
               ),
@@ -196,12 +200,29 @@ class _GeneralInfoScreenState extends State<GeneralInfoScreen> {
                     SizedBox(
                       height: 20,
                     ),
-                    GeneralInfoFormFields(
-                      label: "Location Name",
-                      icon: LineIcons.mapPin,
-                      onChanged: (value) {
-                        displayLocation = value;
+                    ElevatedButton.icon(
+                      onPressed: () {
+                        Future locationData() async {
+                          dynamic _locationData = await locationGetter();
+                          setState(() {
+                            locationCords["longitude"] =
+                                _locationData.longitude;
+                            locationCords["latitude"] = _locationData.latitude;
+                          });
+                          print(locationCords);
+                        }
+
+                        locationData();
                       },
+                      icon: Icon(
+                        Icons.location_pin,
+                      ),
+                      style: ButtonStyle(
+                        backgroundColor: MaterialStateColor.resolveWith(
+                          (states) => kBlack,
+                        ),
+                      ),
+                      label: Text("Get Location"),
                     ),
                     SizedBox(
                       height: 20,
@@ -226,7 +247,7 @@ class _GeneralInfoScreenState extends State<GeneralInfoScreen> {
                             userGeneralInfo(
                               displayName,
                               displayContactInfo,
-                              displayLocation,
+                              locationCords,
                               uid,
                             );
                             snackBar(context, "Changes updated.", 1);
@@ -354,7 +375,7 @@ class GeneralInfoFields extends StatelessWidget {
 Future<void> userGeneralInfo(
   displayName,
   contactInfo,
-  location,
+  locationData,
   uid,
 ) async {
   CollectionReference users = FirebaseFirestore.instance.collection('Users');
@@ -368,7 +389,7 @@ Future<void> userGeneralInfo(
     'displayName': displayName,
     'contactInfo': contactInfo,
     'isFarmer': existingDoc.data()!["isFarmer"],
-    'location': location,
+    'locationData': locationData,
     'uid': uid,
   };
 
@@ -408,5 +429,6 @@ Future<LocationData> locationGetter() async {
   }
 
   _locationData = await location.getLocation();
+
   return _locationData;
 }

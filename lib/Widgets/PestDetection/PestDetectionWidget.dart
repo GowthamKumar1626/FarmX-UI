@@ -45,7 +45,7 @@ class _PestDetectionWidgetState extends State<PestDetectionWidget> {
       // set our global variable equal to local variable
       _output = output;
       _loading = false;
-
+      print(_output);
       confidence = _output != null
           ? (_output![0]['confidence'] * 100.0).toString().substring(0, 2) + "%"
           : " ";
@@ -59,7 +59,7 @@ class _PestDetectionWidgetState extends State<PestDetectionWidget> {
   loadModel() async {
     // define model path and labels path
     await Tflite.loadModel(
-      model: 'assets/models/model.tflite',
+      model: 'assets/models/best_model.tflite',
       labels: 'assets/models/labels.txt',
       numThreads: 1,
     );
