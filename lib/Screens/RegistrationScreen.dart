@@ -57,6 +57,7 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
           'displayName': null,
           'contactInfo': null,
           'isFarmer': isFarmer,
+          'locationName': null,
           'locationData': null,
           'uid': newUser.user!.uid,
         };

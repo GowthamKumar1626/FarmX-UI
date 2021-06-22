@@ -5,6 +5,8 @@ import 'package:farmx/Constants/Constants.dart';
 import 'package:farmx/Constants/Errors.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+// ignore: import_of_legacy_library_into_null_safe
+import 'package:geocoder/geocoder.dart';
 import 'package:line_icons/line_icons.dart';
 import 'package:location/location.dart';
 
@@ -24,7 +26,7 @@ class _GeneralInfoScreenState extends State<GeneralInfoScreen> {
   final _key = GlobalKey<FormState>();
   var displayName, contactInfo, locationInfo, isFarmer;
 
-  var displayNameInfo, displayContactInfo;
+  var displayNameInfo, displayContactInfo, displayLocationName;
 
   var displayState = states.SHOW_GENERAL_INFO;
 
@@ -47,6 +49,7 @@ class _GeneralInfoScreenState extends State<GeneralInfoScreen> {
       uid = _auth.currentUser!.uid;
       displayNameInfo = variable.data()!["displayName"];
       displayContactInfo = variable.data()!["contactInfo"];
+      displayLocationName = variable.data()!["locationName"];
       isFarmer = variable.data()!["isFarmer"];
       print(isFarmer);
     });
@@ -132,12 +135,12 @@ class _GeneralInfoScreenState extends State<GeneralInfoScreen> {
               SizedBox(
                 height: 10,
               ),
-              // GeneralInfoFields(
-              //   label: "Location",
-              //   value: displayLocation.toString().contains('null')
-              //       ? '-'
-              //       : displayLocation.toString(),
-              // ),
+              GeneralInfoFields(
+                label: "Location",
+                value: displayLocationName.toString().contains('null')
+                    ? '-'
+                    : displayLocationName.toString(),
+              ),
               SizedBox(
                 height: 10,
               ),
@@ -200,29 +203,59 @@ class _GeneralInfoScreenState extends State<GeneralInfoScreen> {
                     SizedBox(
                       height: 20,
                     ),
-                    ElevatedButton.icon(
-                      onPressed: () {
-                        Future locationData() async {
-                          dynamic _locationData = await locationGetter();
-                          setState(() {
-                            locationCords["longitude"] =
-                                _locationData.longitude;
-                            locationCords["latitude"] = _locationData.latitude;
-                          });
-                          print(locationCords);
-                        }
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: <Widget>[
+                        ElevatedButton.icon(
+                          onPressed: () {
+                            Future locationData() async {
+                              dynamic _locationData = await locationGetter();
+                              setState(
+                                () async {
+                                  locationCords["longitude"] =
+                                      _locationData.longitude;
+                                  locationCords["latitude"] =
+                                      _locationData.latitude;
 
-                        locationData();
-                      },
-                      icon: Icon(
-                        Icons.location_pin,
-                      ),
-                      style: ButtonStyle(
-                        backgroundColor: MaterialStateColor.resolveWith(
-                          (states) => kBlack,
+                                  final coordinates = new Coordinates(
+                                    locationCords["latitude"],
+                                    locationCords["longitude"],
+                                  );
+                                  var addresses = await Geocoder.local
+                                      .findAddressesFromCoordinates(
+                                          coordinates);
+                                  var first = addresses.first;
+                                  displayLocationName = first.locality;
+
+                                  print("${first.locality}");
+                                  // final query = "Sattenapalli";
+                                  // var addresses = await Geocoder.local
+                                  //     .findAddressesFromQuery(query);
+                                  // var first = addresses.first;
+                                  // print(
+                                  //     "${first.featureName} : ${first.coordinates}");
+                                },
+                              );
+                            }
+
+                            locationData();
+                          },
+                          icon: Icon(
+                            Icons.location_pin,
+                          ),
+                          style: ButtonStyle(
+                            backgroundColor: MaterialStateColor.resolveWith(
+                              (states) => kBlack,
+                            ),
+                          ),
+                          label: Text("Get Location"),
                         ),
-                      ),
-                      label: Text("Get Location"),
+                        Text(
+                          displayLocationName.toString().contains('null')
+                              ? '-'
+                              : displayLocationName.toString(),
+                        ),
+                      ],
                     ),
                     SizedBox(
                       height: 20,
@@ -247,6 +280,7 @@ class _GeneralInfoScreenState extends State<GeneralInfoScreen> {
                             userGeneralInfo(
                               displayName,
                               displayContactInfo,
+                              displayLocationName,
                               locationCords,
                               uid,
                             );
@@ -375,6 +409,7 @@ class GeneralInfoFields extends StatelessWidget {
 Future<void> userGeneralInfo(
   displayName,
   contactInfo,
+  locationName,
   locationData,
   uid,
 ) async {
@@ -389,6 +424,7 @@ Future<void> userGeneralInfo(
     'displayName': displayName,
     'contactInfo': contactInfo,
     'isFarmer': existingDoc.data()!["isFarmer"],
+    "locationName": locationName,
     'locationData': locationData,
     'uid': uid,
   };

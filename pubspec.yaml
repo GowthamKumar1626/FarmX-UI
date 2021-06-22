@@ -48,6 +48,7 @@ dependencies:
   tflite: ^1.1.2
   form_field_validator: ^1.1.0
   http: ^0.13.3
+  geocoder: ^0.2.1
 
 
 dev_dependencies:
