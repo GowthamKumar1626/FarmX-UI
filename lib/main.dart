@@ -6,6 +6,7 @@ import 'package:farmx/Screens/ProfileEditScreens/GeneralInfoScreen.dart';
 import 'package:farmx/Screens/ProfileEditScreens/PrivacySettingsScreen.dart';
 import 'package:farmx/Screens/ToolScreen.dart';
 import 'package:farmx/Screens/UserProfileScreen.dart';
+import 'package:farmx/Widgets/CoFarming/LocationDetails.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -44,6 +45,7 @@ class MyApp extends StatelessWidget {
             GeneralInfoScreen.id: (context) => GeneralInfoScreen(),
             PrivacySettingsScreen.id: (context) => PrivacySettingsScreen(),
             CropInfoScreen.id: (context) => CropInfoScreen(),
+            LocationDetails.id: (context) => LocationDetails(),
           },
         );
         //   if (snapshot.hasError) {

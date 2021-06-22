@@ -1,5 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:farmx/Constants/Constants.dart';
+import 'package:farmx/Widgets/CoFarming/LocationDetails.dart';
 import 'package:firebase_auth/firebase_auth.dart' as auth;
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
@@ -21,7 +22,7 @@ class _CoFarmingWidgetState extends State<CoFarmingWidget> {
   bool isAvailable = false;
   bool isAnonymous = false;
 
-  double _currentSliderValue = 10;
+  dynamic farmersAvailable = [];
 
   @override
   void initState() {
@@ -29,6 +30,15 @@ class _CoFarmingWidgetState extends State<CoFarmingWidget> {
     uid = _auth.currentUser!.uid;
     fetchUserDetails(uid);
     isAnonymous = _auth.currentUser!.isAnonymous;
+
+    FirebaseFirestore.instance
+        .collection('Users')
+        .where("isFarmer", isEqualTo: true)
+        // .where("locationName", isEqualTo: "Sattenapalle")
+        .snapshots()
+        .listen(
+            (data) => data.docs.forEach((doc) => farmersAvailable.add(doc)));
+    print(farmersAvailable);
     super.initState();
   }
 
@@ -114,74 +124,83 @@ class _CoFarmingWidgetState extends State<CoFarmingWidget> {
         Padding(
           padding: EdgeInsets.all(6.0),
           child: Text(
-            "Select the radius (in KM)",
+            "Farmers available for Co-Farming:",
             style: kDefaultStyle,
           ),
         ),
-        Row(
-          mainAxisAlignment: MainAxisAlignment.spaceAround,
-          children: <Widget>[
-            Slider(
-              value: _currentSliderValue,
-              min: 0,
-              max: 50,
-              divisions: 5,
-              label: _currentSliderValue.round().toString(),
-              onChanged: (double value) {
-                setState(() {
-                  _currentSliderValue = value;
-                });
-              },
-              activeColor: kBlack,
-              inactiveColor: kLightSecondaryColor,
-            ),
-            ElevatedButton.icon(
-              label: Text("Search"),
-              icon: Icon(
-                Icons.search,
-              ),
-              style: ButtonStyle(
-                backgroundColor: MaterialStateColor.resolveWith(
-                  (states) => kBlack,
-                ),
-              ),
-              onPressed: () {},
-            ),
-          ],
-        ),
-        Padding(
-          padding: EdgeInsets.all(6.0),
-          child: Text(
-            "Selected radius: $_currentSliderValue",
-            style: kToolNameStyleBlack,
-          ),
-        ),
+        // Row(
+        //   mainAxisAlignment: MainAxisAlignment.spaceAround,
+        //   children: <Widget>[
+        //     Slider(
+        //       value: _currentSliderValue,
+        //       min: 0,
+        //       max: 50,
+        //       divisions: 5,
+        //       label: _currentSliderValue.round().toString(),
+        //       onChanged: (double value) {
+        //         setState(() {
+        //           _currentSliderValue = value;
+        //         });
+        //       },
+        //       activeColor: kBlack,
+        //       inactiveColor: kLightSecondaryColor,
+        //     ),
+        //     ElevatedButton.icon(
+        //       label: Text("Search"),
+        //       icon: Icon(
+        //         Icons.search,
+        //       ),
+        //       style: ButtonStyle(
+        //         backgroundColor: MaterialStateColor.resolveWith(
+        //           (states) => kBlack,
+        //         ),
+        //       ),
+        //       onPressed: () {
+        //         List<QueryDocumentSnapshot> available = [];
+        //         FirebaseFirestore.instance
+        //             .collection('Users')
+        //             .where("isFarmer", isEqualTo: true)
+        //             // .where("locationName", isEqualTo: "Sattenapalle")
+        //             .snapshots()
+        //             .listen((data) =>
+        //                 data.docs.forEach((doc) => farmersAvailable.add(doc)));
+        //         setState(() {
+        //           // farmersAvailable = available;
+        //         });
+        //         print(farmersAvailable);
+        //       },
+        //     ),
+        //   ],
+        // ),
+        // Padding(
+        //   padding: EdgeInsets.all(6.0),
+        //   child: Text(
+        //     "Selected radius: $_currentSliderValue",
+        //     style: kToolNameStyleBlack,
+        //   ),
+        // ),
         SizedBox(
           height: 20,
         ),
         Column(
           // crossAxisAlignment: CrossAxisAlignment.start,
           children: <Widget>[
-            GestureDetector(
-              onTap: () {},
-              child: Container(
-                child: LocationItem(
-                  icon: Icons.location_pin,
-                  text: "Kurapadu",
-                  locationText: "6 KM from here",
+            for (var data in farmersAvailable)
+              GestureDetector(
+                onTap: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (context) => LocationDetails()),
+                  );
+                },
+                child: Container(
+                  child: LocationItem(
+                    icon: Icons.location_pin,
+                    text: "${data["displayName"]} - ${data["locationName"]}",
+                    locationText: "View Details",
+                  ),
                 ),
               ),
-            ),
-            GestureDetector(
-              onTap: () {},
-              child: Container(
-                child: LocationItem(
-                  icon: Icons.location_pin,
-                  text: "Kurapadu",
-                  locationText: "6 KM from here",
-                ),
-              ),
-            ),
           ],
         ),
       ],

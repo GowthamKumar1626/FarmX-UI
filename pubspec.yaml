@@ -49,6 +49,7 @@ dependencies:
   form_field_validator: ^1.1.0
   http: ^0.13.3
   geocoder: ^0.2.1
+  google_maps_flutter: ^2.0.6
 
 
 dev_dependencies:

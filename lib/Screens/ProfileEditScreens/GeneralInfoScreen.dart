@@ -227,7 +227,7 @@ class _GeneralInfoScreenState extends State<GeneralInfoScreen> {
                                   var first = addresses.first;
                                   displayLocationName = first.locality;
 
-                                  print("${first.locality}");
+                                  print("$displayLocationName");
                                   // final query = "Sattenapalli";
                                   // var addresses = await Geocoder.local
                                   //     .findAddressesFromQuery(query);
