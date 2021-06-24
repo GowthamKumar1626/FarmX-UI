@@ -16,21 +16,22 @@ class _HomePageState extends State<NewsFeedScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: kDarkPrimaryColor,
       appBar: AppBar(
-        title: Text("News Feed", style: TextStyle(color: Colors.white)),
+        automaticallyImplyLeading: false,
         backgroundColor: kDarkPrimaryColor,
-        elevation: 0,
+        elevation: 0.0,
+        title: Text(
+          "NewsFeed",
+          style: TextStyle(
+            color: Colors.white,
+            fontFamily: 'Roboto',
+            fontSize: 18.0,
+          ),
+        ),
+        centerTitle: true,
       ),
       body: Container(
-        decoration: BoxDecoration(
-          borderRadius: BorderRadius.only(
-            topLeft: Radius.circular(45.0),
-            topRight: Radius.circular(45.0),
-          ),
-          color: Colors.white,
-        ),
-        height: MediaQuery.of(context).size.height - 100.0,
-        width: MediaQuery.of(context).size.width,
         child: FutureBuilder(
           future: client.getArticle(),
           builder:
@@ -45,7 +46,7 @@ class _HomePageState extends State<NewsFeedScreen> {
             }
             return Center(
               child: CircularProgressIndicator(
-                color: Colors.black,
+                color: Colors.white,
               ),
               // child: new Text("Loading"),
             );

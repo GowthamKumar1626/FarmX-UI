@@ -6,7 +6,6 @@ import 'package:farmx/Widgets/CropSuggestion/CropSuggestionWidget.dart';
 import 'package:farmx/Widgets/FertilizerSuggestion/FertilizerSuggestionWidget.dart';
 import 'package:farmx/Widgets/GeneralCropInfo/GeneralCropInfoWidget.dart';
 import 'package:farmx/Widgets/PestDetection/PestDetectionWidget.dart';
-import 'package:firebase_auth/firebase_auth.dart' as auth;
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 
@@ -29,8 +28,6 @@ class _ToolScreenState extends State<ToolScreen> {
     Firebase.initializeApp();
     super.initState();
   }
-
-  final _auth = auth.FirebaseAuth.instance;
 
   Widget toolWidget = PestDetectionWidget();
 
@@ -103,7 +100,7 @@ class _ToolScreenState extends State<ToolScreen> {
                 color: Colors.transparent,
               ),
               Positioned(
-                top: MediaQuery.of(context).size.height * 0.050,
+                top: MediaQuery.of(context).size.height * 0.080,
                 child: Container(
                   decoration: BoxDecoration(
                     borderRadius: BorderRadius.only(
@@ -124,8 +121,54 @@ class _ToolScreenState extends State<ToolScreen> {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: <Widget>[
+                    // SizedBox(
+                    //   height: 30,
+                    // ),
+                    // Row(
+                    //   children: <Widget>[
+                    //     Expanded(
+                    //       child: SizedBox(
+                    //         height: 80.0,
+                    //         child: ListView(
+                    //           // This next line does the trick.
+                    //           scrollDirection: Axis.horizontal,
+                    //           children: <Widget>[
+                    //             Container(
+                    //               width: 160.0,
+                    //               decoration: BoxDecoration(
+                    //                 borderRadius: BorderRadius.circular(10),
+                    //                 color: Colors.grey.withOpacity(0.2),
+                    //               ),
+                    //             ),
+                    //             SizedBox(
+                    //               width: 10,
+                    //             ),
+                    //             Container(
+                    //               width: 160.0,
+                    //               decoration: BoxDecoration(
+                    //                 borderRadius: BorderRadius.circular(10),
+                    //                 color: Colors.grey.withOpacity(0.2),
+                    //               ),
+                    //             ),
+                    //             SizedBox(
+                    //               width: 10,
+                    //             ),
+                    //             Container(
+                    //               width: 160.0,
+                    //               decoration: BoxDecoration(
+                    //                 borderRadius: BorderRadius.circular(10),
+                    //                 color: Colors.grey.withOpacity(0.8),
+                    //               ),
+                    //             ),
+                    //           ],
+                    //         ),
+                    //       ),
+                    //     ),
+                    //   ],
+                    //   mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    // ),
                     SizedBox(
-                      height: 50,
+                      height: MediaQuery.of(context).size.height * 0.1,
                     ),
                     Text(
                       '$title',

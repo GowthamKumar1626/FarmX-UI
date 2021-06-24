@@ -59,7 +59,7 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
         backgroundColor: kDarkPrimaryColor,
         elevation: 0.0,
         title: Text(
-          "User Profile",
+          "Account",
           style: TextStyle(
             color: Colors.white,
             fontFamily: 'Roboto',
@@ -105,7 +105,8 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
                     width: MediaQuery.of(context).size.width,
                   ),
                 ),
-                Center(
+                Positioned(
+                  left: 40,
                   child: Stack(
                     children: <Widget>[
                       Container(
@@ -160,9 +161,8 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
                   ),
                 ),
                 Positioned(
-                  top: MediaQuery.of(context).size.height * 0.2,
-                  left: 25,
-                  right: 25,
+                  top: MediaQuery.of(context).size.height * 0.1,
+                  right: MediaQuery.of(context).size.width * 0.2,
                   child: Column(
                     children: <Widget>[
                       Text(
@@ -188,7 +188,15 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
                           fontWeight: FontWeight.normal,
                         ),
                       ),
-                      SizedBox(height: 30),
+                    ],
+                  ),
+                ),
+                Positioned(
+                  top: MediaQuery.of(context).size.height * 0.25,
+                  left: 25,
+                  right: 25,
+                  child: Column(
+                    children: <Widget>[
                       Column(
                         crossAxisAlignment: CrossAxisAlignment.stretch,
                         children: <Widget>[
