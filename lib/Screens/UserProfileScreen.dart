@@ -87,7 +87,7 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
             Stack(
               children: <Widget>[
                 Container(
-                  height: MediaQuery.of(context).size.height - 82.0,
+                  height: MediaQuery.of(context).size.height,
                   width: MediaQuery.of(context).size.width,
                   color: Colors.transparent,
                 ),
@@ -101,7 +101,7 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
                       ),
                       color: Colors.white,
                     ),
-                    height: MediaQuery.of(context).size.height - 100.0,
+                    height: MediaQuery.of(context).size.height * 2,
                     width: MediaQuery.of(context).size.width,
                   ),
                 ),

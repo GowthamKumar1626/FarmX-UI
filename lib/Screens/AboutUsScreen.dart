@@ -6,12 +6,12 @@ import 'package:flutter/material.dart';
 import 'package:line_icons/line_icon.dart';
 import 'package:line_icons/line_icons.dart';
 
-class EditProfileScreen extends StatefulWidget {
+class AboutUsScreen extends StatefulWidget {
   @override
-  _EditProfileScreenState createState() => _EditProfileScreenState();
+  _AboutUsScreenState createState() => _AboutUsScreenState();
 }
 
-class _EditProfileScreenState extends State<EditProfileScreen> {
+class _AboutUsScreenState extends State<AboutUsScreen> {
   @override
   void initState() {
     Firebase.initializeApp();

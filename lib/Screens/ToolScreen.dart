@@ -1,6 +1,6 @@
 import 'dart:ui';
 
-import 'package:farmx/Screens/LoginScreen.dart';
+import 'package:farmx/Screens/UserProfileScreen.dart';
 import 'package:farmx/Widgets/CoFarming/CoFarmingWidget.dart';
 import 'package:farmx/Widgets/CropSuggestion/CropSuggestionWidget.dart';
 import 'package:farmx/Widgets/FertilizerSuggestion/FertilizerSuggestionWidget.dart';
@@ -37,10 +37,85 @@ class _ToolScreenState extends State<ToolScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: kDarkPrimaryColor,
+      appBar: AppBar(
+        leading: IconButton(
+          onPressed: () {},
+          icon: Icon(
+            Icons.arrow_back_ios,
+          ),
+          color: Colors.white,
+        ),
+        backgroundColor: kDarkPrimaryColor,
+        elevation: 0.0,
+        title: Text(
+          "Home",
+          style: TextStyle(
+            color: Colors.white,
+            fontFamily: 'Roboto',
+            fontSize: 18.0,
+          ),
+        ),
+        centerTitle: true,
+        actions: <Widget>[
+          GestureDetector(
+            onTap: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => UserProfileScreen(),
+                ),
+              );
+            },
+            child: Container(
+              width: 50,
+              height: 50,
+              margin: EdgeInsets.only(
+                right: 10,
+                top: 10,
+              ),
+              decoration: BoxDecoration(
+                shape: BoxShape.circle,
+                boxShadow: [
+                  BoxShadow(
+                    color: Colors.black.withOpacity(0.1),
+                    blurRadius: 10,
+                    offset: Offset(0, 10),
+                    spreadRadius: 2,
+                  ),
+                ],
+                image: DecorationImage(
+                  fit: BoxFit.cover,
+                  image: AssetImage("assets/images/user.JPG"),
+                ),
+              ),
+            ),
+          ),
+        ],
+      ),
       body: ListView(
         children: <Widget>[
           Stack(
             children: [
+              Container(
+                height: MediaQuery.of(context).size.height - 82.0,
+                width: MediaQuery.of(context).size.width,
+                color: Colors.transparent,
+              ),
+              Positioned(
+                top: MediaQuery.of(context).size.height * 0.050,
+                child: Container(
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.only(
+                      topLeft: Radius.circular(45.0),
+                      topRight: Radius.circular(45.0),
+                    ),
+                    color: Colors.white,
+                  ),
+                  height: MediaQuery.of(context).size.height * 2,
+                  width: MediaQuery.of(context).size.width,
+                ),
+              ),
               Container(
                 padding: EdgeInsets.symmetric(
                   vertical: 15,
@@ -49,54 +124,11 @@ class _ToolScreenState extends State<ToolScreen> {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: <Widget>[
-                    Row(
-                      children: <Widget>[
-                        InkWell(
-                          onTap: () {},
-                          customBorder: CircleBorder(),
-                          child: Padding(
-                            padding: EdgeInsets.all(8.0),
-                            child: Icon(
-                              Icons.search,
-                              size: 30,
-                            ),
-                          ),
-                        ),
-                        Spacer(),
-                        TextButton(
-                          onPressed: () async {
-                            try {
-                              await _auth.signOut();
-                              Navigator.pushNamed(context, LoginScreen.id);
-                            } catch (error) {
-                              print(error);
-                            }
-                          },
-                          child: Text(
-                            "Logout",
-                            style: TextStyle(
-                              color: Colors.black,
-                            ),
-                          ),
-                        ),
-                      ],
-                    ),
                     SizedBox(
                       height: 50,
                     ),
                     Text(
-                      "Hey User",
-                      style: TextStyle(
-                        fontFamily: 'Roboto',
-                        fontSize: 17,
-                        color: kGrey,
-                      ),
-                    ),
-                    SizedBox(
-                      height: 20,
-                    ),
-                    Text(
-                      'Tools provided',
+                      '$title',
                       style: kGreetingsStyle,
                     ),
                     SizedBox(
@@ -161,13 +193,6 @@ class _ToolScreenState extends State<ToolScreen> {
                         ),
                       ],
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    ),
-                    SizedBox(
-                      height: 10,
-                    ),
-                    Text(
-                      title,
-                      style: kToolSelected,
                     ),
                     SizedBox(
                       height: 25,
@@ -243,7 +268,7 @@ class CategoryButton extends StatelessWidget {
       fillColor: isSelected ? color.withAlpha(100) : kLightGrey,
       constraints: BoxConstraints.tightFor(
         width: 70,
-        height: 75,
+        height: 85,
       ),
       child: CircleAvatar(
         radius: 25,

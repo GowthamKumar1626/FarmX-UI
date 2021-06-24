@@ -9,8 +9,6 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:line_icons/line_icons.dart';
 
-import 'UserProfileScreen.dart';
-
 class HomeScreen extends StatefulWidget {
   static const id = "home_screen";
 
@@ -21,13 +19,11 @@ class HomeScreen extends StatefulWidget {
 var _pages = [
   NewsFeedScreen(),
   ToolScreen(),
-  UserProfileScreen(),
-  EditProfileScreen(),
-  NewsFeedScreen(),
+  AboutUsScreen(),
 ];
 
 class _HomeScreenState extends State<HomeScreen> {
-  int currentIndex = 2;
+  int currentIndex = 1;
 
   @override
   void initState() {
@@ -39,7 +35,7 @@ class _HomeScreenState extends State<HomeScreen> {
   }
 
   final _auth = auth.FirebaseAuth.instance;
-  final PageController _pageController = PageController(initialPage: 2);
+  final PageController _pageController = PageController(initialPage: 1);
 
   @override
   Widget build(BuildContext context) {
@@ -54,7 +50,7 @@ class _HomeScreenState extends State<HomeScreen> {
         },
       ),
       bottomNavigationBar: BottomNavyBar(
-        itemCornerRadius: 20,
+        itemCornerRadius: 15,
         curve: Curves.decelerate,
         // animationDuration: Duration(milliseconds: 200),
         backgroundColor: Colors.white,
@@ -79,10 +75,6 @@ class _HomeScreenState extends State<HomeScreen> {
           BottomNavyBarItem(
               icon: Icon(EvaIcons.homeOutline),
               title: Text('Home'),
-              activeColor: Colors.black),
-          BottomNavyBarItem(
-              icon: Icon(EvaIcons.personOutline),
-              title: Text('Account'),
               activeColor: Colors.black),
           BottomNavyBarItem(
               icon: Icon(LineIcons.alternateFile),
