@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:farmx/Constants/Constants.dart';
 import 'package:farmx/Constants/Errors.dart';
+import 'package:farmx/generated/l10n.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 // ignore: import_of_legacy_library_into_null_safe
@@ -152,6 +153,32 @@ class _GeneralInfoScreenState extends State<GeneralInfoScreen> {
                         ? 'Yes'
                         : 'No',
               ),
+              ButtonBar(
+                alignment: MainAxisAlignment.center,
+                children: [
+                  ElevatedButton(
+                      onPressed: () {
+                        setState(() {
+                          S.load(Locale("te"));
+                        });
+                      },
+                      child: Text("తెలుగుకు మార్చండి")),
+                  ElevatedButton(
+                      onPressed: () {
+                        setState(() {
+                          S.load(Locale("hi"));
+                        });
+                      },
+                      child: Text("हिंदी में बदलें")),
+                  ElevatedButton(
+                      onPressed: () {
+                        setState(() {
+                          S.load(Locale("en"));
+                        });
+                      },
+                      child: Text("Change to English")),
+                ],
+              )
             ],
           ),
         ),

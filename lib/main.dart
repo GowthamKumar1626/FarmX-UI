@@ -13,6 +13,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
 import 'Screens/RegistrationScreen.dart';
+import 'package:farmx/generated/l10n.dart';
+import 'package:flutter_localizations/flutter_localizations.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -30,10 +32,18 @@ class MyApp extends StatelessWidget {
       builder: (context, snapshot) {
         return MaterialApp(
           debugShowCheckedModeBanner: false,
+          onGenerateTitle: (BuildContext context) => S.of(context).appTitle,
           theme: ThemeData(
             fontFamily: 'LeonSans',
             visualDensity: VisualDensity.adaptivePlatformDensity,
           ),
+          localizationsDelegates: [
+            S.delegate,
+            GlobalCupertinoLocalizations.delegate,
+            GlobalMaterialLocalizations.delegate,
+            GlobalWidgetsLocalizations.delegate
+          ],
+          supportedLocales: S.delegate.supportedLocales,
           initialRoute: LoginScreen.id,
           routes: {
             RegistrationScreen.id: (context) => RegistrationScreen(),

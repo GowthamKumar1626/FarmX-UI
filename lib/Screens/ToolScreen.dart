@@ -6,6 +6,7 @@ import 'package:farmx/Widgets/CropSuggestion/CropSuggestionWidget.dart';
 import 'package:farmx/Widgets/FertilizerSuggestion/FertilizerSuggestionWidget.dart';
 import 'package:farmx/Widgets/GeneralCropInfo/GeneralCropInfoWidget.dart';
 import 'package:farmx/Widgets/PestDetection/PestDetectionWidget.dart';
+import 'package:farmx/Widgets/Tools/shop.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 
@@ -212,6 +213,7 @@ class _ToolScreenState extends State<ToolScreen> {
                                           case "Co-Farming":
                                             toolWidget = CoFarmingWidget();
                                             break;
+
                                           default:
                                             toolWidget = Container(
                                               child: Text(

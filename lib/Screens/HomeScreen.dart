@@ -8,6 +8,7 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:line_icons/line_icons.dart';
+import 'package:farmx/Widgets/Tools/shop.dart';
 
 class HomeScreen extends StatefulWidget {
   static const id = "home_screen";
@@ -19,6 +20,7 @@ class HomeScreen extends StatefulWidget {
 var _pages = [
   NewsFeedScreen(),
   ToolScreen(),
+  ShopScreen(),
   AboutUsScreen(),
 ];
 
@@ -75,6 +77,10 @@ class _HomeScreenState extends State<HomeScreen> {
           BottomNavyBarItem(
               icon: Icon(EvaIcons.homeOutline),
               title: Text('Home'),
+              activeColor: Colors.black),
+          BottomNavyBarItem(
+              icon: Icon(EvaIcons.shoppingBag),
+              title: Text('Tools'),
               activeColor: Colors.black),
           BottomNavyBarItem(
               icon: Icon(LineIcons.alternateFile),
