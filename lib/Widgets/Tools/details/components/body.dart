@@ -1,6 +1,6 @@
-import 'package:flutter/material.dart';
 import 'package:farmx/widgets/Tools/constants.dart';
 import 'package:farmx/widgets/Tools/products.dart';
+import 'package:flutter/material.dart';
 
 import 'add_to_cart.dart';
 import 'color_and_size.dart';
@@ -9,9 +9,9 @@ import 'description.dart';
 import 'product_title_with_image.dart';
 
 class Body extends StatelessWidget {
+  const Body({Key? key, required this.product}) : super(key: key);
   final Product product;
 
-  const Body({Key? key, required this.product}) : super(key: key);
   @override
   Widget build(BuildContext context) {
     // It provide us total height and width
@@ -48,7 +48,7 @@ class Body extends StatelessWidget {
                       SizedBox(height: kDefaultPaddin / 2),
                       AddToCart(
                         product: product,
-                        key: key!,
+                        key: key,
                       )
                     ],
                   ),
