@@ -9,6 +9,7 @@ import 'package:farmx/Widgets/PestDetection/PestDetectionWidget.dart';
 import 'package:farmx/Widgets/Tools/shop.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
+import 'package:farmx/Screens/currentWeather.dart';
 
 import '../Constants/Constants.dart';
 import '../Constants/Tools.dart';
@@ -171,6 +172,12 @@ class _ToolScreenState extends State<ToolScreen> {
                     SizedBox(
                       height: MediaQuery.of(context).size.height * 0.1,
                     ),
+
+                    CurrentWeatherPage(),
+                    SizedBox(
+                      height: 20,
+                    ),
+
                     Text(
                       '$title',
                       style: kGreetingsStyle,
