@@ -106,12 +106,12 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
                   ),
                 ),
                 Positioned(
-                  left: 40,
+                  left: MediaQuery.of(context).size.width * 0.1,
                   child: Stack(
                     children: <Widget>[
                       Container(
-                        width: 130,
-                        height: 130,
+                        width: 120,
+                        height: 120,
                         decoration: BoxDecoration(
                           shape: BoxShape.circle,
                           // border: Border.all(
