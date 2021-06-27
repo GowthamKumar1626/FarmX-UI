@@ -1,8 +1,8 @@
-import 'package:flutter/material.dart';
-import 'package:flutter_svg/flutter_svg.dart';
+import 'package:farmx/widgets/Tools/buynow.dart';
 import 'package:farmx/widgets/Tools/constants.dart';
 import 'package:farmx/widgets/Tools/products.dart';
-import 'package:farmx/widgets/Tools/buynow.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 
 void showToast() {
@@ -17,7 +17,7 @@ void showToast() {
 
 class AddToCart extends StatelessWidget {
   const AddToCart({
-    required Key key,
+    Key? key,
     required this.product,
   }) : super(key: key);
 

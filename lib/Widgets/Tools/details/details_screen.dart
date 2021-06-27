@@ -1,14 +1,13 @@
+import 'package:farmx/widgets/Tools/constants.dart';
+import 'package:farmx/widgets/Tools/details/components/body.dart';
+import 'package:farmx/widgets/Tools/products.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
-import 'package:farmx/widgets/Tools/constants.dart';
-import 'package:farmx/widgets/Tools/products.dart';
-
-import 'package:farmx/widgets/Tools/details/components/body.dart';
 
 class DetailsScreen extends StatelessWidget {
+  const DetailsScreen({Key? key, required this.product}) : super(key: key);
   final Product product;
 
-  const DetailsScreen({Key? key, required this.product}) : super(key: key);
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -21,7 +20,7 @@ class DetailsScreen extends StatelessWidget {
 
   AppBar buildAppBar(BuildContext context) {
     return AppBar(
-      backgroundColor: Colors.purple[300],
+      backgroundColor: Colors.black,
       elevation: 0,
       leading: IconButton(
         icon: SvgPicture.asset(
