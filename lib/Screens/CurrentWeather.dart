@@ -3,7 +3,6 @@ import 'dart:convert';
 import 'package:farmx/Screens/Weather.dart';
 import 'package:farmx/Services/location.dart';
 import 'package:flutter/material.dart';
-import 'package:geocoder/geocoder.dart';
 import 'package:http/http.dart' as http;
 import 'package:provider/provider.dart';
 
@@ -100,12 +99,7 @@ Widget weatherBox(Weather _weather) {
 Future getCurrentWeather(BuildContext context) async {
   final location = Provider.of<LocationService>(context, listen: false);
   Weather? weather;
-
-  Coordinates coordinates = await location.locationData();
-  var addresses =
-      await Geocoder.local.findAddressesFromCoordinates(coordinates);
-
-  String city = addresses.first.locality;
+  String city = await location.locationName();
   print(city);
   String apiKey = "7e8d6cea22d980cbea8835e0f093ab28";
   var url = Uri.parse(

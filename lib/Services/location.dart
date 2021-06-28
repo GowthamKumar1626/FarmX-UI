@@ -5,6 +5,7 @@ import 'package:location/location.dart';
 abstract class LocationService {
   Future<LocationData> locationGetter();
   Future<Coordinates> locationData();
+  Future<String> locationName();
 }
 
 class LocationCoordinates implements LocationService {
@@ -31,7 +32,7 @@ class LocationCoordinates implements LocationService {
   }
 
   Future<Coordinates> locationData() async {
-    dynamic _locationData = await locationGetter();
+    LocationData _locationData = await locationGetter();
     LocationModel model = LocationModel();
     model.updateWith(
       latitude: _locationData.latitude,
@@ -39,5 +40,13 @@ class LocationCoordinates implements LocationService {
     );
     Coordinates cords = model.getCoordinates();
     return cords;
+  }
+
+  Future<String> locationName() async {
+    Coordinates coordinates = await locationData();
+    var addresses =
+        await Geocoder.local.findAddressesFromCoordinates(coordinates);
+    String locationName = addresses.first.locality;
+    return locationName;
   }
 }
