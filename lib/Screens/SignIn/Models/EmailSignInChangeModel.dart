@@ -7,6 +7,7 @@ import 'package:flutter/foundation.dart';
 class EmailSignInChangeModel with EmailAndPasswordValidators, ChangeNotifier {
   EmailSignInChangeModel({
     required this.auth,
+    // required this.database,
     this.email = '',
     this.password = '',
     this.confirmPassword = '',
@@ -16,6 +17,7 @@ class EmailSignInChangeModel with EmailAndPasswordValidators, ChangeNotifier {
   });
 
   final AuthBase auth;
+  // final Database database;
   String email;
   String password;
   String confirmPassword;
@@ -36,11 +38,18 @@ class EmailSignInChangeModel with EmailAndPasswordValidators, ChangeNotifier {
           throw FirebaseAuthException(
               code: "PASSWORD_MISMATCH", message: "Passwords are not match");
         await auth.createUserWithEmailAndPassword(email, password);
+        // database.createUser({
+        //   "email": auth.currentUser!.email,
+        // });
       }
     } catch (error) {
       updateWith(isLoading: false);
       rethrow;
     }
+  }
+
+  EmailSignInFormType get signInType {
+    return formType;
   }
 
   String get primaryButtonText {

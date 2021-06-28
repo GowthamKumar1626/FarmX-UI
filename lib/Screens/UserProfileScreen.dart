@@ -1,60 +1,29 @@
 import 'dart:ui';
 
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:farmx/Constants/Constants.dart';
-import 'package:farmx/Constants/Crops.dart';
 import 'package:farmx/Screens/ProfileEditScreens/CropInfoScreen.dart';
 import 'package:farmx/Screens/ProfileEditScreens/GeneralInfoScreen.dart';
+import 'package:farmx/Screens/ProfileEditScreens/HelpAndSupport.dart';
 import 'package:farmx/Screens/ProfileEditScreens/PrivacySettingsScreen.dart';
-import 'package:farmx/Screens/UserScreen.dart';
-import 'package:firebase_auth/firebase_auth.dart' as auth;
-import 'package:firebase_core/firebase_core.dart';
+import 'package:farmx/Screens/ProfileEditScreens/PurchaseHistory.dart';
+import 'package:farmx/Screens/ProfileEditScreens/Widgets/ProfileListItem.dart';
+import 'package:farmx/Services/Models/UserModel.dart';
+import 'package:farmx/Services/auth.dart';
+import 'package:farmx/Services/database.dart';
 import 'package:flutter/material.dart';
-import 'package:line_icons/line_icon.dart';
 import 'package:line_icons/line_icons.dart';
+import 'package:provider/provider.dart';
 
-class UserProfileScreen extends StatefulWidget {
-  static const id = "user_profile";
-
-  @override
-  _UserProfileScreenState createState() => _UserProfileScreenState();
-}
-
-class _UserProfileScreenState extends State<UserProfileScreen> {
-  final _auth = auth.FirebaseAuth.instance;
-  var displayName, isFarmer, uid;
-
-  @override
-  void initState() {
-    Firebase.initializeApp();
-    uid = _auth.currentUser!.uid;
-    fetchUserDetails(uid);
-    super.initState();
-  }
-
-  fetchUserDetails(uid) async {
-    DocumentSnapshot variable =
-        await FirebaseFirestore.instance.collection('Users').doc(uid).get();
-    setState(() {
-      displayName = variable.data()!["displayName"];
-      isFarmer = variable.data()!["isFarmer"];
-      print(displayName);
-    });
-  }
-
+class UserProfileScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
+    final auth = Provider.of<AuthBase>(context, listen: false);
     return Scaffold(
       backgroundColor: kDarkPrimaryColor,
       appBar: AppBar(
         leading: IconButton(
           onPressed: () {
-            Navigator.push(
-              context,
-              MaterialPageRoute(
-                builder: (context) => UserScreen(),
-              ),
-            );
+            Navigator.of(context).pop();
           },
           icon: Icon(
             Icons.arrow_back_ios,
@@ -74,11 +43,7 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
         centerTitle: true,
         actions: <Widget>[
           IconButton(
-            onPressed: () {
-              setState(() {
-                fetchUserDetails(uid);
-              });
-            },
+            onPressed: () {},
             icon: Icon(
               Icons.refresh,
               color: Colors.white,
@@ -170,28 +135,9 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
                   right: MediaQuery.of(context).size.width * 0.2,
                   child: Column(
                     children: <Widget>[
-                      Text(
-                        displayName == null
-                            ? "Hey User"
-                            : displayName.toString(),
-                        style: TextStyle(
-                          color: Colors.black,
-                          fontFamily: 'Roboto',
-                          fontSize: 22.0,
-                          fontWeight: FontWeight.bold,
-                        ),
-                      ),
+                      _buildUserNameText(context),
                       SizedBox(
                         height: 3,
-                      ),
-                      Text(
-                        _auth.currentUser!.email.toString(),
-                        style: TextStyle(
-                          color: Colors.black,
-                          fontFamily: 'Roboto',
-                          fontSize: 15.0,
-                          fontWeight: FontWeight.normal,
-                        ),
                       ),
                     ],
                   ),
@@ -204,64 +150,7 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
                     children: <Widget>[
                       Column(
                         crossAxisAlignment: CrossAxisAlignment.stretch,
-                        children: <Widget>[
-                          GestureDetector(
-                            onTap: () {
-                              Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                  builder: (context) => GeneralInfoScreen(),
-                                ),
-                              );
-                            },
-                            child: ProfileListItem(
-                              icon: LineIcons.infoCircle,
-                              text: "General Info",
-                            ),
-                          ),
-                          isFarmer == true
-                              ? GestureDetector(
-                                  onTap: () {
-                                    Navigator.push(
-                                      context,
-                                      MaterialPageRoute(
-                                        builder: (context) => CropInfoScreen(),
-                                      ),
-                                    );
-                                  },
-                                  child: ProfileListItem(
-                                    icon: LineIcons.tools,
-                                    text: "Crop Info",
-                                  ),
-                                )
-                              : Container(),
-                          GestureDetector(
-                            onTap: () {
-                              Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                  builder: (context) => PrivacySettingsScreen(),
-                                ),
-                              );
-                            },
-                            child: ProfileListItem(
-                              icon: LineIcons.userShield,
-                              text: "Privacy",
-                            ),
-                          ),
-                          GestureDetector(
-                            child: ProfileListItem(
-                              icon: LineIcons.history,
-                              text: "Purchase History",
-                            ),
-                          ),
-                          GestureDetector(
-                            child: ProfileListItem(
-                              icon: LineIcons.questionCircle,
-                              text: "Help & Support",
-                            ),
-                          ),
-                        ],
+                        children: _buildSettingsList(context, auth),
                       ),
                     ],
                   ),
@@ -273,79 +162,181 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
       ),
     );
   }
+
+  Widget _buildUserNameText(BuildContext context) {
+    final database = Provider.of<Database>(context, listen: false);
+    return StreamBuilder<UserModel>(
+      stream: database.userDataStream(),
+      builder: (context, snapshot) {
+        if (snapshot.hasData) {
+          final userData = snapshot.data;
+          return Text(
+            userData!.name,
+            style: TextStyle(
+              color: Colors.black,
+              fontFamily: 'Roboto',
+              fontSize: 22.0,
+              fontWeight: FontWeight.bold,
+            ),
+          );
+        }
+        return Column(
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: [
+            Text(
+              "HeyUser",
+              style: TextStyle(
+                color: Colors.black,
+                fontFamily: 'Roboto',
+                fontSize: 22.0,
+                fontWeight: FontWeight.bold,
+              ),
+            ),
+          ],
+        );
+      },
+    );
+  }
+
+  List<Widget> _buildSettingsList(BuildContext context, AuthBase auth) {
+    return [
+      GestureDetector(
+        onTap: () {
+          Navigator.push(
+            context,
+            MaterialPageRoute(
+              fullscreenDialog: true,
+              builder: (BuildContext context) => Provider<Database>(
+                create: (_) => FireStoreDatabase(uid: auth.currentUser!.uid),
+                builder: (context, child) => GeneralInfoScreen(),
+              ),
+            ),
+          );
+        },
+        child: ProfileListItem(
+          icon: LineIcons.infoCircle,
+          text: "General Info",
+        ),
+      ),
+      GestureDetector(
+        onTap: () {
+          Navigator.of(context).push(
+            MaterialPageRoute<void>(
+              fullscreenDialog: true,
+              builder: (context) => CropInfoScreen(),
+            ),
+          );
+        },
+        child: ProfileListItem(
+          icon: LineIcons.tools,
+          text: "Crop Info",
+        ),
+      ),
+      GestureDetector(
+        onTap: () {
+          Navigator.of(context).push(
+            MaterialPageRoute<void>(
+              fullscreenDialog: true,
+              builder: (context) => PrivacySettingsScreen(),
+            ),
+          );
+        },
+        child: ProfileListItem(
+          icon: LineIcons.userShield,
+          text: "Privacy",
+        ),
+      ),
+      GestureDetector(
+        onTap: () {
+          Navigator.of(context).push(
+            MaterialPageRoute<void>(
+              fullscreenDialog: true,
+              builder: (context) => PurchaseHistory(),
+            ),
+          );
+        },
+        child: ProfileListItem(
+          icon: LineIcons.history,
+          text: "Purchase History",
+        ),
+      ),
+      GestureDetector(
+        onTap: () {
+          Navigator.of(context).push(
+            MaterialPageRoute<void>(
+              fullscreenDialog: true,
+              builder: (context) => HelpAndSupport(),
+            ),
+          );
+        },
+        child: ProfileListItem(
+          icon: LineIcons.questionCircle,
+          text: "Help & Support",
+        ),
+      ),
+    ];
+  }
 }
 
 // BuildCropInfoCard
-class CropsCultivatedContainer extends StatelessWidget {
-  final int index;
+// class CropsCultivatedContainer extends StatelessWidget {
+//   final int index;
+//
+//   CropsCultivatedContainer({
+//     required this.index,
+//   });
+//
+//   @override
+//   Widget build(BuildContext context) {
+//     return Container(
+//       height: 100,
+//       width: 70,
+//       decoration: BoxDecoration(
+//         image: DecorationImage(
+//           image: AssetImage(crops[index].imgPath),
+//         ),
+//       ),
+//     );
+//   }
+// }
 
-  CropsCultivatedContainer({
-    required this.index,
-  });
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      height: 100,
-      width: 70,
-      decoration: BoxDecoration(
-        image: DecorationImage(
-          image: AssetImage(crops[index].imgPath),
-        ),
-      ),
-    );
-  }
-}
-
-class ProfileListItem extends StatelessWidget {
-  final IconData icon;
-  final String text;
-
-  const ProfileListItem({
-    required this.icon,
-    required this.text,
-  });
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      width: MediaQuery.of(context).size.width * 0.8,
-      height: 60,
-      margin: EdgeInsets.only(bottom: 15),
-      // margin: EdgeInsets.symmetric(
-      //   horizontal: kSpacingUnit * 4,
-      // ).copyWith(
-      //   bottom: kSpacingUnit * 2,
-      // ),
-      padding: EdgeInsets.all(10),
-      decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(kSpacingUnit * 2),
-        color: kDarkSecondaryColor,
-      ),
-      child: Row(
-        children: <Widget>[
-          LineIcon(
-            this.icon,
-            color: Colors.white,
-            size: kSpacingUnit * 2.5,
-          ),
-          SizedBox(width: kSpacingUnit * 1.5),
-          Text(
-            this.text,
-            style: kTitleTextStyle.copyWith(
-              fontWeight: FontWeight.w500,
-              fontSize: 20,
-              color: kLightSecondaryColor,
-            ),
-          ),
-          Spacer(),
-          LineIcon(
-            LineIcons.angleRight,
-            size: kSpacingUnit * 2.5,
-            color: kAccentColor,
-          ),
-        ],
-      ),
-    );
-  }
-}
+// Widget _buildUserNameText(BuildContext context) {
+//   final database = Provider.of<Database>(context, listen: false);
+//   return StreamBuilder<List<UserModel>>(
+//     stream: database.getAllUsersDataStream(),
+//     builder: (context, snapshot) {
+//       if (snapshot.hasData) {
+//         final userData = snapshot.data;
+//         final data = userData!
+//             .map((user) => Text(
+//           user.name,
+//           style: TextStyle(
+//             color: Colors.black,
+//             fontFamily: 'Roboto',
+//             fontSize: 22.0,
+//             fontWeight: FontWeight.bold,
+//           ),
+//         ))
+//             .toList();
+//         return Column(
+//           crossAxisAlignment: CrossAxisAlignment.center,
+//           children: data,
+//         );
+//       }
+//       return Column(
+//         crossAxisAlignment: CrossAxisAlignment.center,
+//         children: [
+//           Text(
+//             "HeyUser",
+//             style: TextStyle(
+//               color: Colors.black,
+//               fontFamily: 'Roboto',
+//               fontSize: 22.0,
+//               fontWeight: FontWeight.bold,
+//             ),
+//           ),
+//         ],
+//       );
+//     },
+//   );
+// }

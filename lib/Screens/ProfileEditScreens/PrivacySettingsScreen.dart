@@ -3,7 +3,7 @@ import 'dart:async';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:farmx/Constants/Constants.dart';
 import 'package:farmx/Constants/Errors.dart';
-import 'package:farmx/Screens/UserScreen.dart';
+import 'package:farmx/Screens/HomeScreen.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
@@ -151,7 +151,7 @@ class _PrivacySettingsScreenState extends State<PrivacySettingsScreen> {
                         Navigator.push(
                           context,
                           MaterialPageRoute(
-                            builder: (context) => UserScreen(),
+                            builder: (context) => HomeScreen(),
                           ),
                         );
                       });
