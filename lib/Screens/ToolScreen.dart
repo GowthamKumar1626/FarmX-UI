@@ -2,6 +2,7 @@ import 'dart:ui';
 
 import 'package:farmx/Screens/CurrentWeather.dart';
 import 'package:farmx/Screens/UserProfileScreen.dart';
+import 'package:farmx/Screens/currentWeatherScreen.dart';
 import 'package:farmx/Widgets/CoFarming/CoFarmingWidget.dart';
 import 'package:farmx/Widgets/CropSuggestion/CropSuggestionWidget.dart';
 import 'package:farmx/Widgets/FertilizerSuggestion/FertilizerSuggestionWidget.dart';
