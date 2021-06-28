@@ -1,24 +1,34 @@
+import 'package:farmx/CommonWidgets/AlertDialogue.dart';
 import 'package:farmx/Constants/Constants.dart';
-import 'package:farmx/Screens/LoginScreen.dart';
-import 'package:firebase_auth/firebase_auth.dart' as auth;
-import 'package:firebase_core/firebase_core.dart';
+import 'package:farmx/Services/auth.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:line_icons/line_icon.dart';
 import 'package:line_icons/line_icons.dart';
+import 'package:provider/provider.dart';
 
-class AboutUsScreen extends StatefulWidget {
-  @override
-  _AboutUsScreenState createState() => _AboutUsScreenState();
-}
-
-class _AboutUsScreenState extends State<AboutUsScreen> {
-  @override
-  void initState() {
-    Firebase.initializeApp();
-    super.initState();
+class AboutUsScreen extends StatelessWidget {
+  Future<void> _signOut(BuildContext context) async {
+    final auth = Provider.of<AuthBase>(context, listen: false);
+    try {
+      await auth.signOut();
+    } on FirebaseAuthException catch (error) {
+      print(error.message);
+    }
   }
 
-  final _auth = auth.FirebaseAuth.instance;
+  Future<void> _confirmSignOut(BuildContext context) async {
+    final didRequestSignOut = await showAlertDialog(
+      context,
+      title: "Logout",
+      content: "Are you sure you want to logout?",
+      cancelActionText: "Cancel",
+      defaultActionText: "Logout",
+    );
+    if (didRequestSignOut == true) {
+      _signOut(context);
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -80,14 +90,7 @@ class _AboutUsScreenState extends State<AboutUsScreen> {
                       ),
                       Center(
                         child: TextButton.icon(
-                          onPressed: () async {
-                            try {
-                              await _auth.signOut();
-                              Navigator.pushNamed(context, LoginScreen.id);
-                            } catch (error) {
-                              print(error);
-                            }
-                          },
+                          onPressed: () => _confirmSignOut(context),
                           icon: LineIcon(
                             LineIcons.alternateSignOut,
                             color: kBlack,

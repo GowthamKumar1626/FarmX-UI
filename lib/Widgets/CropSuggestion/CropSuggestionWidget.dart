@@ -3,8 +3,6 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 
-// import 'package:rflutter_alert/rflutter_alert.dart';
-
 import '../../Constants/Constants.dart';
 
 class CropSuggestionWidget extends StatefulWidget {

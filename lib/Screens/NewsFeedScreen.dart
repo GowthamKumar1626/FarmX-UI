@@ -5,7 +5,6 @@ import 'package:farmx/newsfeed/services/api_service.dart';
 import 'package:flutter/material.dart';
 
 class NewsFeedScreen extends StatefulWidget {
-  static const id = "news_feed";
   @override
   _HomePageState createState() => _HomePageState();
 }

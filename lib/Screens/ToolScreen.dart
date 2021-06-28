@@ -1,22 +1,19 @@
 import 'dart:ui';
 
 import 'package:farmx/Screens/UserProfileScreen.dart';
+import 'package:farmx/Screens/currentWeather.dart';
 import 'package:farmx/Widgets/CoFarming/CoFarmingWidget.dart';
 import 'package:farmx/Widgets/CropSuggestion/CropSuggestionWidget.dart';
 import 'package:farmx/Widgets/FertilizerSuggestion/FertilizerSuggestionWidget.dart';
 import 'package:farmx/Widgets/GeneralCropInfo/GeneralCropInfoWidget.dart';
 import 'package:farmx/Widgets/PestDetection/PestDetectionWidget.dart';
-import 'package:farmx/Widgets/Tools/shop.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
-import 'package:farmx/Screens/currentWeather.dart';
 
 import '../Constants/Constants.dart';
 import '../Constants/Tools.dart';
 
 class ToolScreen extends StatefulWidget {
-  static const id = "tool_screen";
-
   @override
   _ToolScreenState createState() => _ToolScreenState();
 }
@@ -172,12 +169,7 @@ class _ToolScreenState extends State<ToolScreen> {
                     SizedBox(
                       height: MediaQuery.of(context).size.height * 0.1,
                     ),
-
                     CurrentWeatherPage(),
-                    SizedBox(
-                      height: 20,
-                    ),
-
                     Text(
                       '$title',
                       style: kGreetingsStyle,

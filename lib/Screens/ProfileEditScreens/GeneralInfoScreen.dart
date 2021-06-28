@@ -17,8 +17,6 @@ enum states {
 }
 
 class GeneralInfoScreen extends StatefulWidget {
-  static const id = "general_info";
-
   @override
   _GeneralInfoScreenState createState() => _GeneralInfoScreenState();
 }

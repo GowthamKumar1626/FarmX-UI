@@ -3,8 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:line_icons/line_icons.dart';
 
 class CropInfoScreen extends StatefulWidget {
-  static const id = "crop_info";
-
   @override
   _CropInfoScreenState createState() => _CropInfoScreenState();
 }

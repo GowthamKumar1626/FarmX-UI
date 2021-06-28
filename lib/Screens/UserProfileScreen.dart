@@ -3,10 +3,10 @@ import 'dart:ui';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:farmx/Constants/Constants.dart';
 import 'package:farmx/Constants/Crops.dart';
-import 'package:farmx/Screens/HomeScreen.dart';
 import 'package:farmx/Screens/ProfileEditScreens/CropInfoScreen.dart';
 import 'package:farmx/Screens/ProfileEditScreens/GeneralInfoScreen.dart';
 import 'package:farmx/Screens/ProfileEditScreens/PrivacySettingsScreen.dart';
+import 'package:farmx/Screens/UserScreen.dart';
 import 'package:firebase_auth/firebase_auth.dart' as auth;
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
@@ -49,7 +49,12 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
       appBar: AppBar(
         leading: IconButton(
           onPressed: () {
-            Navigator.pushNamed(context, HomeScreen.id);
+            Navigator.push(
+              context,
+              MaterialPageRoute(
+                builder: (context) => UserScreen(),
+              ),
+            );
           },
           icon: Icon(
             Icons.arrow_back_ios,
@@ -202,9 +207,11 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
                         children: <Widget>[
                           GestureDetector(
                             onTap: () {
-                              Navigator.pushNamed(
+                              Navigator.push(
                                 context,
-                                GeneralInfoScreen.id,
+                                MaterialPageRoute(
+                                  builder: (context) => GeneralInfoScreen(),
+                                ),
                               );
                             },
                             child: ProfileListItem(
@@ -215,9 +222,11 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
                           isFarmer == true
                               ? GestureDetector(
                                   onTap: () {
-                                    Navigator.pushNamed(
+                                    Navigator.push(
                                       context,
-                                      CropInfoScreen.id,
+                                      MaterialPageRoute(
+                                        builder: (context) => CropInfoScreen(),
+                                      ),
                                     );
                                   },
                                   child: ProfileListItem(
@@ -228,9 +237,11 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
                               : Container(),
                           GestureDetector(
                             onTap: () {
-                              Navigator.pushNamed(
+                              Navigator.push(
                                 context,
-                                PrivacySettingsScreen.id,
+                                MaterialPageRoute(
+                                  builder: (context) => PrivacySettingsScreen(),
+                                ),
                               );
                             },
                             child: ProfileListItem(
