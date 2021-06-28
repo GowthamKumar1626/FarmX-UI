@@ -1,15 +1,10 @@
-import 'dart:async';
-
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:farmx/Constants/Constants.dart';
-import 'package:farmx/Constants/Errors.dart';
+import 'package:farmx/Services/Models/UserModel.dart';
+import 'package:farmx/Services/database.dart';
 import 'package:farmx/generated/l10n.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-// ignore: import_of_legacy_library_into_null_safe
-import 'package:geocoder/geocoder.dart';
 import 'package:line_icons/line_icons.dart';
-import 'package:location/location.dart';
+import 'package:provider/provider.dart';
 
 enum states {
   SHOW_GENERAL_INFO,
@@ -22,43 +17,8 @@ class GeneralInfoScreen extends StatefulWidget {
 }
 
 class _GeneralInfoScreenState extends State<GeneralInfoScreen> {
+  states displayState = states.SHOW_GENERAL_INFO;
   final _key = GlobalKey<FormState>();
-  var displayName, contactInfo, locationInfo, isFarmer;
-
-  var displayNameInfo, displayContactInfo, displayLocationName;
-
-  var displayState = states.SHOW_GENERAL_INFO;
-
-  final _auth = FirebaseAuth.instance;
-
-  Map<String, dynamic> locationCords = {
-    "longitude": null,
-    "latitude": null,
-  };
-
-  var uid;
-
-  fetchData() async {
-    DocumentSnapshot variable = await FirebaseFirestore.instance
-        .collection('Users')
-        .doc(_auth.currentUser!.uid)
-        .get();
-
-    setState(() {
-      uid = _auth.currentUser!.uid;
-      displayNameInfo = variable.data()!["displayName"];
-      displayContactInfo = variable.data()!["contactInfo"];
-      displayLocationName = variable.data()!["locationName"];
-      isFarmer = variable.data()!["isFarmer"];
-      print(isFarmer);
-    });
-  }
-
-  @override
-  void initState() {
-    fetchData();
-    super.initState();
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -74,19 +34,6 @@ class _GeneralInfoScreenState extends State<GeneralInfoScreen> {
             fontSize: 18.0,
           ),
         ),
-        actions: <Widget>[
-          IconButton(
-            onPressed: () {
-              setState(() {
-                displayState = states.SHOW_GENERAL_INFO_EDIT_FORM;
-              });
-            },
-            icon: Icon(
-              Icons.edit,
-              color: Colors.white,
-            ),
-          ),
-        ],
       ),
       body: SingleChildScrollView(
         child: displayState == states.SHOW_GENERAL_INFO_EDIT_FORM
@@ -96,92 +43,199 @@ class _GeneralInfoScreenState extends State<GeneralInfoScreen> {
     );
   }
 
-  Column generalInfo(BuildContext context) {
-    return Column(
-      children: <Widget>[
-        Padding(
-          padding: EdgeInsets.all(20.0),
-          child: Column(
-            children: <Widget>[
-              Align(
-                alignment: Alignment.centerLeft,
-                child: Text(
-                  "General Info",
-                  style: TextStyle(
-                    fontWeight: FontWeight.bold,
-                    fontSize: 30,
+  Widget generalInfo(BuildContext context) {
+    final database = Provider.of<Database>(context, listen: false);
+    return StreamBuilder<UserModel>(
+        stream: database.userDataStream(),
+        builder: (context, snapshot) {
+          if (snapshot.hasData) {
+            final userData = snapshot.data;
+            return Column(
+              children: <Widget>[
+                Padding(
+                  padding: EdgeInsets.all(20.0),
+                  child: Column(
+                    children: <Widget>[
+                      Align(
+                        alignment: Alignment.centerLeft,
+                        child: Text(
+                          "General Info",
+                          style: TextStyle(
+                            fontWeight: FontWeight.bold,
+                            fontSize: 30,
+                          ),
+                        ),
+                      ),
+                      SizedBox(
+                        height: 20,
+                      ),
+                      GeneralInfoFields(
+                        label: "Name",
+                        value: userData!.name,
+                      ),
+                      SizedBox(
+                        height: 10,
+                      ),
+                      GeneralInfoFields(
+                        label: "Contact-Info",
+                        value: userData.phoneNumber == ""
+                            ? "-"
+                            : userData.phoneNumber,
+                      ),
+                      SizedBox(
+                        height: 10,
+                      ),
+                      GeneralInfoFields(
+                        label: "Location",
+                        value: userData.locationName == ""
+                            ? "-"
+                            : userData.locationName,
+                      ),
+                      SizedBox(
+                        height: 10,
+                      ),
+                      GeneralInfoFields(
+                        label: "Farmer",
+                        value: userData.isFarmer.toString() == "false"
+                            ? "No"
+                            : "Yes",
+                      ),
+                      SizedBox(
+                        height: 10,
+                      ),
+                      TextButton(
+                        onPressed: () {
+                          setState(() {
+                            displayState = states.SHOW_GENERAL_INFO_EDIT_FORM;
+                          });
+                        },
+                        child: Text(
+                          "Edit",
+                          style: kDefaultStyle,
+                        ),
+                      ),
+                      ButtonBar(
+                        alignment: MainAxisAlignment.center,
+                        children: [
+                          ElevatedButton(
+                              onPressed: () {
+                                setState(() {
+                                  S.load(Locale("te"));
+                                });
+                              },
+                              child: Text("తెలుగుకు మార్చండి")),
+                          ElevatedButton(
+                              onPressed: () {
+                                setState(() {
+                                  S.load(Locale("hi"));
+                                });
+                              },
+                              child: Text("हिंदी में बदलें")),
+                          ElevatedButton(
+                              onPressed: () {
+                                setState(() {
+                                  S.load(Locale("en"));
+                                });
+                              },
+                              child: Text("Change to English")),
+                        ],
+                      )
+                    ],
                   ),
                 ),
-              ),
-              SizedBox(
-                height: 20,
-              ),
-              GeneralInfoFields(
-                label: "Name",
-                value: displayNameInfo.toString().contains('null')
-                    ? "-"
-                    : displayNameInfo.toString(),
-              ),
-              SizedBox(
-                height: 10,
-              ),
-              GeneralInfoFields(
-                label: "Contact-Info",
-                value: displayContactInfo.toString().contains('null')
-                    ? '-'
-                    : displayContactInfo.toString(),
-              ),
-              SizedBox(
-                height: 10,
-              ),
-              GeneralInfoFields(
-                label: "Location",
-                value: displayLocationName.toString().contains('null')
-                    ? '-'
-                    : displayLocationName.toString(),
-              ),
-              SizedBox(
-                height: 10,
-              ),
-              GeneralInfoFields(
-                label: "Farmer",
-                value: isFarmer == null
-                    ? '-'
-                    : isFarmer == true
-                        ? 'Yes'
-                        : 'No',
-              ),
-              ButtonBar(
-                alignment: MainAxisAlignment.center,
-                children: [
-                  ElevatedButton(
+              ],
+            );
+          }
+          return Column(
+            children: <Widget>[
+              Padding(
+                padding: EdgeInsets.all(20.0),
+                child: Column(
+                  children: <Widget>[
+                    Align(
+                      alignment: Alignment.centerLeft,
+                      child: Text(
+                        "General Info",
+                        style: TextStyle(
+                          fontWeight: FontWeight.bold,
+                          fontSize: 30,
+                        ),
+                      ),
+                    ),
+                    SizedBox(
+                      height: 20,
+                    ),
+                    GeneralInfoFields(
+                      label: "Name",
+                      value: "-",
+                    ),
+                    SizedBox(
+                      height: 10,
+                    ),
+                    GeneralInfoFields(
+                      label: "Contact-Info",
+                      value: "-",
+                    ),
+                    SizedBox(
+                      height: 10,
+                    ),
+                    GeneralInfoFields(
+                      label: "Location",
+                      value: "-",
+                    ),
+                    SizedBox(
+                      height: 10,
+                    ),
+                    GeneralInfoFields(
+                      label: "Farmer",
+                      value: "-",
+                    ),
+                    SizedBox(
+                      height: 10,
+                    ),
+                    TextButton(
                       onPressed: () {
                         setState(() {
-                          S.load(Locale("te"));
+                          displayState = states.SHOW_GENERAL_INFO_EDIT_FORM;
                         });
                       },
-                      child: Text("తెలుగుకు మార్చండి")),
-                  ElevatedButton(
-                      onPressed: () {
-                        setState(() {
-                          S.load(Locale("hi"));
-                        });
-                      },
-                      child: Text("हिंदी में बदलें")),
-                  ElevatedButton(
-                      onPressed: () {
-                        setState(() {
-                          S.load(Locale("en"));
-                        });
-                      },
-                      child: Text("Change to English")),
-                ],
-              )
+                      child: Text(
+                        "Edit",
+                        style: kDefaultStyle,
+                      ),
+                    ),
+                    // ButtonBar(
+                    //   alignment: MainAxisAlignment.center,
+                    //   children: [
+                    //     ElevatedButton(
+                    //         onPressed: () {
+                    //           setState(() {
+                    //             S.load(Locale("te"));
+                    //           });
+                    //         },
+                    //         child: Text("తెలుగుకు మార్చండి")),
+                    //     ElevatedButton(
+                    //         onPressed: () {
+                    //           setState(() {
+                    //             S.load(Locale("hi"));
+                    //           });
+                    //         },
+                    //         child: Text("हिंदी में बदलें")),
+                    //     ElevatedButton(
+                    //         onPressed: () {
+                    //           setState(() {
+                    //             S.load(Locale("en"));
+                    //           });
+                    //         },
+                    //         child: Text("Change to English")),
+                    //   ],
+                    // )
+                  ],
+                ),
+              ),
             ],
-          ),
-        ),
-      ],
-    );
+          );
+        });
   }
 
   Column generalInfoEdit(BuildContext context) {
@@ -211,9 +265,7 @@ class _GeneralInfoScreenState extends State<GeneralInfoScreen> {
                     GeneralInfoFormFields(
                       label: "Name",
                       icon: LineIcons.identificationBadge,
-                      onChanged: (value) {
-                        displayName = value;
-                      },
+                      onChanged: (value) {},
                     ),
                     SizedBox(
                       height: 20,
@@ -221,9 +273,7 @@ class _GeneralInfoScreenState extends State<GeneralInfoScreen> {
                     GeneralInfoFormFields(
                       label: "Contact",
                       icon: LineIcons.alternatePhone,
-                      onChanged: (value) {
-                        displayContactInfo = value;
-                      },
+                      onChanged: (value) {},
                     ),
                     SizedBox(
                       height: 20,
@@ -232,39 +282,7 @@ class _GeneralInfoScreenState extends State<GeneralInfoScreen> {
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: <Widget>[
                         ElevatedButton.icon(
-                          onPressed: () {
-                            Future locationData() async {
-                              dynamic _locationData = await locationGetter();
-                              setState(
-                                () async {
-                                  locationCords["longitude"] =
-                                      _locationData.longitude;
-                                  locationCords["latitude"] =
-                                      _locationData.latitude;
-
-                                  final coordinates = new Coordinates(
-                                    locationCords["latitude"],
-                                    locationCords["longitude"],
-                                  );
-                                  var addresses = await Geocoder.local
-                                      .findAddressesFromCoordinates(
-                                          coordinates);
-                                  var first = addresses.first;
-                                  displayLocationName = first.locality;
-
-                                  print("$displayLocationName");
-                                  // final query = "Sattenapalli";
-                                  // var addresses = await Geocoder.local
-                                  //     .findAddressesFromQuery(query);
-                                  // var first = addresses.first;
-                                  // print(
-                                  //     "${first.featureName} : ${first.coordinates}");
-                                },
-                              );
-                            }
-
-                            locationData();
-                          },
+                          onPressed: () {},
                           icon: Icon(
                             Icons.location_pin,
                           ),
@@ -276,9 +294,7 @@ class _GeneralInfoScreenState extends State<GeneralInfoScreen> {
                           label: Text("Get Location"),
                         ),
                         Text(
-                          displayLocationName.toString().contains('null')
-                              ? '-'
-                              : displayLocationName.toString(),
+                          "-",
                         ),
                       ],
                     ),
@@ -301,23 +317,7 @@ class _GeneralInfoScreenState extends State<GeneralInfoScreen> {
                           ),
                         ),
                         ElevatedButton(
-                          onPressed: () async {
-                            userGeneralInfo(
-                              displayName,
-                              displayContactInfo,
-                              displayLocationName,
-                              locationCords,
-                              uid,
-                            );
-                            snackBar(context, "Changes updated.", 1);
-                            Timer(Duration(seconds: 2), () {
-                              // 5s over, navigate to a new page
-                              setState(() {
-                                fetchData();
-                                displayState = states.SHOW_GENERAL_INFO;
-                              });
-                            });
-                          },
+                          onPressed: () async {},
                           child: Text(
                             "Save changes",
                             style: TextStyle(fontSize: 15),
@@ -431,65 +431,9 @@ class GeneralInfoFields extends StatelessWidget {
   }
 }
 
-Future<void> userGeneralInfo(
-  displayName,
-  contactInfo,
-  locationName,
-  locationData,
-  uid,
-) async {
-  CollectionReference users = FirebaseFirestore.instance.collection('Users');
-  final _auth = FirebaseAuth.instance;
-  DocumentSnapshot existingDoc = await FirebaseFirestore.instance
-      .collection('Users')
-      .doc(_auth.currentUser!.uid)
-      .get();
-
-  Map<String, dynamic> userData = {
-    'displayName': displayName,
-    'contactInfo': contactInfo,
-    'isFarmer': existingDoc.data()!["isFarmer"],
-    "locationName": locationName,
-    'locationData': locationData,
-    'uid': uid,
-  };
-
-  dynamic userRef = users.doc(uid);
-
-  try {
-    await userRef.update(userData);
-  } catch (error) {
-    print(error);
-  }
-  return;
-}
-
-//Location Getter
-
-Future<LocationData> locationGetter() async {
-  Location location = new Location();
-
-  bool _serviceEnabled;
-  PermissionStatus _permissionGranted;
-  LocationData _locationData;
-
-  _serviceEnabled = await location.serviceEnabled();
-  if (!_serviceEnabled) {
-    _serviceEnabled = await location.requestService();
-    if (!_serviceEnabled) {
-      return Future.error('Location service not enabled');
-    }
-  }
-
-  _permissionGranted = await location.hasPermission();
-  if (_permissionGranted == PermissionStatus.denied) {
-    _permissionGranted = await location.requestPermission();
-    if (_permissionGranted != PermissionStatus.granted) {
-      return Future.error('Location permissions are denied');
-    }
-  }
-
-  _locationData = await location.getLocation();
-
-  return _locationData;
-}
+// void userData() async {
+//   await database.setGeneralUserData(
+//       UserModel(name: "test@email.com", isFarmer: true));
+// }
+//
+// userData();

@@ -3,12 +3,15 @@ import 'dart:ui';
 import 'package:farmx/Screens/CurrentWeather.dart';
 import 'package:farmx/Screens/UserProfileScreen.dart';
 import 'package:farmx/Screens/currentWeatherScreen.dart';
+import 'package:farmx/Services/auth.dart';
+import 'package:farmx/Services/database.dart';
 import 'package:farmx/Widgets/CoFarming/CoFarmingWidget.dart';
 import 'package:farmx/Widgets/CropSuggestion/CropSuggestionWidget.dart';
 import 'package:farmx/Widgets/FertilizerSuggestion/FertilizerSuggestionWidget.dart';
 import 'package:farmx/Widgets/GeneralCropInfo/GeneralCropInfoWidget.dart';
 import 'package:farmx/Widgets/PestDetection/PestDetectionWidget.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 import '../Constants/Constants.dart';
 import '../Constants/Tools.dart';
@@ -25,6 +28,9 @@ class _ToolScreenState extends State<ToolScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final auth = Provider.of<AuthBase>(context, listen: false);
+    final database = Provider.of<Database>(context, listen: false);
+
     return Scaffold(
       backgroundColor: kDarkPrimaryColor,
       appBar: AppBar(
@@ -52,7 +58,11 @@ class _ToolScreenState extends State<ToolScreen> {
               Navigator.push(
                 context,
                 MaterialPageRoute(
-                  builder: (context) => UserProfileScreen(),
+                  builder: (BuildContext context) => Provider<Database>(
+                    create: (_) =>
+                        FireStoreDatabase(uid: auth.currentUser!.uid),
+                    builder: (context, child) => UserProfileScreen(),
+                  ),
                 ),
               );
             },

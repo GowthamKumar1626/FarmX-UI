@@ -9,12 +9,12 @@ import 'package:flutter/material.dart';
 import 'package:line_icons/line_icons.dart';
 import 'package:provider/provider.dart';
 
-class UserScreen extends StatefulWidget {
+class HomeScreen extends StatefulWidget {
   @override
-  _UserScreenState createState() => _UserScreenState();
+  _HomeScreenState createState() => _HomeScreenState();
 }
 
-class _UserScreenState extends State<UserScreen> {
+class _HomeScreenState extends State<HomeScreen> {
   int currentIndex = 1;
 
   var _pages = [
@@ -29,6 +29,7 @@ class _UserScreenState extends State<UserScreen> {
   @override
   Widget build(BuildContext context) {
     final auth = Provider.of<AuthBase>(context, listen: false);
+
     return Scaffold(
         body: PageView(
           controller: _pageController,
@@ -67,7 +68,7 @@ class _UserScreenState extends State<UserScreen> {
                 title: Text('Home'),
                 activeColor: Colors.black),
             BottomNavyBarItem(
-                icon: Icon(EvaIcons.shoppingBag),
+                icon: Icon(EvaIcons.shoppingBagOutline),
                 title: Text('Tools'),
                 activeColor: Colors.black),
             BottomNavyBarItem(
