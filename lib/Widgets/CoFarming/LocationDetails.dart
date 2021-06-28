@@ -1,6 +1,8 @@
 import 'package:farmx/Constants/Constants.dart';
+import 'package:farmx/Services/location.dart';
 import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
+import 'package:provider/provider.dart';
 
 class LocationDetails extends StatefulWidget {
   static const id = "location_details";
@@ -20,6 +22,7 @@ class _LocationDetailsState extends State<LocationDetails> {
 
   @override
   Widget build(BuildContext context) {
+    final location = Provider.of<LocationService>(context, listen: false);
     return Scaffold(
       appBar: AppBar(
         elevation: 0,

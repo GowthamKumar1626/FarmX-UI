@@ -33,6 +33,21 @@ class FireStoreDatabase implements Database {
         }).toList());
   }
 
+  Stream<List<UserModel>> getAllCoFarmingFarmers() {
+    final path = APIPath.allUsersDataPath();
+    final reference = FirebaseFirestore.instance.collection(path);
+    final snapshots = reference.snapshots();
+    return snapshots.map((snapshot) => snapshot.docs.map((element) {
+          final data = element.data();
+          return UserModel(
+            name: data["name"],
+            phoneNumber: data["phoneNumber"],
+            isFarmer: data["isFarmer"],
+            locationName: data["locationName"],
+          );
+        }).toList());
+  }
+
   Stream<UserModel> userDataStream() {
     final path = APIPath.userDataPath(uid);
     final reference = FirebaseFirestore.instance.doc(path);

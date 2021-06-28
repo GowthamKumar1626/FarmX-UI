@@ -28,7 +28,6 @@ class _ToolScreenState extends State<ToolScreen> {
   @override
   Widget build(BuildContext context) {
     final auth = Provider.of<AuthBase>(context, listen: false);
-    final database = Provider.of<Database>(context, listen: false);
 
     return Scaffold(
       backgroundColor: kDarkPrimaryColor,

@@ -1,7 +1,7 @@
 import 'package:farmx/Constants/Constants.dart';
 import 'package:farmx/Services/Models/UserModel.dart';
 import 'package:farmx/Services/database.dart';
-import 'package:farmx/generated/l10n.dart';
+import 'package:farmx/Services/location.dart';
 import 'package:flutter/material.dart';
 import 'package:line_icons/line_icons.dart';
 import 'package:provider/provider.dart';
@@ -19,6 +19,8 @@ class GeneralInfoScreen extends StatefulWidget {
 class _GeneralInfoScreenState extends State<GeneralInfoScreen> {
   states displayState = states.SHOW_GENERAL_INFO;
   final _key = GlobalKey<FormState>();
+
+  var name, phoneNumber, locationName;
 
   @override
   Widget build(BuildContext context) {
@@ -114,32 +116,6 @@ class _GeneralInfoScreenState extends State<GeneralInfoScreen> {
                           style: kDefaultStyle,
                         ),
                       ),
-                      ButtonBar(
-                        alignment: MainAxisAlignment.center,
-                        children: [
-                          ElevatedButton(
-                              onPressed: () {
-                                setState(() {
-                                  S.load(Locale("te"));
-                                });
-                              },
-                              child: Text("తెలుగుకు మార్చండి")),
-                          ElevatedButton(
-                              onPressed: () {
-                                setState(() {
-                                  S.load(Locale("hi"));
-                                });
-                              },
-                              child: Text("हिंदी में बदलें")),
-                          ElevatedButton(
-                              onPressed: () {
-                                setState(() {
-                                  S.load(Locale("en"));
-                                });
-                              },
-                              child: Text("Change to English")),
-                        ],
-                      )
                     ],
                   ),
                 ),
@@ -239,6 +215,14 @@ class _GeneralInfoScreenState extends State<GeneralInfoScreen> {
   }
 
   Column generalInfoEdit(BuildContext context) {
+    final location = Provider.of<LocationService>(context, listen: false);
+    final database = Provider.of<Database>(context, listen: false);
+
+    Future<String> getLocation() async {
+      String city = await location.locationName();
+      return city;
+    }
+
     return Column(
       children: <Widget>[
         Padding(
@@ -265,7 +249,11 @@ class _GeneralInfoScreenState extends State<GeneralInfoScreen> {
                     GeneralInfoFormFields(
                       label: "Name",
                       icon: LineIcons.identificationBadge,
-                      onChanged: (value) {},
+                      onChanged: (value) {
+                        setState(() {
+                          name = value;
+                        });
+                      },
                     ),
                     SizedBox(
                       height: 20,
@@ -273,7 +261,11 @@ class _GeneralInfoScreenState extends State<GeneralInfoScreen> {
                     GeneralInfoFormFields(
                       label: "Contact",
                       icon: LineIcons.alternatePhone,
-                      onChanged: (value) {},
+                      onChanged: (value) {
+                        setState(() {
+                          phoneNumber = value;
+                        });
+                      },
                     ),
                     SizedBox(
                       height: 20,
@@ -282,7 +274,12 @@ class _GeneralInfoScreenState extends State<GeneralInfoScreen> {
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: <Widget>[
                         ElevatedButton.icon(
-                          onPressed: () {},
+                          onPressed: () async {
+                            String city = await getLocation();
+                            setState(() {
+                              locationName = city;
+                            });
+                          },
                           icon: Icon(
                             Icons.location_pin,
                           ),
@@ -294,7 +291,11 @@ class _GeneralInfoScreenState extends State<GeneralInfoScreen> {
                           label: Text("Get Location"),
                         ),
                         Text(
-                          "-",
+                          locationName == null ? "Set Location" : locationName,
+                          style: TextStyle(
+                            fontWeight: FontWeight.w300,
+                            fontSize: 20.0,
+                          ),
                         ),
                       ],
                     ),
@@ -317,7 +318,16 @@ class _GeneralInfoScreenState extends State<GeneralInfoScreen> {
                           ),
                         ),
                         ElevatedButton(
-                          onPressed: () async {},
+                          onPressed: () {
+                            database.setGeneralUserData(
+                              UserModel(
+                                name: name,
+                                phoneNumber: phoneNumber,
+                                locationName: locationName,
+                              ),
+                            );
+                            Navigator.of(context).pop();
+                          },
                           child: Text(
                             "Save changes",
                             style: TextStyle(fontSize: 15),
