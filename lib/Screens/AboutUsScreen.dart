@@ -1,6 +1,7 @@
 import 'package:farmx/CommonWidgets/AlertDialogue.dart';
 import 'package:farmx/Constants/Constants.dart';
 import 'package:farmx/Services/auth.dart';
+import 'package:farmx/Services/location.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:line_icons/line_icon.dart';
@@ -32,6 +33,7 @@ class AboutUsScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final location = Provider.of<LocationService>(context, listen: false);
     return Scaffold(
       backgroundColor: kDarkPrimaryColor,
       appBar: AppBar(
@@ -83,25 +85,39 @@ class AboutUsScreen extends StatelessWidget {
                   horizontal: 25,
                 ),
                 child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: <Widget>[
-                      SizedBox(
-                        height: MediaQuery.of(context).size.height * 0.4,
-                      ),
-                      Center(
-                        child: TextButton.icon(
-                          onPressed: () => _confirmSignOut(context),
-                          icon: LineIcon(
-                            LineIcons.alternateSignOut,
-                            color: kBlack,
-                          ),
-                          label: Text(
-                            "Logout",
-                            style: kLoginHeading,
-                          ),
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: <Widget>[
+                    SizedBox(
+                      height: MediaQuery.of(context).size.height * 0.4,
+                    ),
+                    Center(
+                      child: TextButton.icon(
+                        onPressed: () => _confirmSignOut(context),
+                        icon: LineIcon(
+                          LineIcons.alternateSignOut,
+                          color: kBlack,
+                        ),
+                        label: Text(
+                          "Logout",
+                          style: kLoginHeading,
                         ),
                       ),
-                    ]),
+                    ),
+                    Center(
+                      child: TextButton.icon(
+                        onPressed: () => location.locationData(),
+                        icon: LineIcon(
+                          LineIcons.searchLocation,
+                          color: kBlack,
+                        ),
+                        label: Text(
+                          "Get Location",
+                          style: kLoginHeading,
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
               ),
             ],
           ),

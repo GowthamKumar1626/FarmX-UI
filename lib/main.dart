@@ -1,4 +1,5 @@
 import 'package:farmx/Screens/LandingScreen.dart';
+import 'package:farmx/Services/location.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -18,13 +19,16 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return Provider<AuthBase>(
       create: (context) => Auth(),
-      child: MaterialApp(
-        debugShowCheckedModeBanner: false,
-        title: "FarmX",
-        theme: ThemeData(
-          primarySwatch: Colors.indigo,
+      child: Provider<LocationService>(
+        create: (context) => LocationCoordinates(),
+        child: MaterialApp(
+          debugShowCheckedModeBanner: false,
+          title: "FarmX",
+          theme: ThemeData(
+            primarySwatch: Colors.indigo,
+          ),
+          home: LandingScreen(),
         ),
-        home: LandingScreen(),
       ),
     );
   }

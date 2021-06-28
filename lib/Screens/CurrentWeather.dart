@@ -1,8 +1,11 @@
 import 'dart:convert';
-import 'package:http/http.dart' as http;
 
-import 'package:farmx/Screens/weather.dart';
+import 'package:farmx/Screens/Weather.dart';
+import 'package:farmx/Services/location.dart';
 import 'package:flutter/material.dart';
+import 'package:geocoder/geocoder.dart';
+import 'package:http/http.dart' as http;
+import 'package:provider/provider.dart';
 
 class CurrentWeatherPage extends StatefulWidget {
   const CurrentWeatherPage({Key? key}) : super(key: key);
@@ -38,7 +41,7 @@ class _CurrentWeatherPageState extends State<CurrentWeatherPage> {
                     return Text("oops!!");
                   }
                 },
-                future: getCurrentWeather(),
+                future: getCurrentWeather(context),
               ),
             ],
           )
@@ -94,9 +97,16 @@ Widget weatherBox(Weather _weather) {
   ));
 }
 
-Future getCurrentWeather() async {
+Future getCurrentWeather(BuildContext context) async {
+  final location = Provider.of<LocationService>(context, listen: false);
   Weather? weather;
-  String city = "vijayawada";
+
+  Coordinates coordinates = await location.locationData();
+  var addresses =
+      await Geocoder.local.findAddressesFromCoordinates(coordinates);
+
+  String city = addresses.first.locality;
+  print(city);
   String apiKey = "7e8d6cea22d980cbea8835e0f093ab28";
   var url = Uri.parse(
       "https://api.openweathermap.org/data/2.5/weather?q=$city&appid=$apiKey&units=metric");

@@ -82,46 +82,52 @@ class SignInPageScreen extends StatelessWidget {
 
   Widget _buildContent(BuildContext context) {
     return Container(
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: <Widget>[
-          SizedBox(
-            height: 50.0,
-            child: _buildHeader(),
-          ),
-          PhoneSignInFormBloc.create(context),
-          // SignInWithPhone(),
-          Padding(
-            padding: EdgeInsets.all(10.0),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-              children: <Widget>[
-                IconButton(
-                  icon: Icon(
-                    Icons.phone,
-                  ),
-                  onPressed: () {},
-                ),
-                IconButton(
-                  icon: Icon(
-                    Icons.mail,
-                  ),
-                  onPressed: isLoading ? null : () => _signInWithEmail(context),
-                ),
-                IconButton(
-                  icon: Image.asset("assets/icons/anonymous.png"),
-                  onPressed:
-                      isLoading ? null : () => _signInAnonymously(context),
-                ),
-                IconButton(
-                  icon: Image.asset("assets/icons/icons8-google.png"),
-                  onPressed:
-                      isLoading ? null : () => _signInWithGoogle(context),
-                ),
-              ],
+      child: SingleChildScrollView(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: <Widget>[
+            SizedBox(
+              height: MediaQuery.of(context).size.height * 0.3,
             ),
-          ),
-        ],
+            SizedBox(
+              height: 50.0,
+              child: _buildHeader(),
+            ),
+            PhoneSignInFormBloc.create(context),
+            // SignInWithPhone(),
+            Padding(
+              padding: EdgeInsets.all(10.0),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                children: <Widget>[
+                  IconButton(
+                    icon: Icon(
+                      Icons.phone,
+                    ),
+                    onPressed: () {},
+                  ),
+                  IconButton(
+                    icon: Icon(
+                      Icons.mail,
+                    ),
+                    onPressed:
+                        isLoading ? null : () => _signInWithEmail(context),
+                  ),
+                  IconButton(
+                    icon: Image.asset("assets/icons/anonymous.png"),
+                    onPressed:
+                        isLoading ? null : () => _signInAnonymously(context),
+                  ),
+                  IconButton(
+                    icon: Image.asset("assets/icons/icons8-google.png"),
+                    onPressed:
+                        isLoading ? null : () => _signInWithGoogle(context),
+                  ),
+                ],
+              ),
+            ),
+          ],
+        ),
       ),
     );
   }

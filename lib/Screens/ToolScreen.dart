@@ -1,13 +1,12 @@
 import 'dart:ui';
 
+import 'package:farmx/Screens/CurrentWeather.dart';
 import 'package:farmx/Screens/UserProfileScreen.dart';
-import 'package:farmx/Screens/currentWeather.dart';
 import 'package:farmx/Widgets/CoFarming/CoFarmingWidget.dart';
 import 'package:farmx/Widgets/CropSuggestion/CropSuggestionWidget.dart';
 import 'package:farmx/Widgets/FertilizerSuggestion/FertilizerSuggestionWidget.dart';
 import 'package:farmx/Widgets/GeneralCropInfo/GeneralCropInfoWidget.dart';
 import 'package:farmx/Widgets/PestDetection/PestDetectionWidget.dart';
-import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 
 import '../Constants/Constants.dart';
@@ -21,13 +20,6 @@ class ToolScreen extends StatefulWidget {
 class _ToolScreenState extends State<ToolScreen> {
   String title = "Pest Detection";
   int currentIndex = 0; //Walk through features
-
-  @override
-  void initState() {
-    Firebase.initializeApp();
-    super.initState();
-  }
-
   Widget toolWidget = PestDetectionWidget();
 
   @override

@@ -1,12 +1,10 @@
 import 'package:bottom_navy_bar/bottom_navy_bar.dart';
 import 'package:eva_icons_flutter/eva_icons_flutter.dart';
-import 'package:farmx/CommonWidgets/AlertDialogue.dart';
 import 'package:farmx/Screens/AboutUsScreen.dart';
 import 'package:farmx/Screens/NewsFeedScreen.dart';
 import 'package:farmx/Screens/ToolScreen.dart';
 import 'package:farmx/Services/auth.dart';
 import 'package:farmx/Widgets/Tools/shop.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:line_icons/line_icons.dart';
 import 'package:provider/provider.dart';
@@ -18,28 +16,6 @@ class UserScreen extends StatefulWidget {
 
 class _UserScreenState extends State<UserScreen> {
   int currentIndex = 1;
-
-  Future<void> _signOut(BuildContext context) async {
-    final auth = Provider.of<AuthBase>(context, listen: false);
-    try {
-      await auth.signOut();
-    } on FirebaseAuthException catch (error) {
-      print(error.message);
-    }
-  }
-
-  Future<void> _confirmSignOut(BuildContext context) async {
-    final didRequestSignOut = await showAlertDialog(
-      context,
-      title: "Logout",
-      content: "Are you sure you want to logout?",
-      cancelActionText: "Cancel",
-      defaultActionText: "Logout",
-    );
-    if (didRequestSignOut == true) {
-      _signOut(context);
-    }
-  }
 
   var _pages = [
     NewsFeedScreen(),
