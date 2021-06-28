@@ -167,7 +167,7 @@ class _ToolScreenState extends State<ToolScreen> {
                     //   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     // ),
                     SizedBox(
-                      height: MediaQuery.of(context).size.height * 0.1,
+                      height: MediaQuery.of(context).size.height * 0.005,
                     ),
                     CurrentWeatherPage(),
                     Text(
