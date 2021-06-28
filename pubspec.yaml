@@ -54,6 +54,10 @@ dependencies:
   http: ^0.13.3
   geocoder: ^0.2.1
   google_maps_flutter: ^2.0.6
+  google_sign_in: ^5.0.4
+  sms_autofill: ^2.0.0
+  provider: ^5.0.0
+
 
 dev_dependencies:
   flutter_test:
