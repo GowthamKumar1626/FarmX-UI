@@ -218,20 +218,7 @@ class UserProfileScreen extends StatelessWidget {
           text: "General Info",
         ),
       ),
-      GestureDetector(
-        onTap: () {
-          Navigator.of(context).push(
-            MaterialPageRoute<void>(
-              fullscreenDialog: true,
-              builder: (context) => CropInfoScreen(),
-            ),
-          );
-        },
-        child: ProfileListItem(
-          icon: LineIcons.tools,
-          text: "Crop Info",
-        ),
-      ),
+      cropInfoBuilder(context),
       GestureDetector(
         onTap: () {
           Navigator.of(context).push(
@@ -275,6 +262,23 @@ class UserProfileScreen extends StatelessWidget {
         ),
       ),
     ];
+  }
+
+  GestureDetector cropInfoBuilder(BuildContext context) {
+    return GestureDetector(
+      onTap: () {
+        Navigator.of(context).push(
+          MaterialPageRoute<void>(
+            fullscreenDialog: true,
+            builder: (context) => CropInfoScreen(),
+          ),
+        );
+      },
+      child: ProfileListItem(
+        icon: LineIcons.tools,
+        text: "Crop Info",
+      ),
+    );
   }
 }
 

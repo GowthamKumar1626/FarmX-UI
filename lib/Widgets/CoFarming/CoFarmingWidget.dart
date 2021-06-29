@@ -3,9 +3,12 @@ import 'package:farmx/Services/Models/UserModel.dart';
 import 'package:farmx/Services/auth.dart';
 import 'package:farmx/Services/database.dart';
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 import 'package:line_icons/line_icon.dart';
 import 'package:line_icons/line_icons.dart';
 import 'package:provider/provider.dart';
+
+import 'LocationDetails.dart';
 
 class CoFarmingWidget extends StatefulWidget {
   const CoFarmingWidget({Key? key}) : super(key: key);
@@ -23,7 +26,6 @@ class _CoFarmingWidgetState extends State<CoFarmingWidget> {
   Widget build(BuildContext context) {
     final auth = Provider.of<AuthBase>(context, listen: false);
     final database = Provider.of<Database>(context, listen: false);
-    bool isFarmer = false;
     bool isAnonymous = auth.currentUser!.isAnonymous;
 
     return StreamBuilder<UserModel>(
@@ -31,15 +33,15 @@ class _CoFarmingWidgetState extends State<CoFarmingWidget> {
       builder: (context, snapshot) {
         if (snapshot.hasData) {
           final userData = snapshot.data;
-          isFarmer = userData!.isFarmer;
-          print(isFarmer);
+          print(userData!.isFarmer);
+
           return Column(
             children: [
               Form(
                 key: _key,
                 child: isAnonymous == true
                     ? isAnonymousForm()
-                    : isFarmer == true
+                    : userData.isFarmer == true
                         ? coFarmingAvailabilityForm()
                         : userCoFarmingForm(context),
               ),
@@ -61,20 +63,31 @@ class _CoFarmingWidgetState extends State<CoFarmingWidget> {
   Widget _buildUserNameText(BuildContext context) {
     final database = Provider.of<Database>(context, listen: false);
     return StreamBuilder<List<UserModel>>(
-      stream: database.getAllUsersDataStream(),
+      stream: database.getAllCoFarmingFarmers(),
       builder: (context, snapshot) {
         if (snapshot.hasData) {
           final userData = snapshot.data;
           final data = userData!
-              .map((user) => Text(
-                    user.name,
-                    style: TextStyle(
-                      color: Colors.black,
-                      fontFamily: 'Roboto',
-                      fontSize: 22.0,
-                      fontWeight: FontWeight.bold,
+              .map(
+                (user) => GestureDetector(
+                  onTap: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        fullscreenDialog: true,
+                        builder: (context) => LocationDetails(),
+                      ),
+                    );
+                  },
+                  child: Container(
+                    child: LocationItem(
+                      icon: Icons.location_pin,
+                      text: "${user.name}-${user.locationName}",
+                      locationText: "View Details",
                     ),
-                  ))
+                  ),
+                ),
+              )
               .toList();
           return Column(
             crossAxisAlignment: CrossAxisAlignment.center,
@@ -85,7 +98,7 @@ class _CoFarmingWidgetState extends State<CoFarmingWidget> {
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
             Text(
-              "HeyUser",
+              "No Farmers data",
               style: TextStyle(
                 color: Colors.black,
                 fontFamily: 'Roboto',
@@ -100,52 +113,58 @@ class _CoFarmingWidgetState extends State<CoFarmingWidget> {
   }
 
   Column coFarmingAvailabilityForm() {
+    DateTime selectedDate = DateTime.now();
+    final DateFormat dateFormat = DateFormat('dd-MM-yyyy HH:mm');
     return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: <Widget>[
-        Padding(
-          padding: EdgeInsets.all(6.0),
-          child: Text(
-            "Are you available for Co-Farming?",
-            style: kDefaultStyle,
-          ),
-        ),
-        Row(
+      children: [
+        Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
           children: <Widget>[
             Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: ElevatedButton(
-                  child: Text('Yes'),
-                  style: ButtonStyle(
-                    backgroundColor: MaterialStateColor.resolveWith(
-                      (states) => kBlack,
-                    ),
-                  ),
-                  onPressed: () {
-                    setState(() {
-                      isAvailable = true;
-                      print("Co-Farming availability status: $isAvailable");
-                    });
-                  }),
+              padding: EdgeInsets.all(6.0),
+              child: Text(
+                "Are you available for Co-Farming?",
+                style: kDefaultStyle,
+              ),
             ),
-            Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: ElevatedButton(
-                  child: Text(
-                    'No',
-                    style: TextStyle(color: kBlack),
-                  ),
-                  style: ButtonStyle(
-                    backgroundColor: MaterialStateColor.resolveWith(
-                      (states) => kLightSecondaryColor,
-                    ),
-                  ),
-                  onPressed: () {
-                    setState(() {
-                      isAvailable = false;
-                      print("Co-Farming availability status: $isAvailable");
-                    });
-                  }),
+            Row(
+              children: <Widget>[
+                Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: ElevatedButton(
+                      child: Text('Yes'),
+                      style: ButtonStyle(
+                        backgroundColor: MaterialStateColor.resolveWith(
+                          (states) => kBlack,
+                        ),
+                      ),
+                      onPressed: () {
+                        setState(() {
+                          isAvailable = true;
+                          print("Co-Farming availability status: $isAvailable");
+                        });
+                      }),
+                ),
+                Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: ElevatedButton(
+                      child: Text(
+                        'No',
+                        style: TextStyle(color: kBlack),
+                      ),
+                      style: ButtonStyle(
+                        backgroundColor: MaterialStateColor.resolveWith(
+                          (states) => kLightSecondaryColor,
+                        ),
+                      ),
+                      onPressed: () {
+                        setState(() {
+                          isAvailable = false;
+                          print("Co-Farming availability status: $isAvailable");
+                        });
+                      }),
+                ),
+              ],
             ),
           ],
         ),
@@ -168,28 +187,6 @@ class _CoFarmingWidgetState extends State<CoFarmingWidget> {
           height: 20,
         ),
         _buildUserNameText(context),
-        // Column(
-        // crossAxisAlignment: CrossAxisAlignment.start,
-        // children: () => _buildUserNameText(context),
-        // <Widget>[
-        // for (var data in farmersAvailable])
-        //   GestureDetector(
-        //     onTap: () {
-        //       Navigator.push(
-        //         context,
-        //         MaterialPageRoute(fullscreenDialog: true, builder: (context) => LocationDetails(),),
-        //       );
-        //     },
-        //     child: Container(
-        //       child: LocationItem(
-        //         icon: Icons.location_pin,
-        //         text: "${data["displayName"]} - ${data["locationName"]}",
-        //         locationText: "View Details",
-        //       ),
-        //     ),
-        //   ),
-        // ],
-        // ),
       ],
     );
   }

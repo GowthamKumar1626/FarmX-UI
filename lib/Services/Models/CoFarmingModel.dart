@@ -1,14 +1,14 @@
-class UserModel {
-  UserModel({
+class CoFarmingModel {
+  CoFarmingModel({
     this.name = '',
     this.phoneNumber = '',
-    this.isFarmer = false,
+    this.isAvailable = false,
     this.locationName = '',
     this.locationDetails = '',
   });
   String name;
   String phoneNumber;
-  bool isFarmer;
+  bool isAvailable;
   String locationName;
   dynamic locationDetails;
 
@@ -16,7 +16,7 @@ class UserModel {
     return {
       "name": name,
       "phoneNumber": phoneNumber,
-      "isFarmer": isFarmer,
+      "isFarmer": isAvailable,
       "locationName": locationName,
       "locationDetails": locationDetails,
     };

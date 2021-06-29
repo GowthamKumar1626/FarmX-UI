@@ -58,6 +58,7 @@ dependencies:
   google_sign_in: ^5.0.4
   sms_autofill: ^2.0.0
   provider: ^5.0.0
+  date_time_picker: ^2.0.0
 
 
 dev_dependencies:
