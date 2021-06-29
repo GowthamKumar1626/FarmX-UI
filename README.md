@@ -39,7 +39,6 @@ flutter doctor
 - Follow the below instructions on command line to install and run the application. The following instructions are for VSCode, You are free to use any other application you may like
 ```
 https://github.com/GowthamKumar1626/FarmX-UI.git
-cd FarmX/FARMX APP
 ```
 - To open and run using VSCODE from command line
 ```
