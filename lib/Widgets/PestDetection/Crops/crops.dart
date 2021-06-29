@@ -4,24 +4,20 @@ List<Crops> pestCrops = [
     imagePath: "assets/images/apple.png",
   ),
   Crops(
-    name: "Apple",
-    imagePath: "assets/images/apple.png",
+    name: "Grapes",
+    imagePath: "assets/images/grapes.jpeg",
   ),
   Crops(
-    name: "Apple",
-    imagePath: "assets/images/apple.png",
+    name: "Potato",
+    imagePath: "assets/images/potato.jpeg",
   ),
   Crops(
-    name: "Apple",
-    imagePath: "assets/images/apple.png",
+    name: "tomato",
+    imagePath: "assets/images/tomato.jpeg",
   ),
   Crops(
-    name: "Apple",
-    imagePath: "assets/images/apple.png",
-  ),
-  Crops(
-    name: "Apple",
-    imagePath: "assets/images/apple.png",
+    name: "BlueBerry",
+    imagePath: "assets/images/blueberry.jpeg",
   ),
 ];
 

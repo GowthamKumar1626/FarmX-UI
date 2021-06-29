@@ -5,12 +5,14 @@ class UserModel {
     this.isFarmer = false,
     this.locationName = '',
     this.locationDetails = '',
+    this.coFarmingAvailable = "Not Selected",
   });
   String name;
   String phoneNumber;
   bool isFarmer;
   String locationName;
   dynamic locationDetails;
+  String coFarmingAvailable;
 
   Map<String, dynamic> toMap() {
     return {
@@ -19,6 +21,7 @@ class UserModel {
       "isFarmer": isFarmer,
       "locationName": locationName,
       "locationDetails": locationDetails,
+      "coFarmingAvailable": coFarmingAvailable,
     };
   }
 }
