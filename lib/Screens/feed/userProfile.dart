@@ -1,11 +1,8 @@
 import 'package:flutter/material.dart';
-
-import 'commons/youtubepromotion.dart';
-import 'subviews/changeUserIcon.dart';
-
 import 'package:shared_preferences/shared_preferences.dart';
 
 import 'commons/const.dart';
+import 'subviews/changeUserIcon.dart';
 
 class UserProfile extends StatefulWidget {
   final MyProfileData? myData;

@@ -132,7 +132,7 @@ class _WritePost extends State<WritePost> {
                                     width: 40,
                                     height: 40,
                                     child: Image.asset(
-                                        'images/${widget.myData!.myThumbnail}')),
+                                        'assets/images/${widget.myData!.myThumbnail}')),
                               ),
                               Text(
                                 widget.myData!.myName!,
