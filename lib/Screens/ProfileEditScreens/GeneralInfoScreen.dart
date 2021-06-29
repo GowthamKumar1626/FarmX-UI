@@ -5,6 +5,7 @@ import 'package:farmx/Services/location.dart';
 import 'package:flutter/material.dart';
 import 'package:line_icons/line_icons.dart';
 import 'package:provider/provider.dart';
+import 'package:farmx/generated/l10n.dart';
 
 enum states {
   SHOW_GENERAL_INFO,
@@ -182,32 +183,33 @@ class _GeneralInfoScreenState extends State<GeneralInfoScreen> {
                         style: kDefaultStyle,
                       ),
                     ),
-                    // ButtonBar(
-                    //   alignment: MainAxisAlignment.center,
-                    //   children: [
-                    //     ElevatedButton(
-                    //         onPressed: () {
-                    //           setState(() {
-                    //             S.load(Locale("te"));
-                    //           });
-                    //         },
-                    //         child: Text("తెలుగుకు మార్చండి")),
-                    //     ElevatedButton(
-                    //         onPressed: () {
-                    //           setState(() {
-                    //             S.load(Locale("hi"));
-                    //           });
-                    //         },
-                    //         child: Text("हिंदी में बदलें")),
-                    //     ElevatedButton(
-                    //         onPressed: () {
-                    //           setState(() {
-                    //             S.load(Locale("en"));
-                    //           });
-                    //         },
-                    //         child: Text("Change to English")),
-                    //   ],
-                    // )
+                    ButtonBar(
+                      alignment: MainAxisAlignment.center,
+                      children: [
+                        ElevatedButton(
+                            onPressed: () {
+                              setState(() {
+                                //Locale myLocale = Localizations.localeOf(context);
+                                S.load(Locale("te"));
+                              });
+                            },
+                            child: Text("తెలుగుకు మార్చండి")),
+                        ElevatedButton(
+                            onPressed: () {
+                              setState(() {
+                                S.load(Locale("hi"));
+                              });
+                            },
+                            child: Text("हिंदी में बदलें")),
+                        ElevatedButton(
+                            onPressed: () {
+                              setState(() {
+                                S.load(Locale("en"));
+                              });
+                            },
+                            child: Text("Change to English")),
+                      ],
+                    )
                   ],
                 ),
               ),
