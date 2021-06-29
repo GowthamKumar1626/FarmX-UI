@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:farmx/Constants/Constants.dart';
 import 'package:farmx/Screens/feed/commons/const.dart';
 import 'package:farmx/Screens/feed/contentDetail.dart';
 import 'package:farmx/Screens/feed/subViews/threadItem.dart';
@@ -30,13 +31,17 @@ class _ThreadMain extends State<ThreadMain> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: AppBar(
+        backgroundColor: kBlack,
+        title: Text("Threads"),
+      ),
       body: StreamBuilder<QuerySnapshot>(
           stream: FirebaseFirestore.instance
               .collection('thread')
               .orderBy('postTimeStamp', descending: true)
               .snapshots(),
           builder: (context, snapshot) {
-            if (snapshot.hasData) return LinearProgressIndicator();
+            if (!snapshot.hasData) return LinearProgressIndicator();
             return Stack(
               children: <Widget>[
                 snapshot.data!.docs.length > 0

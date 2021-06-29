@@ -1,5 +1,6 @@
 import 'dart:math';
 
+import 'package:farmx/Constants/Constants.dart';
 import 'package:farmx/Screens/feed/commons/const.dart';
 import 'package:farmx/Screens/feed/userProfile.dart';
 import 'package:flutter/material.dart';
@@ -86,15 +87,19 @@ class _PostsScreenState extends State<PostsScreen>
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: AppBar(
+        backgroundColor: kBlack,
+        title: Text("Posts"),
+      ),
       body: Stack(
         children: <Widget>[
           TabBarView(controller: _tabController, children: [
             ThreadMain(
-              myData: myData,
+              myData: myData!,
               updateMyData: updateMyData,
             ),
             UserProfile(
-              myData: myData,
+              myData: myData!,
               updateMyData: updateMyData,
             ),
           ]),
