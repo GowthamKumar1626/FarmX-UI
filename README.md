@@ -1,5 +1,5 @@
 <p align="center">
-  <img src="./FARMX APP/assets/images/appicon.png" />
+  <img src="./assets/images/appicon.png" />
 </p>
 <h1 align="center">FarmX</h1>
 <p align = "center"><strong>AI Powered Assistant for Farmers</strong></p>
