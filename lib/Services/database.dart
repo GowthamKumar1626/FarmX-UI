@@ -35,7 +35,9 @@ class FireStoreDatabase implements Database {
 
   Stream<List<UserModel>> getAllCoFarmingFarmers() {
     final path = APIPath.allUsersDataPath();
-    final reference = FirebaseFirestore.instance.collection(path);
+    final reference = FirebaseFirestore.instance
+        .collection(path)
+        .where("isFarmer", isEqualTo: "true");
     final snapshots = reference.snapshots();
     return snapshots.map((snapshot) => snapshot.docs.map((element) {
           final data = element.data();

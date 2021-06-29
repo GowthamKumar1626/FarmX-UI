@@ -1,11 +1,11 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:farmx/Constants/Constants.dart';
-import 'package:farmx/Widgets/CoFarming/LocationDetails.dart';
-import 'package:firebase_auth/firebase_auth.dart' as auth;
-import 'package:firebase_core/firebase_core.dart';
+import 'package:farmx/Services/Models/UserModel.dart';
+import 'package:farmx/Services/auth.dart';
+import 'package:farmx/Services/database.dart';
 import 'package:flutter/material.dart';
 import 'package:line_icons/line_icon.dart';
 import 'package:line_icons/line_icons.dart';
+import 'package:provider/provider.dart';
 
 class CoFarmingWidget extends StatefulWidget {
   const CoFarmingWidget({Key? key}) : super(key: key);
@@ -17,49 +17,85 @@ class CoFarmingWidget extends StatefulWidget {
 class _CoFarmingWidgetState extends State<CoFarmingWidget> {
   final _key = GlobalKey<FormState>();
 
-  final _auth = auth.FirebaseAuth.instance;
-  var isFarmer, uid;
   bool isAvailable = false;
-  bool isAnonymous = false;
-
-  dynamic farmersAvailable = [];
-
-  @override
-  void initState() {
-    Firebase.initializeApp();
-    uid = _auth.currentUser!.uid;
-    fetchUserDetails(uid);
-    isAnonymous = _auth.currentUser!.isAnonymous;
-
-    FirebaseFirestore.instance
-        .collection('Users')
-        .where("isFarmer", isEqualTo: true)
-        // .where("locationName", isEqualTo: "Sattenapalle")
-        .snapshots()
-        .listen(
-            (data) => data.docs.forEach((doc) => farmersAvailable.add(doc)));
-    print(farmersAvailable);
-    super.initState();
-  }
-
-  fetchUserDetails(uid) async {
-    DocumentSnapshot variable =
-        await FirebaseFirestore.instance.collection('Users').doc(uid).get();
-    setState(() {
-      isFarmer = variable.data()!["isFarmer"];
-      print("IS farmer: $isFarmer");
-    });
-  }
 
   @override
   Widget build(BuildContext context) {
-    return Form(
-      key: _key,
-      child: isAnonymous == true
-          ? isAnonymousForm()
-          : isFarmer == true
-              ? coFarmingAvailabilityForm()
-              : userCoFarmingForm(),
+    final auth = Provider.of<AuthBase>(context, listen: false);
+    final database = Provider.of<Database>(context, listen: false);
+    bool isFarmer = false;
+    bool isAnonymous = auth.currentUser!.isAnonymous;
+
+    return StreamBuilder<UserModel>(
+      stream: database.userDataStream(),
+      builder: (context, snapshot) {
+        if (snapshot.hasData) {
+          final userData = snapshot.data;
+          isFarmer = userData!.isFarmer;
+          print(isFarmer);
+          return Column(
+            children: [
+              Form(
+                key: _key,
+                child: isAnonymous == true
+                    ? isAnonymousForm()
+                    : isFarmer == true
+                        ? coFarmingAvailabilityForm()
+                        : userCoFarmingForm(context),
+              ),
+            ],
+          );
+        }
+        return Column(
+          children: [
+            Form(
+              key: _key,
+              child: Text("Anonymous"),
+            ),
+          ],
+        );
+      },
+    );
+  }
+
+  Widget _buildUserNameText(BuildContext context) {
+    final database = Provider.of<Database>(context, listen: false);
+    return StreamBuilder<List<UserModel>>(
+      stream: database.getAllUsersDataStream(),
+      builder: (context, snapshot) {
+        if (snapshot.hasData) {
+          final userData = snapshot.data;
+          final data = userData!
+              .map((user) => Text(
+                    user.name,
+                    style: TextStyle(
+                      color: Colors.black,
+                      fontFamily: 'Roboto',
+                      fontSize: 22.0,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ))
+              .toList();
+          return Column(
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: data,
+          );
+        }
+        return Column(
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: [
+            Text(
+              "HeyUser",
+              style: TextStyle(
+                color: Colors.black,
+                fontFamily: 'Roboto',
+                fontSize: 22.0,
+                fontWeight: FontWeight.bold,
+              ),
+            ),
+          ],
+        );
+      },
     );
   }
 
@@ -117,7 +153,7 @@ class _CoFarmingWidgetState extends State<CoFarmingWidget> {
     );
   }
 
-  Column userCoFarmingForm() {
+  Column userCoFarmingForm(BuildContext context) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: <Widget>[
@@ -128,81 +164,32 @@ class _CoFarmingWidgetState extends State<CoFarmingWidget> {
             style: kDefaultStyle,
           ),
         ),
-        // Row(
-        //   mainAxisAlignment: MainAxisAlignment.spaceAround,
-        //   children: <Widget>[
-        //     Slider(
-        //       value: _currentSliderValue,
-        //       min: 0,
-        //       max: 50,
-        //       divisions: 5,
-        //       label: _currentSliderValue.round().toString(),
-        //       onChanged: (double value) {
-        //         setState(() {
-        //           _currentSliderValue = value;
-        //         });
-        //       },
-        //       activeColor: kBlack,
-        //       inactiveColor: kLightSecondaryColor,
-        //     ),
-        //     ElevatedButton.icon(
-        //       label: Text("Search"),
-        //       icon: Icon(
-        //         Icons.search,
-        //       ),
-        //       style: ButtonStyle(
-        //         backgroundColor: MaterialStateColor.resolveWith(
-        //           (states) => kBlack,
-        //         ),
-        //       ),
-        //       onPressed: () {
-        //         List<QueryDocumentSnapshot> available = [];
-        //         FirebaseFirestore.instance
-        //             .collection('Users')
-        //             .where("isFarmer", isEqualTo: true)
-        //             // .where("locationName", isEqualTo: "Sattenapalle")
-        //             .snapshots()
-        //             .listen((data) =>
-        //                 data.docs.forEach((doc) => farmersAvailable.add(doc)));
-        //         setState(() {
-        //           // farmersAvailable = available;
-        //         });
-        //         print(farmersAvailable);
-        //       },
-        //     ),
-        //   ],
-        // ),
-        // Padding(
-        //   padding: EdgeInsets.all(6.0),
-        //   child: Text(
-        //     "Selected radius: $_currentSliderValue",
-        //     style: kToolNameStyleBlack,
-        //   ),
-        // ),
         SizedBox(
           height: 20,
         ),
-        Column(
-          // crossAxisAlignment: CrossAxisAlignment.start,
-          children: <Widget>[
-            for (var data in farmersAvailable)
-              GestureDetector(
-                onTap: () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(builder: (context) => LocationDetails()),
-                  );
-                },
-                child: Container(
-                  child: LocationItem(
-                    icon: Icons.location_pin,
-                    text: "${data["displayName"]} - ${data["locationName"]}",
-                    locationText: "View Details",
-                  ),
-                ),
-              ),
-          ],
-        ),
+        _buildUserNameText(context),
+        // Column(
+        // crossAxisAlignment: CrossAxisAlignment.start,
+        // children: () => _buildUserNameText(context),
+        // <Widget>[
+        // for (var data in farmersAvailable])
+        //   GestureDetector(
+        //     onTap: () {
+        //       Navigator.push(
+        //         context,
+        //         MaterialPageRoute(fullscreenDialog: true, builder: (context) => LocationDetails(),),
+        //       );
+        //     },
+        //     child: Container(
+        //       child: LocationItem(
+        //         icon: Icons.location_pin,
+        //         text: "${data["displayName"]} - ${data["locationName"]}",
+        //         locationText: "View Details",
+        //       ),
+        //     ),
+        //   ),
+        // ],
+        // ),
       ],
     );
   }

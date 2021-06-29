@@ -22,6 +22,8 @@ class _GeneralInfoScreenState extends State<GeneralInfoScreen> {
 
   var name, phoneNumber, locationName;
 
+  bool isFarmer = false;
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -303,6 +305,30 @@ class _GeneralInfoScreenState extends State<GeneralInfoScreen> {
                       height: 20,
                     ),
                     Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: <Widget>[
+                        Text(
+                          "Are you farmer?",
+                          style: TextStyle(
+                            fontWeight: FontWeight.w300,
+                            fontSize: 20.0,
+                          ),
+                        ),
+                        Switch(
+                          value: isFarmer,
+                          activeColor: Colors.black,
+                          onChanged: (bool state) {
+                            setState(() {
+                              isFarmer = state;
+                            });
+                          },
+                        ),
+                      ],
+                    ),
+                    SizedBox(
+                      height: 20,
+                    ),
+                    Row(
                       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                       children: <Widget>[
                         ElevatedButton(
@@ -323,6 +349,7 @@ class _GeneralInfoScreenState extends State<GeneralInfoScreen> {
                               UserModel(
                                 name: name,
                                 phoneNumber: phoneNumber,
+                                isFarmer: isFarmer,
                                 locationName: locationName,
                               ),
                             );
