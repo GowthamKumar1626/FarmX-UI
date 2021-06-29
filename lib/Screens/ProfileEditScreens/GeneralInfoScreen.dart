@@ -5,6 +5,7 @@ import 'package:farmx/Services/location.dart';
 import 'package:flutter/material.dart';
 import 'package:line_icons/line_icons.dart';
 import 'package:provider/provider.dart';
+import 'package:farmx/generated/l10n.dart';
 
 enum states {
   SHOW_GENERAL_INFO,
