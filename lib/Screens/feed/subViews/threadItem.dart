@@ -77,7 +77,7 @@ class _ThreadItem extends State<ThreadItem> {
                           width: 48,
                           height: 48,
                           child: Image.asset(
-                              'images/${widget.data!['userThumbnail']}')),
+                              'assets/photos/${widget.data!['userThumbnail']}')),
                     ),
                     Column(
                       crossAxisAlignment: CrossAxisAlignment.start,

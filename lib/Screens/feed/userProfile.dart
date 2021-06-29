@@ -46,7 +46,8 @@ class _UserProfile extends State<UserProfile> {
                             Container(
                                 width: 40,
                                 height: 40,
-                                child: Image.asset('images/$_myThumbnail')),
+                                child: Image.asset(
+                                    'assets/images/{$_myThumbnail}')),
                             Padding(
                               padding: const EdgeInsets.only(top: 3.0),
                               child: Text(
