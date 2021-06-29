@@ -49,7 +49,7 @@ class AboutUsScreen extends StatelessWidget {
         backgroundColor: kDarkPrimaryColor,
         elevation: 0.0,
         title: Text(
-          "About Us",
+          "Logout",
           style: TextStyle(
             color: Colors.white,
             fontFamily: 'Roboto',

@@ -1,6 +1,5 @@
 import 'dart:ui';
 
-import 'package:farmx/CommonWidgets/AlertDialogue.dart';
 import 'package:farmx/Constants/Constants.dart';
 import 'package:farmx/Screens/ProfileEditScreens/CropInfoScreen.dart';
 import 'package:farmx/Screens/ProfileEditScreens/GeneralInfoScreen.dart';
@@ -11,34 +10,11 @@ import 'package:farmx/Screens/ProfileEditScreens/Widgets/ProfileListItem.dart';
 import 'package:farmx/Services/Models/UserModel.dart';
 import 'package:farmx/Services/auth.dart';
 import 'package:farmx/Services/database.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:line_icons/line_icons.dart';
 import 'package:provider/provider.dart';
 
 class UserProfileScreen extends StatelessWidget {
-  Future<void> _signOut(BuildContext context) async {
-    final auth = Provider.of<AuthBase>(context, listen: false);
-    try {
-      await auth.signOut();
-    } on FirebaseAuthException catch (error) {
-      print(error.message);
-    }
-  }
-
-  Future<void> _confirmSignOut(BuildContext context) async {
-    final didRequestSignOut = await showAlertDialog(
-      context,
-      title: "Logout",
-      content: "Are you sure you want to logout?",
-      cancelActionText: "Cancel",
-      defaultActionText: "Logout",
-    );
-    if (didRequestSignOut == true) {
-      _signOut(context);
-    }
-  }
-
   @override
   Widget build(BuildContext context) {
     final auth = Provider.of<AuthBase>(context, listen: false);
@@ -65,15 +41,6 @@ class UserProfileScreen extends StatelessWidget {
           ),
         ),
         centerTitle: true,
-        actions: <Widget>[
-          IconButton(
-            onPressed: () => _confirmSignOut(context),
-            icon: Icon(
-              Icons.logout,
-              color: Colors.white,
-            ),
-          ),
-        ],
       ),
       body: Container(
         child: ListView(

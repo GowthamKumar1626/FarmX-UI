@@ -8,7 +8,6 @@ import 'package:farmx/Services/auth.dart';
 import 'package:farmx/Widgets/Tools/shop.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_statusbarcolor/flutter_statusbarcolor.dart';
-import 'package:line_icons/line_icons.dart';
 import 'package:provider/provider.dart';
 
 class HomeScreen extends StatefulWidget {
@@ -84,8 +83,8 @@ class _HomeScreenState extends State<HomeScreen> {
                 title: Text('Tools'),
                 activeColor: Colors.black),
             BottomNavyBarItem(
-                icon: Icon(LineIcons.alternateFile),
-                title: Text('About us'),
+                icon: Icon(Icons.logout),
+                title: Text('Logout'),
                 activeColor: Colors.black),
           ],
         ));
