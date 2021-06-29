@@ -1,9 +1,11 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:farmx/Constants/Constants.dart';
 import 'package:farmx/Widgets/CoFarming/LocationDetails.dart';
+import 'package:farmx/Widgets/CoFarming/notification_dialog.dart';
 import 'package:firebase_auth/firebase_auth.dart' as auth;
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 import 'package:line_icons/line_icon.dart';
 import 'package:line_icons/line_icons.dart';
 
@@ -23,6 +25,9 @@ class _CoFarmingWidgetState extends State<CoFarmingWidget> {
   bool isAnonymous = false;
 
   dynamic farmersAvailable = [];
+  DateTime selectedDate = DateTime.now();
+
+  final DateFormat? dateFormat = DateFormat('dd-MM-yyyy HH:mm');
 
   @override
   void initState() {
@@ -77,21 +82,27 @@ class _CoFarmingWidgetState extends State<CoFarmingWidget> {
         Row(
           children: <Widget>[
             Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: ElevatedButton(
+                padding: const EdgeInsets.all(8.0),
+                child: ElevatedButton(
                   child: Text('Yes'),
                   style: ButtonStyle(
                     backgroundColor: MaterialStateColor.resolveWith(
                       (states) => kBlack,
                     ),
                   ),
-                  onPressed: () {
+                  onPressed: () async {
                     setState(() {
                       isAvailable = true;
                       print("Co-Farming availability status: $isAvailable");
                     });
-                  }),
-            ),
+                    showDateTimeDialog(context, initialDate: selectedDate,
+                        onSelectedDate: (selectedDate) {
+                      setState(() {
+                        this.selectedDate = selectedDate;
+                      });
+                    });
+                  },
+                )),
             Padding(
               padding: const EdgeInsets.all(8.0),
               child: ElevatedButton(
