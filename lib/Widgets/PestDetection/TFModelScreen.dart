@@ -1,13 +1,15 @@
 import 'package:farmx/Constants/Constants.dart';
+import 'package:farmx/Widgets/PestDetection/Crops/crops.dart';
 import 'package:farmx/Widgets/PestDetection/PestModel.dart';
 import 'package:flutter/material.dart';
 
 class TFModelScreen extends StatelessWidget {
-  const TFModelScreen({Key? key, required this.cropName}) : super(key: key);
-  final String cropName;
+  const TFModelScreen({Key? key, required this.cropIndex}) : super(key: key);
+  final int cropIndex;
 
   @override
   Widget build(BuildContext context) {
+    print(cropIndex);
     return Scaffold(
       appBar: AppBar(
         title: Text("Pest Detection"),
@@ -15,8 +17,8 @@ class TFModelScreen extends StatelessWidget {
         backgroundColor: kBlack,
       ),
       body: PestModel(
-        modelPath: "assets/models/model.tflite",
-        labelPath: "assets/models/label.txt",
+        modelPath: pestCrops[cropIndex].modelPath,
+        labelPath: pestCrops[cropIndex].labelPath,
       ),
     );
   }

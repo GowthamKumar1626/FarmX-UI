@@ -35,7 +35,7 @@ class _PestModelState extends State<PestModel> {
   }
 
 // Function to perform TFLite Inference
-  classifyImage(File image) async {
+  Future classifyImage(File image) async {
     var output = await Tflite.runModelOnImage(
         path: image.path, // required
         imageMean: 0.0, // defaults to 117.0
@@ -59,11 +59,13 @@ class _PestModelState extends State<PestModel> {
   }
 
   // Function to Load Model
-  loadModel() async {
+  Future loadModel() async {
     // define model path and labels path
     await Tflite.loadModel(
-      model: widget.modelPath,
-      labels: widget.labelPath,
+      // model: widget.modelPath,
+      // labels: widget.labelPath,
+      model: 'assets/models/model.tflite',
+      labels: 'assets/models/labels.txt',
       numThreads: 1,
     );
   }
@@ -124,8 +126,9 @@ class _PestModelState extends State<PestModel> {
                 child: new Column(
                   children: <Widget>[
                     new Text(
-                        "Pest Detection is a powerful tool designed using AI. It detects around 38 different pests.",
-                        textAlign: TextAlign.left),
+                      "Pest Detection is a powerful tool designed using AI. It detects around 38 different pests.",
+                      textAlign: TextAlign.left,
+                    ),
                   ],
                 ),
               ),

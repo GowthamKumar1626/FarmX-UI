@@ -3,10 +3,9 @@ import 'dart:math';
 
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:flutter/material.dart';
 import 'package:farmx/Screens/feed/controllers/FBCloudStore.dart';
 import 'package:farmx/Screens/feed/controllers/localTempDB.dart';
-
+import 'package:flutter/material.dart';
 import 'package:image_cropper/image_cropper.dart';
 
 import 'const.dart';
@@ -122,8 +121,7 @@ class Utils {
           List<DocumentSnapshot> savedCommentData;
           if (commentDocuments[_originalData[i]['commentID']] != null &&
               commentDocuments[_originalData[i]['commentID']]!.length > 0) {
-            savedCommentData =
-                commentDocuments![_originalData[i]['commentID']]!;
+            savedCommentData = commentDocuments[_originalData[i]['commentID']]!;
           } else {
             // ignore: deprecated_member_use
             savedCommentData = List<DocumentSnapshot>.empty();
@@ -150,7 +148,7 @@ class Utils {
     for (int i = 0; i < _originalData.length; i++) {
       if (commentDocuments[_originalData[i]['commentID']] != null) {
         _originalData.insertAll(
-            i + 1, commentDocuments![_originalData[i]['commentID']]!);
+            i + 1, commentDocuments[_originalData[i]['commentID']]!);
       }
     }
     return _originalData;

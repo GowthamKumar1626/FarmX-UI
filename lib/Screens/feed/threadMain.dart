@@ -1,11 +1,9 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:flutter/material.dart';
-
 import 'package:farmx/Screens/feed/commons/const.dart';
-
 import 'package:farmx/Screens/feed/contentDetail.dart';
 import 'package:farmx/Screens/feed/subViews/threadItem.dart';
 import 'package:farmx/Screens/feed/writePost.dart';
+import 'package:flutter/material.dart';
 
 import 'commons/utils.dart';
 
@@ -38,7 +36,7 @@ class _ThreadMain extends State<ThreadMain> {
               .orderBy('postTimeStamp', descending: true)
               .snapshots(),
           builder: (context, snapshot) {
-            if (!snapshot.hasData) return LinearProgressIndicator();
+            if (snapshot.hasData) return LinearProgressIndicator();
             return Stack(
               children: <Widget>[
                 snapshot.data!.docs.length > 0

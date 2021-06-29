@@ -2,14 +2,13 @@ import 'dart:io';
 import 'dart:math';
 
 import 'package:flutter/material.dart';
-import 'controllers/FBStorage.dart';
-
 import 'package:image_picker/image_picker.dart';
 import 'package:keyboard_actions/keyboard_actions.dart';
 
 import 'commons/const.dart';
 import 'commons/utils.dart';
 import 'controllers/FBCloudStore.dart';
+import 'controllers/FBStorage.dart';
 //import 'controllers/FBStorage.dart';
 
 class WritePost extends StatefulWidget {
@@ -81,7 +80,7 @@ class _WritePost extends State<WritePost> {
           postID: postID, postImageFile: _postImageFile))!;
     }
     FBCloudStore.sendPostInFirebase(postID, writingTextController.text,
-        widget.myData!, postImageURL! ?? 'NONE');
+        widget.myData!, postImageURL ?? 'NONE');
 
     setState(() {
       _isLoading = false;

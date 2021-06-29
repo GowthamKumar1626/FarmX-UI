@@ -7,9 +7,9 @@ import 'package:farmx/Screens/feed/posts.dart';
 import 'package:farmx/Services/auth.dart';
 import 'package:farmx/Widgets/Tools/shop.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_statusbarcolor/flutter_statusbarcolor.dart';
 import 'package:line_icons/line_icons.dart';
 import 'package:provider/provider.dart';
-import 'package:flutter_statusbarcolor/flutter_statusbarcolor.dart';
 
 class HomeScreen extends StatefulWidget {
   @override
@@ -20,7 +20,7 @@ class _HomeScreenState extends State<HomeScreen> {
 //   SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle(
 //   statusBarColor: Colors.white
 // ));
-  int currentIndex = 1;
+  int currentIndex = 2;
 
   var _pages = [
     NewsFeedScreen(),
@@ -30,7 +30,7 @@ class _HomeScreenState extends State<HomeScreen> {
     AboutUsScreen(),
   ];
 
-  final PageController _pageController = PageController(initialPage: 1);
+  final PageController _pageController = PageController(initialPage: 2);
 
   @override
   Widget build(BuildContext context) {
@@ -57,7 +57,7 @@ class _HomeScreenState extends State<HomeScreen> {
           onItemSelected: (index) {
             setState(() {
               if (auth.currentUser!.isAnonymous) {
-                currentIndex = 1;
+                currentIndex = 2;
               } else {
                 currentIndex = index;
               }

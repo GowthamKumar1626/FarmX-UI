@@ -1,9 +1,8 @@
 import 'dart:math';
 
-import 'package:flutter/material.dart';
-
 import 'package:farmx/Screens/feed/commons/const.dart';
 import 'package:farmx/Screens/feed/userProfile.dart';
+import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import 'commons/utils.dart';
@@ -91,11 +90,11 @@ class _PostsScreenState extends State<PostsScreen>
         children: <Widget>[
           TabBarView(controller: _tabController, children: [
             ThreadMain(
-              myData: myData!,
+              myData: myData,
               updateMyData: updateMyData,
             ),
             UserProfile(
-              myData: myData!,
+              myData: myData,
               updateMyData: updateMyData,
             ),
           ]),

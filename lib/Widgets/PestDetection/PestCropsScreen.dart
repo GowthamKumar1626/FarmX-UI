@@ -38,7 +38,7 @@ class _PestCropsScreenState extends State<PestCropsScreen> {
               MaterialPageRoute(
                 fullscreenDialog: true,
                 builder: (context) => TFModelScreen(
-                  cropName: pestCrops[index].name,
+                  cropIndex: index,
                 ),
               ),
             ),
