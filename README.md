@@ -12,7 +12,7 @@ But, Are we giving utmost importance and support to agriculture and farming? A l
 
 
 ## Features
-- Supports Plant Disease detection for 14 different Plants with 26 Diseases more precision for 6 Plants trained using SOTA Deep Learning Models.
+- Supports Plant Disease detection for 14 different Plants with 26 Diseases and more focused diseases for 6 plants, trained using SOTA Deep Learning Models.
 - Information Related to Crop Diseases such as causes and prevention.
 - Region Based Crop Suggestion along with conditions.
 - Fertilizer Suggestion Based on Soil Condition.
