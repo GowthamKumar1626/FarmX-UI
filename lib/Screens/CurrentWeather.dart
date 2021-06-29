@@ -186,7 +186,6 @@ Future getCurrentWeather(BuildContext context) async {
   Weather? weather;
   String city = await location.locationName();
   city1 = city;
-  print(city);
   String apiKey = "7e8d6cea22d980cbea8835e0f093ab28";
   var url = Uri.parse(
       "https://api.openweathermap.org/data/2.5/weather?q=$city&appid=$apiKey&units=metric");

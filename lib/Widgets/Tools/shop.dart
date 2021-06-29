@@ -1,10 +1,8 @@
-import 'package:flutter/material.dart';
-//import 'package:flutter_auth/Screens/features/features.dart';
-import 'package:farmx/widgets/Tools/cartpressed.dart';
-import 'package:flutter_svg/svg.dart';
-import 'package:farmx/widgets/Tools/constants.dart';
-
 import 'package:farmx/Widgets/Tools/home/components/body.dart';
+import 'package:farmx/widgets/Tools/cartpressed.dart';
+import 'package:farmx/widgets/Tools/constants.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter_svg/svg.dart';
 
 // ignore: must_be_immutable
 class ShopScreen extends StatelessWidget {

@@ -6,6 +6,7 @@ abstract class Database {
   Future<void> setGeneralUserData(UserModel userData);
   Stream<List<UserModel>> getAllUsersDataStream();
   Stream<UserModel> userDataStream();
+  Stream<List<UserModel>> getAllCoFarmingFarmers();
 }
 
 class FireStoreDatabase implements Database {
@@ -29,13 +30,16 @@ class FireStoreDatabase implements Database {
             phoneNumber: data["phoneNumber"],
             isFarmer: data["isFarmer"],
             locationName: data["locationName"],
+            locationDetails: data["locationDetails"],
           );
         }).toList());
   }
 
   Stream<List<UserModel>> getAllCoFarmingFarmers() {
     final path = APIPath.allUsersDataPath();
-    final reference = FirebaseFirestore.instance.collection(path);
+    final reference = FirebaseFirestore.instance
+        .collection(path)
+        .where("isFarmer", isEqualTo: true);
     final snapshots = reference.snapshots();
     return snapshots.map((snapshot) => snapshot.docs.map((element) {
           final data = element.data();
@@ -44,6 +48,7 @@ class FireStoreDatabase implements Database {
             phoneNumber: data["phoneNumber"],
             isFarmer: data["isFarmer"],
             locationName: data["locationName"],
+            locationDetails: data["locationDetails"],
           );
         }).toList());
   }
@@ -55,6 +60,10 @@ class FireStoreDatabase implements Database {
       final data = event.data();
       return UserModel(
         name: data!["name"],
+        isFarmer: data["isFarmer"],
+        phoneNumber: data["phoneNumber"],
+        locationName: data["locationName"],
+        locationDetails: data["locationDetails"],
       );
     });
   }

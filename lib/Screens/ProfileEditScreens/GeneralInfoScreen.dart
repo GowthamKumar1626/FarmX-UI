@@ -2,10 +2,11 @@ import 'package:farmx/Constants/Constants.dart';
 import 'package:farmx/Services/Models/UserModel.dart';
 import 'package:farmx/Services/database.dart';
 import 'package:farmx/Services/location.dart';
+import 'package:farmx/generated/l10n.dart';
 import 'package:flutter/material.dart';
+import 'package:geocoder/geocoder.dart';
 import 'package:line_icons/line_icons.dart';
 import 'package:provider/provider.dart';
-import 'package:farmx/generated/l10n.dart';
 
 enum states {
   SHOW_GENERAL_INFO,
@@ -21,7 +22,9 @@ class _GeneralInfoScreenState extends State<GeneralInfoScreen> {
   states displayState = states.SHOW_GENERAL_INFO;
   final _key = GlobalKey<FormState>();
 
-  var name, phoneNumber, locationName;
+  var name, phoneNumber, locationName, locationDetails;
+
+  bool isFarmer = false;
 
   @override
   Widget build(BuildContext context) {
@@ -81,18 +84,14 @@ class _GeneralInfoScreenState extends State<GeneralInfoScreen> {
                       ),
                       GeneralInfoFields(
                         label: "Contact-Info",
-                        value: userData.phoneNumber == ""
-                            ? "-"
-                            : userData.phoneNumber,
+                        value: userData.phoneNumber ?? "-",
                       ),
                       SizedBox(
                         height: 10,
                       ),
                       GeneralInfoFields(
                         label: "Location",
-                        value: userData.locationName == ""
-                            ? "-"
-                            : userData.locationName,
+                        value: userData.locationName ?? "-",
                       ),
                       SizedBox(
                         height: 10,
@@ -220,9 +219,15 @@ class _GeneralInfoScreenState extends State<GeneralInfoScreen> {
     final location = Provider.of<LocationService>(context, listen: false);
     final database = Provider.of<Database>(context, listen: false);
 
-    Future<String> getLocation() async {
+    Future<String> getLocationName() async {
       String city = await location.locationName();
       return city;
+    }
+
+    Future<Coordinates> getLocationCoordinates() async {
+      Coordinates cords = await location.locationData();
+      print(cords);
+      return cords;
     }
 
     return Column(
@@ -277,9 +282,11 @@ class _GeneralInfoScreenState extends State<GeneralInfoScreen> {
                       children: <Widget>[
                         ElevatedButton.icon(
                           onPressed: () async {
-                            String city = await getLocation();
+                            String city = await getLocationName();
+                            Coordinates cords = await getLocationCoordinates();
                             setState(() {
                               locationName = city;
+                              locationDetails = cords.toMap();
                             });
                           },
                           icon: Icon(
@@ -298,6 +305,30 @@ class _GeneralInfoScreenState extends State<GeneralInfoScreen> {
                             fontWeight: FontWeight.w300,
                             fontSize: 20.0,
                           ),
+                        ),
+                      ],
+                    ),
+                    SizedBox(
+                      height: 20,
+                    ),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: <Widget>[
+                        Text(
+                          "Are you farmer?",
+                          style: TextStyle(
+                            fontWeight: FontWeight.w300,
+                            fontSize: 20.0,
+                          ),
+                        ),
+                        Switch(
+                          value: isFarmer,
+                          activeColor: Colors.black,
+                          onChanged: (bool state) {
+                            setState(() {
+                              isFarmer = state;
+                            });
+                          },
                         ),
                       ],
                     ),
@@ -325,7 +356,9 @@ class _GeneralInfoScreenState extends State<GeneralInfoScreen> {
                               UserModel(
                                 name: name,
                                 phoneNumber: phoneNumber,
+                                isFarmer: isFarmer,
                                 locationName: locationName,
+                                locationDetails: locationDetails,
                               ),
                             );
                             Navigator.of(context).pop();

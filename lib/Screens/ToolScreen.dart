@@ -2,7 +2,6 @@ import 'dart:ui';
 
 import 'package:farmx/Screens/CurrentWeather.dart';
 import 'package:farmx/Screens/UserProfileScreen.dart';
-import 'package:farmx/Screens/currentWeatherScreen.dart';
 import 'package:farmx/Services/auth.dart';
 import 'package:farmx/Services/database.dart';
 import 'package:farmx/Widgets/CoFarming/CoFarmingWidget.dart';
@@ -122,52 +121,6 @@ class _ToolScreenState extends State<ToolScreen> {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: <Widget>[
-                    // SizedBox(
-                    //   height: 30,
-                    // ),
-                    // Row(
-                    //   children: <Widget>[
-                    //     Expanded(
-                    //       child: SizedBox(
-                    //         height: 80.0,
-                    //         child: ListView(
-                    //           // This next line does the trick.
-                    //           scrollDirection: Axis.horizontal,
-                    //           children: <Widget>[
-                    //             Container(
-                    //               width: 160.0,
-                    //               decoration: BoxDecoration(
-                    //                 borderRadius: BorderRadius.circular(10),
-                    //                 color: Colors.grey.withOpacity(0.2),
-                    //               ),
-                    //             ),
-                    //             SizedBox(
-                    //               width: 10,
-                    //             ),
-                    //             Container(
-                    //               width: 160.0,
-                    //               decoration: BoxDecoration(
-                    //                 borderRadius: BorderRadius.circular(10),
-                    //                 color: Colors.grey.withOpacity(0.2),
-                    //               ),
-                    //             ),
-                    //             SizedBox(
-                    //               width: 10,
-                    //             ),
-                    //             Container(
-                    //               width: 160.0,
-                    //               decoration: BoxDecoration(
-                    //                 borderRadius: BorderRadius.circular(10),
-                    //                 color: Colors.grey.withOpacity(0.8),
-                    //               ),
-                    //             ),
-                    //           ],
-                    //         ),
-                    //       ),
-                    //     ),
-                    //   ],
-                    //   mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    // ),
                     SizedBox(
                       height: MediaQuery.of(context).size.height * 0.005,
                     ),
