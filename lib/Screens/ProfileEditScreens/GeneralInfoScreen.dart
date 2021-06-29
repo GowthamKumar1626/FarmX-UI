@@ -84,14 +84,18 @@ class _GeneralInfoScreenState extends State<GeneralInfoScreen> {
                       ),
                       GeneralInfoFields(
                         label: "Contact-Info",
-                        value: userData.phoneNumber ?? "-",
+                        value: userData.phoneNumber == ""
+                            ? "-"
+                            : userData.phoneNumber,
                       ),
                       SizedBox(
                         height: 10,
                       ),
                       GeneralInfoFields(
                         label: "Location",
-                        value: userData.locationName ?? "-",
+                        value: userData.locationName == ""
+                            ? "-"
+                            : userData.locationName,
                       ),
                       SizedBox(
                         height: 10,

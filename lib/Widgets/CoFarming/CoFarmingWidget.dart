@@ -1,12 +1,9 @@
 import 'package:farmx/Constants/Constants.dart';
-import 'package:farmx/Widgets/CoFarming/LocationDetails.dart';
-import 'package:farmx/Widgets/CoFarming/notification.dart';
-import 'package:farmx/Widgets/CoFarming/notification_dialog.dart';
-import 'package:firebase_auth/firebase_auth.dart' as auth;
-import 'package:firebase_core/firebase_core.dart';
 import 'package:farmx/Services/Models/UserModel.dart';
 import 'package:farmx/Services/auth.dart';
 import 'package:farmx/Services/database.dart';
+import 'package:farmx/Widgets/CoFarming/LocationDetails.dart';
+import 'package:farmx/Widgets/CoFarming/notification.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:line_icons/line_icon.dart';
@@ -53,8 +50,8 @@ class _CoFarmingWidgetState extends State<CoFarmingWidget> {
                 child: isAnonymous == true
                     ? isAnonymousForm()
                     : userData.isFarmer == true
-                        ? coFarmingAvailabilityForm()
-                        : userCoFarmingForm(context),
+                        ? coFarmingAvailabilityForm(userData, database)
+                        : userCoFarmingForm(context, userData),
               ),
             ],
           );
@@ -71,7 +68,7 @@ class _CoFarmingWidgetState extends State<CoFarmingWidget> {
     );
   }
 
-  Widget _buildUserNameText(BuildContext context) {
+  Widget _buildUserNameText(BuildContext context, UserModel currentUser) {
     final database = Provider.of<Database>(context, listen: false);
     return StreamBuilder<List<UserModel>>(
       stream: database.getAllCoFarmingFarmers(),
@@ -86,7 +83,10 @@ class _CoFarmingWidgetState extends State<CoFarmingWidget> {
                       context,
                       MaterialPageRoute(
                         fullscreenDialog: true,
-                        builder: (context) => LocationDetails(),
+                        builder: (context) => LocationDetails(
+                          farmer: user,
+                          currentUser: currentUser,
+                        ),
                       ),
                     );
                   },
@@ -123,108 +123,109 @@ class _CoFarmingWidgetState extends State<CoFarmingWidget> {
     );
   }
 
-  Column coFarmingAvailabilityForm() {
+  Column coFarmingAvailabilityForm(UserModel userData, Database database) {
     DateTime selectedDate = DateTime.now();
     final DateFormat dateFormat = DateFormat('dd-MM-yyyy HH:mm');
-    return Column(
-      children: [
-        Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: <Widget>[
-            Container(
-              padding: EdgeInsets.all(6.0),
-              child: Text(
-                "Are you available for Co-Farming?",
-                style: kDefaultStyle,
+    return userData.coFarmingAvailable == "Not Selected"
+        ? Column(
+            children: [
+              Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: <Widget>[
+                  Container(
+                    padding: EdgeInsets.all(6.0),
+                    child: Text(
+                      "Are you available for Co-Farming?",
+                      style: kDefaultStyle,
+                    ),
+                  ),
+                  Row(
+                    children: <Widget>[
+                      Padding(
+                          padding: const EdgeInsets.all(8.0),
+                          child: ElevatedButton(
+                            child: Text('Yes'),
+                            style: ButtonStyle(
+                              backgroundColor: MaterialStateColor.resolveWith(
+                                (states) => kBlack,
+                              ),
+                            ),
+                            onPressed: () async {
+                              showDateTimeDialog(context,
+                                  initialDate: selectedDate,
+                                  onSelectedDate: (selectedDate) {
+                                setState(() {
+                                  this.selectedDate = selectedDate;
+                                });
+                              });
+                              setState(() {
+                                isAvailable = true;
+                                print(
+                                    "Co-Farming availability status: $selectedDate");
+                                UserModel model = UserModel(
+                                  name: userData.name,
+                                  phoneNumber: userData.phoneNumber,
+                                  isFarmer: userData.isFarmer,
+                                  locationName: userData.locationName,
+                                  locationDetails: userData.locationDetails,
+                                  coFarmingAvailable: isAvailable.toString(),
+                                  selectedDate: selectedDate.toString(),
+                                );
+                                database.setGeneralUserData(model);
+                              });
+                            },
+                          )),
+                      Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: ElevatedButton(
+                          child: Text(
+                            'No',
+                            style: TextStyle(color: kBlack),
+                          ),
+                          style: ButtonStyle(
+                            backgroundColor: MaterialStateColor.resolveWith(
+                              (states) => kLightSecondaryColor,
+                            ),
+                          ),
+                          onPressed: () {
+                            setState(() {
+                              isAvailable = false;
+                              UserModel model = UserModel(
+                                name: userData.name,
+                                phoneNumber: userData.phoneNumber,
+                                isFarmer: userData.isFarmer,
+                                locationName: userData.locationName,
+                                locationDetails: userData.locationDetails,
+                                coFarmingAvailable: isAvailable.toString(),
+                                selectedDate: "none",
+                              );
+                              database.setGeneralUserData(model);
+                              print(
+                                  "Co-Farming availability status: $isAvailable");
+                            });
+                          },
+                        ),
+                      ),
+                    ],
+                  ),
+                ],
               ),
-            ),
-            Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: ElevatedButton(
-                  child: Text('Yes'),
-                  style: ButtonStyle(
-                    backgroundColor: MaterialStateColor.resolveWith(
-                      (states) => kBlack,
-                    ),
-                  ),
-                  onPressed: () async {
-                    setState(() {
-                      isAvailable = true;
-                      print("Co-Farming availability status: $isAvailable");
-                    });
-                    showDateTimeDialog(context, initialDate: selectedDate,
-                        onSelectedDate: (selectedDate) {
-                      setState(() {
-                        this.selectedDate = selectedDate;
-                      });
-                    });
-                  },
-                )),
-            Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: ElevatedButton(
-                  child: Text(
-                    'No',
-                    style: TextStyle(color: kBlack),
-                  ),
-                  style: ButtonStyle(
-                    backgroundColor: MaterialStateColor.resolveWith(
-                      (states) => kLightSecondaryColor,
-                    ),
-                  ),
-                  onPressed: () {
-                    setState(() {
-                      isAvailable = false;
-                      print("Co-Farming availability status: $isAvailable");
-                    });
-                  }),
-            ),
-            Row(
-              children: <Widget>[
-                Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: ElevatedButton(
-                      child: Text('Yes'),
-                      style: ButtonStyle(
-                        backgroundColor: MaterialStateColor.resolveWith(
-                          (states) => kBlack,
-                        ),
-                      ),
-                      onPressed: () {
-                        setState(() {
-                          isAvailable = true;
-                          print("Co-Farming availability status: $isAvailable");
-                        });
-                      }),
-                ),
-                Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: ElevatedButton(
-                      child: Text(
-                        'No',
-                        style: TextStyle(color: kBlack),
-                      ),
-                      style: ButtonStyle(
-                        backgroundColor: MaterialStateColor.resolveWith(
-                          (states) => kLightSecondaryColor,
-                        ),
-                      ),
-                      onPressed: () {
-                        setState(() {
-                          isAvailable = false;
-                          print("Co-Farming availability status: $isAvailable");
-                        });
-                      }),
-                ),
-              ],
-            ),
-          ],
-        ),
-      ],
-    );
+            ],
+          )
+        : userData.coFarmingAvailable == "true"
+            ? Column(
+                children: <Widget>[
+                  Text("You have Scheduled at - ${userData.selectedDate}"),
+                ],
+              )
+            : Column(
+                children: <Widget>[
+                  Text("Not eligible"),
+                ],
+              );
   }
 
-  Column userCoFarmingForm(BuildContext context) {
+  Column userCoFarmingForm(BuildContext context, UserModel userData) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: <Widget>[
@@ -238,7 +239,7 @@ class _CoFarmingWidgetState extends State<CoFarmingWidget> {
         SizedBox(
           height: 20,
         ),
-        _buildUserNameText(context),
+        _buildUserNameText(context, userData),
       ],
     );
   }
@@ -283,7 +284,7 @@ class LocationItem extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       width: MediaQuery.of(context).size.width * 0.85,
-      height: 60,
+      height: MediaQuery.of(context).size.height * 0.09,
       margin: EdgeInsets.only(bottom: 15),
       padding: EdgeInsets.all(10),
       decoration: BoxDecoration(

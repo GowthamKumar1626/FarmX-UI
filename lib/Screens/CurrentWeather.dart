@@ -2,6 +2,7 @@ import 'dart:convert';
 import 'dart:ui' as ui;
 import 'dart:ui';
 
+import 'package:farmx/Constants/Constants.dart';
 import 'package:farmx/Screens/Weather.dart';
 import 'package:farmx/Screens/currentWeatherScreen.dart';
 import 'package:farmx/Screens/weather/models/location.dart';
@@ -35,42 +36,44 @@ class _CurrentWeatherPageState extends State<CurrentWeatherPage> {
           ),
         );
       },
-      child: new BackdropFilter(
-        filter: new ImageFilter.blur(sigmaX: 1.0, sigmaY: 1.0),
-        child: Container(
-            padding: const EdgeInsets.all(5.0),
-            margin: const EdgeInsets.all(5.0),
-            height: MediaQuery.of(context).size.height * 0.2,
-            decoration: BoxDecoration(
-              color: Colors.grey.withOpacity(0.3),
-              shape: BoxShape.rectangle,
-              borderRadius: BorderRadius.circular(20),
-            ),
-            child: Row(
-              children: [
-                Image(
+      child: Container(
+          padding: const EdgeInsets.all(5.0),
+          margin: const EdgeInsets.all(5.0),
+          height: MediaQuery.of(context).size.height * 0.2,
+          width: MediaQuery.of(context).size.width * 0.8,
+          decoration: BoxDecoration(
+            color: kDarkPrimaryColor,
+            shape: BoxShape.rectangle,
+            borderRadius: BorderRadius.circular(10),
+          ),
+          child: Row(
+            children: [
+              Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: Image(
                   image: AssetImage("assets/icons/weatherblack.png"),
                   width: 100,
                   height: 100,
+                  color: Colors.white,
                 ),
-                FutureBuilder(
-                  builder: (context, snapshot) {
-                    if (snapshot.hasData) {
-                      Weather? _weather = snapshot.data as Weather?;
-                      if (_weather == null) {
-                        return Text("error getting weather data");
-                      } else {
-                        return weatherBox(_weather);
-                      }
+              ),
+              FutureBuilder(
+                builder: (context, snapshot) {
+                  if (snapshot.hasData) {
+                    Weather? _weather = snapshot.data as Weather?;
+                    if (_weather == null) {
+                      return Text("error getting weather data");
                     } else {
-                      return Text("oops!!");
+                      return weatherBox(_weather);
                     }
-                  },
-                  future: getCurrentWeather(context),
-                ),
-              ],
-            )),
-      ),
+                  } else {
+                    return Text("oops!!");
+                  }
+                },
+                future: getCurrentWeather(context),
+              ),
+            ],
+          )),
     )));
   }
 }
@@ -84,14 +87,31 @@ Widget weatherBox(Weather _weather) {
             child: Text(
               "${_weather.temp}°C",
               textAlign: TextAlign.center,
-              style: TextStyle(fontWeight: FontWeight.bold, fontSize: 50),
+              style: TextStyle(
+                fontWeight: FontWeight.w500,
+                fontSize: 40,
+                color: Colors.white,
+              ),
             )),
         Text(
-            "${_weather.description[0].toUpperCase()}${_weather.description.substring(1)}"),
-        SizedBox(
-          height: 20,
+          "${_weather.description[0].toUpperCase()}${_weather.description.substring(1)}",
+          style: TextStyle(
+            fontWeight: FontWeight.w500,
+            fontSize: 15,
+            color: Colors.white,
+          ),
         ),
-        Text("Feels Like:${_weather.feelsLike}°C"),
+        SizedBox(
+          height: 10,
+        ),
+        Text(
+          "Feels Like:${_weather.feelsLike}°C",
+          style: TextStyle(
+            fontWeight: FontWeight.w500,
+            fontSize: 12,
+            color: Colors.white,
+          ),
+        ),
         // style: TextStyle(
         //     fontWeight: FontWeight.normal,
         //     fontSize: 13,

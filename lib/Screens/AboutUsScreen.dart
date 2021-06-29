@@ -105,19 +105,6 @@ class AboutUsScreen extends StatelessWidget {
                         ),
                       ),
                     ),
-                    Center(
-                      child: TextButton.icon(
-                        onPressed: () => location.locationData(),
-                        icon: LineIcon(
-                          LineIcons.searchLocation,
-                          color: kBlack,
-                        ),
-                        label: Text(
-                          "Get Location",
-                          style: kLoginHeading,
-                        ),
-                      ),
-                    ),
                   ],
                 ),
               ),

@@ -75,6 +75,7 @@ class _ToolScreenState extends State<ToolScreen> {
               ),
               decoration: BoxDecoration(
                 shape: BoxShape.circle,
+                color: Colors.white,
                 boxShadow: [
                   BoxShadow(
                     color: Colors.black.withOpacity(0.1),
@@ -85,7 +86,7 @@ class _ToolScreenState extends State<ToolScreen> {
                 ],
                 image: DecorationImage(
                   fit: BoxFit.cover,
-                  image: AssetImage("assets/images/user.JPG"),
+                  image: AssetImage("assets/icons/profile-user.png"),
                 ),
               ),
             ),
