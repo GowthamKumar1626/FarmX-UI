@@ -1,17 +1,14 @@
 import 'dart:convert';
 import 'dart:ui' as ui;
 import 'dart:ui';
-//import 'package:farmx/Constants/Constants.dart';
+
 import 'package:farmx/Screens/Weather.dart';
 import 'package:farmx/Screens/currentWeatherScreen.dart';
-import 'package:farmx/Services/location.dart';
 import 'package:farmx/Screens/weather/models/location.dart';
-import 'package:farmx/Constants/Constants.dart';
-
+import 'package:farmx/Services/location.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:provider/provider.dart';
-//import 'package:podo/widgets/blurry_container.dart';
 
 class CurrentWeatherPage extends StatefulWidget {
   const CurrentWeatherPage({Key? key}) : super(key: key);
@@ -43,9 +40,9 @@ class _CurrentWeatherPageState extends State<CurrentWeatherPage> {
         child: Container(
             padding: const EdgeInsets.all(5.0),
             margin: const EdgeInsets.all(5.0),
-            height: MediaQuery.of(context).size.height * 0.3,
+            height: MediaQuery.of(context).size.height * 0.2,
             decoration: BoxDecoration(
-              color: Colors.blueGrey.withOpacity(0.6),
+              color: Colors.grey.withOpacity(0.3),
               shape: BoxShape.rectangle,
               borderRadius: BorderRadius.circular(20),
             ),
@@ -89,7 +86,8 @@ Widget weatherBox(Weather _weather) {
               textAlign: TextAlign.center,
               style: TextStyle(fontWeight: FontWeight.bold, fontSize: 50),
             )),
-        Text("${_weather.description}"),
+        Text(
+            "${_weather.description[0].toUpperCase()}${_weather.description.substring(1)}"),
         SizedBox(
           height: 20,
         ),
@@ -201,7 +199,7 @@ Future getCurrentWeather(BuildContext context) async {
   return weather;
 }
 
-Widget generateBluredImage() {
+Widget generateBlurredImage() {
   return new Container(
     decoration: new BoxDecoration(
       image: new DecorationImage(
@@ -209,7 +207,6 @@ Widget generateBluredImage() {
         fit: BoxFit.cover,
       ),
     ),
-    //I blured the parent container to blur background image, you can get rid of this part
     child: new BackdropFilter(
       filter: new ui.ImageFilter.blur(sigmaX: 3.0, sigmaY: 3.0),
       child: new Container(

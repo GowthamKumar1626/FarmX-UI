@@ -1,6 +1,6 @@
 class UserModel {
   UserModel({
-    this.name = 'User',
+    this.name = '',
     this.phoneNumber = '',
     this.isFarmer = false,
     this.locationName = '',
