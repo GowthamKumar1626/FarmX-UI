@@ -4,7 +4,7 @@
         android:label="farmx"
         android:icon="@mipmap/ic_launcher">
        <meta-data android:name="com.google.android.geo.API_KEY"
-           android:value="AIzaSyDuk9U9m8sNF6AT3JLz0s7cZPJiaoprdIE"/>
+           android:value="AIzaSyBtrAkBpH-IrC_iffZ_1qKXcK5VjeLQhv4"/>
         <activity
             android:name=".MainActivity"
             android:launchMode="singleTop"

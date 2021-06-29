@@ -32,6 +32,7 @@ class FireStoreDatabase implements Database {
             locationName: data["locationName"],
             locationDetails: data["locationDetails"],
             coFarmingAvailable: data["coFarmingAvailable"],
+            selectedDate: data["selectedDate"],
           );
         }).toList());
   }
@@ -51,6 +52,7 @@ class FireStoreDatabase implements Database {
             locationName: data["locationName"],
             locationDetails: data["locationDetails"],
             coFarmingAvailable: data["coFarmingAvailable"],
+            selectedDate: data["selectedDate"],
           );
         }).toList());
   }
@@ -67,6 +69,7 @@ class FireStoreDatabase implements Database {
         locationName: data["locationName"],
         locationDetails: data["locationDetails"],
         coFarmingAvailable: data["coFarmingAvailable"],
+        selectedDate: data["selectedDate"],
       );
     });
   }

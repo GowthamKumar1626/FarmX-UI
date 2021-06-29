@@ -84,10 +84,7 @@ class UserProfileScreen extends StatelessWidget {
                         height: 120,
                         decoration: BoxDecoration(
                           shape: BoxShape.circle,
-                          // border: Border.all(
-                          //   width: 4,
-                          //   color: Theme.of(context).scaffoldBackgroundColor,
-                          // ),
+                          color: Colors.white,
                           boxShadow: [
                             BoxShadow(
                               color: Colors.black.withOpacity(0.1),
@@ -98,7 +95,7 @@ class UserProfileScreen extends StatelessWidget {
                           ],
                           image: DecorationImage(
                             fit: BoxFit.cover,
-                            image: AssetImage("assets/images/user.JPG"),
+                            image: AssetImage("assets/icons/profile-user.png"),
                           ),
                         ),
                       ),

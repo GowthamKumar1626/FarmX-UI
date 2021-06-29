@@ -48,10 +48,14 @@ class _CurrentWeatherPageState extends State<CurrentWeatherPage> {
           ),
           child: Row(
             children: [
-              Image(
-                image: AssetImage("assets/icons/weatherblack.png"),
-                width: 100,
-                height: 100,
+              Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: Image(
+                  image: AssetImage("assets/icons/weatherblack.png"),
+                  width: 100,
+                  height: 100,
+                  color: Colors.white,
+                ),
               ),
               FutureBuilder(
                 builder: (context, snapshot) {
