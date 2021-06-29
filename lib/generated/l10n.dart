@@ -50,20 +50,20 @@ class S {
     return Localizations.of<S>(context, S);
   }
 
-  /// `Farmx App`
+  /// `Farmx‌`
   String get appTitle {
     return Intl.message(
-      'Farmx App',
+      'Farmx‌',
       name: 'appTitle',
       desc: '',
       args: [],
     );
   }
 
-  /// `Farmx App - Home Page`
+  /// `Welcome`
   String get pageTitle {
     return Intl.message(
-      'Farmx App - Home Page',
+      'Welcome',
       name: 'pageTitle',
       desc: '',
       args: [],
