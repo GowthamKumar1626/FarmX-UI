@@ -1,7 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:flutter/material.dart';
 import 'package:farmx/Screens/feed/commons/const.dart';
 import 'package:farmx/Screens/feed/commons/utils.dart';
+import 'package:flutter/material.dart';
 
 import '../reportPost.dart';
 
@@ -77,7 +77,7 @@ class _ThreadItem extends State<ThreadItem> {
                           width: 48,
                           height: 48,
                           child: Image.asset(
-                              'images/${widget.data!['userThumbnail']}')),
+                              'assets/photos/${widget.data!['userThumbnail']}')),
                     ),
                     Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
