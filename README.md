@@ -85,6 +85,7 @@ All the Deployment Related Code Can be found at [**Farmx-Model-Deployment-Repo**
   - To provide and focus on more diseases for different crops using OpenCV
   - To provide more fertilizer information and fertilizer shop feature which farmers get redirected to after finding the  pest.
   - Bussiness with farmer groups.
+  - Complete Multi-Language Support.
 
 
 ### End Note
