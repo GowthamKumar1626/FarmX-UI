@@ -3,6 +3,7 @@ import 'package:farmx/newsfeed/components/customListTile.dart';
 import 'package:farmx/newsfeed/model/article_model.dart';
 import 'package:farmx/newsfeed/services/api_service.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_statusbarcolor/flutter_statusbarcolor.dart';
 
 class NewsFeedScreen extends StatefulWidget {
   @override
@@ -14,6 +15,7 @@ class _HomePageState extends State<NewsFeedScreen> {
 
   @override
   Widget build(BuildContext context) {
+    FlutterStatusbarcolor.setStatusBarColor(Colors.white);
     return Scaffold(
       backgroundColor: kDarkPrimaryColor,
       appBar: AppBar(

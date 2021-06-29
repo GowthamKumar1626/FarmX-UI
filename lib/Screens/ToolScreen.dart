@@ -10,6 +10,7 @@ import 'package:farmx/Widgets/FertilizerSuggestion/FertilizerSuggestionWidget.da
 import 'package:farmx/Widgets/GeneralCropInfo/GeneralCropInfoWidget.dart';
 import 'package:farmx/Widgets/PestDetection/PestDetectionWidget.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_statusbarcolor/flutter_statusbarcolor.dart';
 import 'package:provider/provider.dart';
 
 import '../Constants/Constants.dart';
@@ -27,6 +28,7 @@ class _ToolScreenState extends State<ToolScreen> {
 
   @override
   Widget build(BuildContext context) {
+    FlutterStatusbarcolor.setStatusBarColor(Colors.white);
     final auth = Provider.of<AuthBase>(context, listen: false);
 
     return Scaffold(

@@ -4,6 +4,7 @@ import 'package:farmx/Services/auth.dart';
 import 'package:farmx/Services/location.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_statusbarcolor/flutter_statusbarcolor.dart';
 import 'package:line_icons/line_icon.dart';
 import 'package:line_icons/line_icons.dart';
 import 'package:provider/provider.dart';
@@ -33,6 +34,7 @@ class AboutUsScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    FlutterStatusbarcolor.setStatusBarColor(Colors.white);
     final location = Provider.of<LocationService>(context, listen: false);
     return Scaffold(
       backgroundColor: kDarkPrimaryColor,

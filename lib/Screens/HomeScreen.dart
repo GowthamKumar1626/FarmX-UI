@@ -3,11 +3,13 @@ import 'package:eva_icons_flutter/eva_icons_flutter.dart';
 import 'package:farmx/Screens/AboutUsScreen.dart';
 import 'package:farmx/Screens/NewsFeedScreen.dart';
 import 'package:farmx/Screens/ToolScreen.dart';
+import 'package:farmx/Screens/feed/posts.dart';
 import 'package:farmx/Services/auth.dart';
 import 'package:farmx/Widgets/Tools/shop.dart';
 import 'package:flutter/material.dart';
 import 'package:line_icons/line_icons.dart';
 import 'package:provider/provider.dart';
+import 'package:flutter_statusbarcolor/flutter_statusbarcolor.dart';
 
 class HomeScreen extends StatefulWidget {
   @override
@@ -15,10 +17,14 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
+//   SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle(
+//   statusBarColor: Colors.white
+// ));
   int currentIndex = 1;
 
   var _pages = [
     NewsFeedScreen(),
+    PostsScreen(),
     ToolScreen(),
     ShopScreen(),
     AboutUsScreen(),
@@ -28,6 +34,7 @@ class _HomeScreenState extends State<HomeScreen> {
 
   @override
   Widget build(BuildContext context) {
+    FlutterStatusbarcolor.setStatusBarColor(Colors.white);
     final auth = Provider.of<AuthBase>(context, listen: false);
 
     return Scaffold(
@@ -61,6 +68,11 @@ class _HomeScreenState extends State<HomeScreen> {
             BottomNavyBarItem(
               icon: Icon(EvaIcons.castOutline),
               title: Text('News feed'),
+              activeColor: Colors.black,
+            ),
+            BottomNavyBarItem(
+              icon: Icon(EvaIcons.peopleOutline),
+              title: Text('Posts'),
               activeColor: Colors.black,
             ),
             BottomNavyBarItem(
