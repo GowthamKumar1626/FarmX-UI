@@ -9,7 +9,12 @@ Food is the major source of life and Farmers are the backbone of society.
 
 But, Are we giving utmost importance and support to agriculture and farming? A lot of Technological advancements and research using AI are happening every day related to agriculture, but most farmers have no access to them. In order to bridge the gap between Technology and Agriculture, we made **FarmX**.
 
-
+## Technologies Used
+- Flutter : For developing the mobile application
+- Firebase : For data storage and authentication
+- TFLite : For pest detection models 
+- Google Cloud Platform : For Google Maps API
+- Heroku : For ML model deployment  
 
 ## Features
 - Supports Plant Disease detection for 14 different Plants with 26 Diseases and more focused diseases for 6 plants, trained using SOTA Deep Learning Models.
